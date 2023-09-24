@@ -1,3 +1,5 @@
 import Hero from "./Hero";
+import Card from "./Card";
+import CardsList from "./CardsList";
 
-export { Hero };
+export { Hero, Card,CardsList };
