@@ -14,10 +14,10 @@ const cards = [
     bg: "/timer-start-bg.png",
   },
   {
-    src: "/ticket-2.png",
+    src: "/bus-ticket-2.png",
     alt: "Ticket",
     text: "Возврат билетов",
-    bg: "/ticket-2-bg.png",
+    bg: "/bus-ticket-2-bg.png",
   },
   {
     src: "/global-search.png",
