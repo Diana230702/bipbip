@@ -6,12 +6,9 @@ import {
   CustomText,
   DirectionCardsList,
 } from "@/entities";
-import Hero from "@/pages/home/ui";
-import { AppQr, CustomButton, Card } from "@/shared";
-import DirectionCard from "@/shared/ui/direction-card/ui";
+import Hero from "@/app/home/ui";
+import { AppQr } from "@/shared";
 import { Footer, SearchSelect } from "@/widgets";
-
-import { useState } from "react";
 
 export default function Home() {
   return (
