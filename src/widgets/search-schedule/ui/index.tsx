@@ -19,7 +19,7 @@ const ExampleCustomInput: FC<ExampleCustomInputProps> = forwardRef<
   <div className="bg-[#fff] py-[12px] w-[200px]">
     <p className="text-[#95A5BC] text-[12px] ml-8 mb-1">Дата отправления</p>
     <button className="flex" onClick={onClick} ref={ref}>
-      <Image src="/note.svg" alt="" className="mr-2" />
+      <Image src="/note.svg" width="25" height="25" alt="" className="mr-2" />
       <span className="text-[14px]">{value}</span>
     </button>
   </div>
@@ -42,6 +42,8 @@ const SearchSelect = () => {
         <Image
           src="/location.svg"
           alt=""
+          width="30"
+          height="30"
           className="absolute top-[10px] left-[10px]"
         />
         <input
@@ -55,6 +57,8 @@ const SearchSelect = () => {
       <div className="relative">
         <Image
           src="/location-tick.svg"
+          width="30"
+          height="30"
           alt=""
           className="absolute top-[10px] left-[10px]"
         />

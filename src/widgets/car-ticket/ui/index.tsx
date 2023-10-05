@@ -1,8 +1,13 @@
 import { DirectionInfo } from "@/entities";
 import { DirectionCount, DirectionUser, CustomButton } from "@/shared";
 import Image from "next/image";
+import { FC } from "react";
 
-const CarTicket = () => {
+interface CarTicketProps {
+  setShowModal: (showModal: boolean) => void;
+}
+
+const CarTicket: FC<CarTicketProps> = ({ setShowModal }) => {
   return (
     <div className="bg-[#fff] rounded-[6px] flex items-center justify-between pl-8 pt-[50px] pb-[25px]">
       <div>
@@ -31,33 +36,64 @@ const CarTicket = () => {
         />
         <CustomButton
           title="Забронировать место"
+          onClick={() => setShowModal(true)}
           containerStyles="mt-20 text-white px-8 direction-gardient text-[12px]"
         />
       </div>
       <div className="bg-[#FCFCFC] w-[296px]">
         <div className="flex">
           <div>
-            <Image src="/line-direction.png" alt="" className="mr-[1px]" />
+            <Image
+              src="/line-direction.png"
+              width="1"
+              height="1"
+              alt=""
+              className="mr-[1px]"
+            />
           </div>
           <div className="px-[23px] py-[50px]">
             <div className="flex">
               <div>
                 <div className="flex items-center mb-[20px]">
-                  <Image src="/sofa.svg" alt="" className="w-6" />
+                  <Image
+                    src="/sofa.svg"
+                    width="25"
+                    height="25"
+                    alt=""
+                    className="w-6"
+                  />
                   <p className="mx-2 text-[#676767] text-[12px]">
                     2 места на заднем сиденье
                   </p>
                 </div>
                 <div className="flex">
-                  <Image src="/github.svg" alt="" className="w-6" />
+                  <Image
+                    src="/github.svg"
+                    width="25"
+                    height="25"
+                    alt=""
+                    className="w-6"
+                  />
                   <p className="mx-2 items-center text-[#676767] text-[12px]">
                     Можно с животными
                   </p>
                 </div>
               </div>
               <div className="ml-[10px]">
-                <Image src="/check.svg" alt="" className="w-[16px] mb-[30px]" />
-                <Image src="/check.svg" alt="" className="w-[16px]" />
+                <Image
+                  src="/check.svg"
+                  width="25"
+                  height="25"
+                  alt=""
+                  className="w-[16px] mb-[30px]"
+                />
+                <Image
+                  src="/check.svg"
+                  width="25"
+                  height="25"
+                  alt=""
+                  className="w-[16px]"
+                />
               </div>
             </div>
             <p className="mt-[26px] text-[12px]">

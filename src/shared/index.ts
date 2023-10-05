@@ -5,3 +5,5 @@ export { default as DirectionCardChildren } from "./ui/direction-card-children/u
 export { default as DirectionCard } from "./ui/direction-card/ui";
 export { default as CustomButton } from "./ui/custom-button/ui";
 export { default as Card } from "./ui/card/ui";
+export { default as BookingState } from "./ui/booking-state/ui";
+export { default as Modal } from "./ui/modal/ui";
