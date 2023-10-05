@@ -5,7 +5,7 @@ const DirectionCardChildren: FC<DirectionCardChildren> = ({
   imageSrc,
   destination,
   price,
-}: any) => {
+}) => {
   return (
     <div className="flex items-center">
       <div className="mr-4">

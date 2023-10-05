@@ -12,7 +12,6 @@ interface ExampleCustomInputProps {
   onClick: () => void;
 }
 
-// eslint-disable-next-line react/display-name
 const ExampleCustomInput: FC<ExampleCustomInputProps> = forwardRef<
   HTMLButtonElement,
   ExampleCustomInputProps
