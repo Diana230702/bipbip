@@ -127,3 +127,25 @@ body {
 .direction-gardient {
   background: linear-gradient(268deg, #20ddb7 -4.4%, #22bb9c 107.33%), #21d6b1;
 }
+.booking-state-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -24px;
+  bottom: 0;
+  width: 1px;
+  border: 2px solid #A6EFE0;
+  transform: rotate(90deg);
+  z-index: 0;
+}
+.booking-state-button-two::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -22px;
+  bottom: 0;
+  width: 1px;
+  border: 2px solid #E4E9F0;
+  transform: rotate(90deg);
+  z-index: 0;
+}

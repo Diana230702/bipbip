@@ -1,4 +1,4 @@
 export interface DirectionCountProps {
   icon: string;
-  count: number;
+  count: number | string;
 }

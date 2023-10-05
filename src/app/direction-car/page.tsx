@@ -3,9 +3,11 @@
 import { ButtonFilter } from "@/entities";
 import { CarTicket, DirectionFilter, Footer, Header } from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
-import React from "react";
+import React, { useState } from "react";
+import { Modal } from "@/shared";
 
-const Direction = () => {
+const DirectionCar = () => {
+  const [showModal, setShowModal] = useState(false);
   return (
     <>
       <div className="container mx-auto sm:px-10 px-5">
@@ -16,13 +18,15 @@ const Direction = () => {
         <ButtonFilter containerStyles="justify-start" />
         <SearchSelect />
         <div className="max-w-[840px] mx-auto">
-          <DirectionFilter />
-          <CarTicket />
+          <DirectionFilter route="4 поездки" passengers="1" />
+          <CarTicket setShowModal={setShowModal} />
         </div>
+        <Modal showModal={showModal} setShowModal={setShowModal} />
       </div>
+
       <Footer />
     </>
   );
 };
 
-export default Direction;
+export default DirectionCar;
