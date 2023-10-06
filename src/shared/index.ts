@@ -7,3 +7,4 @@ export { default as CustomButton } from "./ui/custom-button/ui";
 export { default as Card } from "./ui/card/ui";
 export { default as BookingState } from "./ui/booking-state/ui";
 export { default as Modal } from "./ui/modal/ui";
+export { default as BookingPlaceInfo } from "./ui/booking-place-info/ui";

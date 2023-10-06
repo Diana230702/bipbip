@@ -10,7 +10,7 @@ const MoreTicket = () => {
   };
 
   return (
-    <div className="mt-[40px] bg-[#fff] py-[15px] px-[25px] rounded-[10px]">
+    <div className="mt-[40px] bg-[#fff] py-[15px] px-[25px] rounded-[10px] relative">
       <div
         className="flex justify-between cursor-pointer"
         onClick={toggleDetails}
@@ -33,7 +33,7 @@ const MoreTicket = () => {
       </div>
 
       {isDetailsOpen && (
-        <div className="flex items-baseline justify-between">
+        <div className="flex items-baseline justify-between absolute py-[15px] px-[25px] bg-[#fff] w-full left-0 z-10 rounded-b-[10px]">
           <div>
             <span className="text-[12px] block mt-[30px]  mb-[10px]">
               15:00, 11 мая
@@ -58,7 +58,7 @@ const MoreTicket = () => {
                 width="20"
                 height="20"
                 className="mx-[16px]"
-                alt='wifi-off'
+                alt="wifi-off"
               />
               <Image src="/plug-2.svg" width="20" height="20" alt="plug" />
             </div>
