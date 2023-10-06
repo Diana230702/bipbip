@@ -16,12 +16,12 @@ const DirectionInfo: FC<DirectionInfoProps> = ({
   const timeInWay: string = "1д 7ч В пути";
 
   return (
-    <div className="flex justify-between items-baseline w-[420px]">
-      <div className="mr-10">
+    <div className="flex justify-between items-baseline w-[410px]">
+      <div className="w-[100px]">
         <span className="font-semibold text-[18px]">{timeOfDeparture}</span>
         <p className="text-[#676767] font-normal text-[12px]">{departure}</p>
       </div>
-      <div>
+      <div className="w-[125px]">
         <span className="text-[#95A4BC] text-[12px]">~ {timeInWay}</span>
       </div>
       <div className="relative">
@@ -33,7 +33,7 @@ const DirectionInfo: FC<DirectionInfoProps> = ({
           </div>
         </div>
       </div>
-      <div>
+      <div className="w-[100px]">
         <span className="font-semibold text-[18px]">{timeOfArrival}</span>
         <p className="text-[#676767] font-normal text-[12px]">{arrival}</p>
       </div>

@@ -112,18 +112,19 @@ body {
 }
 
 .v8aa {
-  /* padding-left: 40px; */
-  /* margin: 10px 0; */
   height: 100px;
   position: relative;
-  /* margin-left: -5px; */
   transform: rotate(90deg);
+}
+.v8aa-no {
+  transform: rotate(0deg);
 }
 
 .aa9v1 {
   bottom: -4px;
   right: 4px;
 }
+
 .direction-gardient {
   background: linear-gradient(268deg, #20ddb7 -4.4%, #22bb9c 107.33%), #21d6b1;
 }
@@ -134,18 +135,40 @@ body {
   right: -24px;
   bottom: 0;
   width: 1px;
-  border: 2px solid #A6EFE0;
+  border: 2px solid #a6efe0;
   transform: rotate(90deg);
   z-index: 0;
 }
-.booking-state-button-two::after{
+.booking-state-button-two::after {
   content: "";
   position: absolute;
   top: 0;
   right: -22px;
   bottom: 0;
   width: 1px;
-  border: 2px solid #E4E9F0;
+  border: 2px solid #e4e9f0;
   transform: rotate(90deg);
   z-index: 0;
+}
+.aav9-no,
+.a9va-no,
+.aa9v-no {
+  background-color: #95a4bc;
+  border-color: #dce1e8;
+  padding: 1px;
+}
+.aa9v-no {
+  bottom: 0;
+  left: 10px;
+  position: absolute;
+  top: 0;
+  width: 4px;
+  /* border: 1px dashed #95a4bc; */
+  background: url("/line-direction.png");
+}
+.aav9-no {
+  top: -10px !important;
+}
+.aa9v1-no {
+  top: 90px !important;
 }

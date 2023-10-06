@@ -1,7 +1,7 @@
 "use client";
 
 import { ButtonFilter } from "@/entities";
-import { DirectionFilter, Footer, Header } from "@/widgets";
+import { BusTicket, DirectionFilter, Footer, Header } from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
 import React, { useState } from "react";
 import { Modal } from "@/shared";
@@ -18,6 +18,7 @@ const DirectionBus = () => {
         <SearchSelect />
         <div className="max-w-[840px] mx-auto">
           <DirectionFilter route="20 Направлений" passengers="2" />
+          <BusTicket />
         </div>
       </div>
 
