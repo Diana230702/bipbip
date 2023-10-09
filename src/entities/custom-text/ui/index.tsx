@@ -1,16 +1,22 @@
 import Image from "next/image";
+import { FC } from "react";
 
-const CustomText = () => {
+interface CustomText {
+  containerStyles?: string;
+  textStyles?: string;
+}
+
+const CustomText: FC<CustomText> = ({ containerStyles, textStyles }) => {
   return (
-    <div className="flex items-center mb-[45px]">
+    <div className={`${containerStyles} flex items-center mb-[25px]`}>
       <Image
         src="/direct-up.png"
-        width="40"
-        height="40"
+        width="30"
+        height="30"
         alt="direct-up"
         className="mr-[15px]"
       />
-      <h4 className="text-[32px] font-medium">Популярные направления</h4>
+      <h4 className={`font-medium ${textStyles}`}>Популярные направления</h4>
     </div>
   );
 };
