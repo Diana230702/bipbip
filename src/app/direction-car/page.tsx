@@ -1,7 +1,13 @@
 "use client";
 
 import { ButtonFilter } from "@/entities";
-import { CarTicket, DirectionFilter, Footer, Header } from "@/widgets";
+import {
+  CarTicket,
+  DirectionFilter,
+  Footer,
+  Header,
+  ModalContentCarTicket,
+} from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
 import React, { useState } from "react";
 import { Modal } from "@/shared";
@@ -21,7 +27,11 @@ const DirectionCar = () => {
           <DirectionFilter route="4 поездки" passengers="1" />
           <CarTicket setShowModal={setShowModal} />
         </div>
-        <Modal showModal={showModal} setShowModal={setShowModal} />
+        <Modal
+          showModal={showModal}
+          setShowModal={setShowModal}
+          content={<ModalContentCarTicket setShowModal={setShowModal}/>}
+        />
       </div>
 
       <Footer />

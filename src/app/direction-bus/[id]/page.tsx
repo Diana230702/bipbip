@@ -15,7 +15,11 @@ const BookingBus = () => {
       <div className="container mx-auto sm:px-10 px-5">
         <div className="max-w-[840px] mx-auto">
           <TreeSite />
-          <BookingState />
+          <BookingState
+            activeStylesOne="bg-[#21D6B1] text-[#fff]"
+            activeStylesTwo="bg-[#fff]"
+            activeStylesThree="bg-[#fff]"
+          />
           <MoreTicket />
           <p className="text-center mt-[40px] mb-[15px] text-[14px] text-[#95A4BC]">
             Выберите места на схеме автобуса
