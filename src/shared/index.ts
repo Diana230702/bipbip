@@ -10,3 +10,5 @@ export { default as Modal } from "./ui/modal/ui";
 export { default as BookingPlaceInfo } from "./ui/booking-place-info/ui";
 export { default as FloatingInput } from "./ui/floating-input/ui";
 export { default as CustomSelect } from "./ui/custom-select/ui";
+export { default as RecentlyAccordion } from "./ui/recently-accordion/ui";
+export { default as RecentlyInfo } from "./ui/recently-info/ui";
