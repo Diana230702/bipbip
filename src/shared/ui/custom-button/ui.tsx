@@ -11,6 +11,7 @@ const CustomButton: FC<CustomButtonProps> = ({
   textStyles,
   containerStyles,
   title,
+  iconStyles,
 }) => {
   return (
     <button
@@ -19,7 +20,7 @@ const CustomButton: FC<CustomButtonProps> = ({
       onClick={onClick}
     >
       {icon && (
-        <div className="relative w-6 h-6">
+        <div className={`${iconStyles}  relative w-6 h-6`}>
           <Image src={icon} alt="allow_left" fill className="object-contain" />
         </div>
       )}

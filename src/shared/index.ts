@@ -8,3 +8,5 @@ export { default as Card } from "./ui/card/ui";
 export { default as BookingState } from "./ui/booking-state/ui";
 export { default as Modal } from "./ui/modal/ui";
 export { default as BookingPlaceInfo } from "./ui/booking-place-info/ui";
+export { default as FloatingInput } from "./ui/floating-input/ui";
+export { default as CustomSelect } from "./ui/custom-select/ui";

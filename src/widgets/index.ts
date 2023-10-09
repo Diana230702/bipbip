@@ -6,3 +6,5 @@ export { default as Header } from "./header/ui/index";
 export { default as SearchSelect } from "./search-schedule/ui/index";
 export { default as Footer } from "./footer/ui/index";
 export { default as ChoosePlace } from "./choose-place/ui/index";
+export { default as ModalContentCarTicket } from "./modal-content-car-ticket/ui/index";
+export { default as ModalContentPayment } from "./modal-content-payment/ui/index";
