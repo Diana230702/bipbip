@@ -13,7 +13,7 @@ const DirectionInfo: FC<DirectionInfoProps> = ({
   timeOfDeparture,
   timeOfArrival,
 }) => {
-  const timeInWay: string = "1д 7ч В пути";
+  const timeInWay = "1д 7ч В пути";
 
   return (
     <div className="flex justify-between items-baseline w-[410px]">

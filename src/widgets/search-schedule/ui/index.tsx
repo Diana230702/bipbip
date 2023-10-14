@@ -1,11 +1,15 @@
 "use client";
-import { useState, forwardRef, FC } from "react";
+import React, { useState, forwardRef, FC, ReactNode } from "react";
 import format from "date-fns/format";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ruLocale from "date-fns/locale/ru";
 import Image from "next/image";
 import { CustomButton } from "@/shared";
+import { useQuery } from "@tanstack/react-query";
+import fetchDirections from "@/widgets/search-schedule/model";
+import { Direction, searchDirections } from "@/helpers/searchDirections";
+import Dropdown from "@/shared/ui/dropdown/ui";
 
 interface ExampleCustomInputProps {
   value: string;
@@ -26,9 +30,15 @@ const ExampleCustomInput: FC<ExampleCustomInputProps> = forwardRef<
 ));
 
 const SearchSelect = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [fromDirections, setFromDirections] = useState<Direction[]>([]);
+  const [toDirections, setToDirections] = useState<Direction[]>([]);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   registerLocale("ru", ruLocale);
+  const { data: directionData } = useQuery({
+    queryFn: fetchDirections,
+  });
 
   const formatDate = (date: Date) => {
     const formattedDate = format(date, "d MMM", { locale: ruLocale });
@@ -44,14 +54,30 @@ const SearchSelect = () => {
           alt=""
           width="30"
           height="30"
-          className="absolute top-[10px] left-[10px]"
+          className="absolute top-[10px] left-[5px]"
         />
+        {fromDirections.length !== 0 ? (
+          <Dropdown
+            content={fromDirections}
+            setFrom={setFrom}
+            setFromDirections={setFromDirections}
+          />
+        ) : null}
         <input
           type="text"
           placeholder="Откуда"
-          className="w-full py-3 pl-10 pr-10 rounded-r-none border-r border-[#F5F5F5] rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px]"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full py-3 pl-10 pr-10 rounded-r-none border-r border-[#F5F5F5] rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px] "
+          value={from}
+          onChange={(e) => {
+            setFromDirections(
+              searchDirections(
+                e.target.value,
+                directionData.travel_directions,
+                from,
+              ),
+            );
+            setFrom(e.target.value);
+          }}
         />
       </div>
       <div className="relative">
@@ -60,26 +86,42 @@ const SearchSelect = () => {
           width="30"
           height="30"
           alt=""
-          className="absolute top-[10px] left-[10px]"
+          className="absolute top-[10px] left-[5px]"
         />
+        {toDirections.length !== 0 ? (
+          <Dropdown
+            content={toDirections}
+            setFrom={setTo}
+            setFromDirections={setToDirections}
+          />
+        ) : null}
         <input
           type="text"
           placeholder="Куда"
           className="w-full py-3 pl-10 pr-10 rounded-l-none rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px]"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={to}
+          onChange={(e) => {
+            setToDirections(
+              searchDirections(
+                e.target.value,
+                directionData.travel_directions,
+                from,
+              ),
+            );
+            setTo(e.target.value);
+          }}
         />
       </div>
       <div className="relative flex ">
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date as Date)}
-          customInput={
-            <ExampleCustomInput
-              value={formatDate(startDate as Date)}
-              onClick={() => {}}
-            />
-          }
+          // customInput={
+          //   <ExampleCustomInput
+          //     value={formatDate(startDate as Date)}
+          //     onClick={() => {}}
+          //   />
+          // }
           locale={ruLocale}
           dateFormat="dd MMM eee"
           placeholderText="Выберите дату"
@@ -89,12 +131,12 @@ const SearchSelect = () => {
         <DatePicker
           selected={startDate}
           onChange={(date) => setStartDate(date as Date)}
-          customInput={
-            <ExampleCustomInput
-              value={formatDate(startDate as Date)}
-              onClick={() => {}}
-            />
-          }
+          // customInput={
+          //   <ExampleCustomInput
+          //     value={formatDate(startDate as Date)}
+          //     onClick={() => {}}
+          //   />
+          // }
           locale={ruLocale}
           dateFormat="dd MMM eee"
           placeholderText="Выберите дату"
