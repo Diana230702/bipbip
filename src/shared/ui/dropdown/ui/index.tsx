@@ -5,10 +5,12 @@ const Dropdown = ({
   content,
   setFrom,
   setFromDirections,
+  setFromStr,
 }: {
   content: Direction[];
-  setFrom: Dispatch<SetStateAction<string>>;
+  setFrom: Dispatch<SetStateAction<Direction>>;
   setFromDirections: Dispatch<SetStateAction<Direction[]>>;
+  setFromStr: Dispatch<SetStateAction<string>>;
 }) => (
   <div className="relative inline-block top-9">
     <div className="absolute bg-white min-w-[280px] max-h-[300px] z-10 px-[16px] py-[16px] overflow-y-auto rounded-xl">
@@ -18,7 +20,8 @@ const Dropdown = ({
             <div
               className="hover:bg-slate-100 transition duration-300 ease-in-out px-2"
               onClick={() => {
-                setFrom(element.locality);
+                setFromStr(element.locality);
+                setFrom(element);
                 setFromDirections([]);
               }}
             >
