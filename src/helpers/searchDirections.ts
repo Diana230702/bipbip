@@ -26,5 +26,5 @@ export function searchDirections(
     results.splice(indexOfFrom, 1);
   }
 
-  return results.slice(0, 5);
+  return results && results.slice(0, 5);
 }
