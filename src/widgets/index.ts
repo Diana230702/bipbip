@@ -8,3 +8,7 @@ export { default as Footer } from "./footer/ui/index";
 export { default as ChoosePlace } from "./choose-place/ui/index";
 export { default as ModalContentCarTicket } from "./modal-content-car-ticket/ui/index";
 export { default as ModalContentPayment } from "./modal-content-payment/ui/index";
+export { default as ProfileTripHistory } from "./profile-trip-history/ui/index";
+export { default as ProfileTicket } from "./profile-ticket/ui/index";
+export { default as ModalContentProfile } from "./modal-content-profile/ui/index";
+export { default as HistoryTicket } from "./history-ticket/ui/index";

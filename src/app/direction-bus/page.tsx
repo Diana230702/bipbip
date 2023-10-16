@@ -3,8 +3,7 @@
 import { ButtonFilter } from "@/entities";
 import { BusTicket, DirectionFilter, Footer, Header } from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
-import React, { useState } from "react";
-import { Modal } from "@/shared";
+import React from "react";
 
 const DirectionBus = () => {
   return (

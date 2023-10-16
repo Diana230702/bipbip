@@ -12,18 +12,19 @@ export function searchDirections(
   if (startingLetters.trim() === "") {
     return [];
   }
-  const results = directions.filter((direction) => {
-    const name = direction.name.toUpperCase();
-    const input = startingLetters.toUpperCase();
-    return name.includes(input);
-  });
+  const results =
+    directions &&
+    directions.filter((direction) => {
+      const name = direction.name.toUpperCase();
+      const input = startingLetters.toUpperCase();
+      return name.includes(input);
+    });
 
-  const indexOfFrom = results.findIndex(
-    (direction) => direction.locality === from,
-  );
+  const indexOfFrom =
+    results && results.findIndex((direction) => direction?.locality === from);
 
   if (indexOfFrom !== -1) {
-    results.splice(indexOfFrom, 1);
+    results && results.splice(indexOfFrom, 1);
   }
 
   return results && results.slice(0, 5);
