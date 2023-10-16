@@ -1,15 +1,18 @@
 "use client";
-import React, { useState, forwardRef, FC, ReactNode } from "react";
-import format from "date-fns/format";
+import React, { useState, forwardRef, FC } from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ruLocale from "date-fns/locale/ru";
 import Image from "next/image";
 import { CustomButton } from "@/shared";
 import { useQuery } from "@tanstack/react-query";
-import fetchDirections from "@/widgets/search-schedule/model";
+import {
+  fetchAvailableTrips,
+  fetchDirections,
+} from "@/widgets/search-schedule/model";
 import { Direction, searchDirections } from "@/helpers/searchDirections";
 import Dropdown from "@/shared/ui/dropdown/ui";
+import formatDate from "@/helpers/formatDate";
 
 interface ExampleCustomInputProps {
   value: string;
@@ -30,21 +33,32 @@ const ExampleCustomInput: FC<ExampleCustomInputProps> = forwardRef<
 ));
 
 const SearchSelect = () => {
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const [from, setFrom] = useState<Direction | undefined>(undefined);
+  const [fromStr, setFromStr] = useState("");
+  const [to, setTo] = useState<Direction>();
+  const [toStr, setToStr] = useState("");
   const [fromDirections, setFromDirections] = useState<Direction[]>([]);
   const [toDirections, setToDirections] = useState<Direction[]>([]);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   registerLocale("ru", ruLocale);
   const { data: directionData } = useQuery({
+    queryKey: [],
     queryFn: fetchDirections,
   });
 
-  const formatDate = (date: Date) => {
-    const formattedDate = format(date, "d MMM", { locale: ruLocale });
-    const dayOfWeek = format(date, "eee", { locale: ruLocale });
-    return `${formattedDate}. ${dayOfWeek}`;
-  };
+  const { data: ticketsData } = useQuery({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    queryKey: [
+      {
+        departureCity: from?.locality,
+        destinationCity: to?.locality,
+        date: startDate && formatDate(startDate),
+      },
+    ],
+    queryFn: fetchAvailableTrips,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <div className="relative flex items-center my-10 justify-between px-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-[70px]">
@@ -59,24 +73,27 @@ const SearchSelect = () => {
         {fromDirections.length !== 0 ? (
           <Dropdown
             content={fromDirections}
+            /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+            // @ts-ignore
             setFrom={setFrom}
             setFromDirections={setFromDirections}
+            setFromStr={setFromStr}
           />
         ) : null}
         <input
           type="text"
           placeholder="Откуда"
           className="w-full py-3 pl-10 pr-10 rounded-r-none border-r border-[#F5F5F5] rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px] "
-          value={from}
+          value={fromStr}
           onChange={(e) => {
             setFromDirections(
               searchDirections(
                 e.target.value,
-                directionData.travel_directions,
-                from
-              )
+                directionData && directionData.travel_directions,
+                fromStr,
+              ),
             );
-            setFrom(e.target.value);
+            setFromStr(e.target.value);
           }}
         />
       </div>
@@ -91,24 +108,27 @@ const SearchSelect = () => {
         {toDirections.length !== 0 ? (
           <Dropdown
             content={toDirections}
+            /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+            // @ts-ignore
             setFrom={setTo}
             setFromDirections={setToDirections}
+            setFromStr={setToStr}
           />
         ) : null}
         <input
           type="text"
           placeholder="Куда"
           className="w-full py-3 pl-10 pr-10 rounded-l-none rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px]"
-          value={to}
+          value={toStr}
           onChange={(e) => {
             setToDirections(
               searchDirections(
                 e.target.value,
                 directionData.travel_directions,
-                from
-              )
+                fromStr,
+              ),
             );
-            setTo(e.target.value);
+            setToStr(e.target.value);
           }}
         />
       </div>
