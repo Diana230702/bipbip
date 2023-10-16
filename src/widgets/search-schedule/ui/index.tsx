@@ -54,7 +54,7 @@ const SearchSelect = () => {
           alt=""
           width="30"
           height="30"
-          className="absolute top-[10px] left-[5px]"
+          className="absolute top-[10px] left-[10px]"
         />
         {fromDirections.length !== 0 ? (
           <Dropdown
@@ -73,8 +73,8 @@ const SearchSelect = () => {
               searchDirections(
                 e.target.value,
                 directionData.travel_directions,
-                from,
-              ),
+                from
+              )
             );
             setFrom(e.target.value);
           }}
@@ -105,8 +105,8 @@ const SearchSelect = () => {
               searchDirections(
                 e.target.value,
                 directionData.travel_directions,
-                from,
-              ),
+                from
+              )
             );
             setTo(e.target.value);
           }}

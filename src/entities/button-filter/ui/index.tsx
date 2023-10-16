@@ -1,4 +1,3 @@
-
 import bus_white from "../../../../public/bus-white.svg";
 import car_white from "../../../../public/car-black.svg";
 import bus_gray from "../../../../public/bus-gray.svg";
