@@ -70,7 +70,7 @@ const SearchSelect = () => {
           height="30"
           className="absolute top-[10px] left-[10px]"
         />
-        {fromDirections.length !== 0 ? (
+        {fromDirections && fromDirections.length !== 0 ? (
           <Dropdown
             content={fromDirections}
             /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
@@ -105,7 +105,7 @@ const SearchSelect = () => {
           alt=""
           className="absolute top-[10px] left-[5px]"
         />
-        {toDirections.length !== 0 ? (
+        {toDirections && toDirections.length !== 0 ? (
           <Dropdown
             content={toDirections}
             /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
