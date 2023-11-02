@@ -5,14 +5,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import ruLocale from "date-fns/locale/ru";
 import Image from "next/image";
 import { CustomButton } from "@/shared";
-import { useQuery } from "@tanstack/react-query";
-import {
-  fetchAvailableTrips,
-  fetchDirections,
-} from "@/widgets/search-schedule/model";
 import { Direction, searchDirections } from "@/helpers/searchDirections";
 import Dropdown from "@/shared/ui/dropdown/ui";
+import {
+  useGetDirectionsQuery,
+  useSearchTripCitiesMutation,
+} from "@/services/BibipTripService";
+import { useDispatch } from "react-redux";
+import { fromDirection, toDirection } from "@/slices/direction-slice";
 import formatDate from "@/helpers/formatDate";
+import { useRouter } from "next/navigation";
 
 interface ExampleCustomInputProps {
   value: string;
@@ -41,25 +43,38 @@ const SearchSelect = () => {
   const [toDirections, setToDirections] = useState<Direction[]>([]);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   registerLocale("ru", ruLocale);
-  const { data: directionData } = useQuery({
-    queryKey: [],
-    queryFn: fetchDirections,
-  });
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [gotAnswer, setGotAnswer] = useState(false);
 
-  const { data: ticketsData } = useQuery({
+  const {
+    data: directionData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    queryKey: [
-      {
-        departureCity: from?.locality,
-        destinationCity: to?.locality,
-        date: startDate && formatDate(startDate),
-      },
-    ],
-    queryFn: fetchAvailableTrips,
-    refetchOnWindowFocus: false,
-  });
+  } = useGetDirectionsQuery();
 
+  const [getTickets, { isLoading: isUpdating, isSuccess: isGotAnswer }] =
+    useSearchTripCitiesMutation();
+
+  const onSaveTrip = () => {
+    if (from && to && startDate) {
+      dispatch(fromDirection({ from }));
+      dispatch(toDirection({ to }));
+      getTickets({
+        departureCity: from.locality,
+        destinationCity: to.locality,
+        date: formatDate(startDate),
+      });
+    }
+  };
+
+  if (isGotAnswer) {
+    router.push("/direction-bus");
+  }
   return (
     <div className="relative flex items-center my-10 justify-between px-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-[70px]">
       <div className="relative">
@@ -147,26 +162,12 @@ const SearchSelect = () => {
           placeholderText="Выберите дату"
         />
       </div>
-      <div>
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date as Date)}
-          // customInput={
-          //   <ExampleCustomInput
-          //     value={formatDate(startDate as Date)}
-          //     onClick={() => {}}
-          //   />
-          // }
-          locale={ruLocale}
-          dateFormat="dd MMM eee"
-          placeholderText="Выберите дату"
-        />
-      </div>
 
       <div className="ml-10 py-2">
         <CustomButton
           title="Найти"
           containerStyles="bg-[#FFA723] text-white font-medium text-[15px] min-w-[194px]"
+          onClick={onSaveTrip}
         />
       </div>
 
