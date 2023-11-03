@@ -1,10 +1,11 @@
 import { DirectionInfo } from "@/entities";
-import { DirectionCount, DirectionUser, CustomButton } from "@/shared";
+import { CustomButton } from "@/shared";
 import { BusTicketBottom } from "@/widgets";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { useState } from "react";
+import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 
-const BusTicket: FC = () => {
+const BusTicket = ({ trip }: { trip: Trip }) => {
   const [showBottom, setShowBottom] = useState(false);
 
   const toggleBottom = () => {
@@ -12,17 +13,19 @@ const BusTicket: FC = () => {
   };
 
   return (
-    <div className="bg-[#fff] rounded-[6px] pt-[30px] overflow-hidden">
+    <div className="bg-[#fff] rounded-[6px] pt-[30px] overflow-hidden mb-3">
       <div className="flex items-start justify-between pl-8">
         <div className="">
           <div className="flex items-baseline">
             <DirectionInfo
-              departure="Казанский вокзал, Казань"
-              arrival="Автовокзал, Нижнекамск"
-              timeOfDeparture="01:50"
-              timeOfArrival="09:00"
+              departure={trip.Departure.Name}
+              arrival={trip.Destination.Name}
+              timeOfDeparture={formatHours(trip.DepartureTime)}
+              timeOfArrival={formatHours(trip.ArrivalTime)}
             />
-            <p className="text-[10px] text-[#FF5959]">12 июня, пн</p>
+            <p className="text-[10px] text-[#FF5959]">
+              {formatDayOfMonth(trip.ArrivalTime)}
+            </p>
           </div>
 
           <div className="flex items-center mt-[100px]">
@@ -56,16 +59,19 @@ const BusTicket: FC = () => {
                   className="w-6"
                 />
                 <p className="mx-2 font-semibold text-[14px]">
-                  ООО “Буревестник”
+                  {trip.CarrierData.CarrierName}
                 </p>
               </div>
               <div className="bg-[#F5F6F8] rounded-[6px]">
                 <p className="mx-2 items-center text-[#676767] text-[12px]">
-                  Свободно: <span className="text-[#95A4BC]">14 мест</span>
+                  Свободно:{" "}
+                  <span className="text-[#95A4BC]">
+                    {trip.FreeSeatsAmount} мест
+                  </span>
                 </p>
               </div>
               <span className="mx-2 block text-[24px] mt-[35px] font-semibold">
-                1 200 ₽
+                {trip.PassengerFareCost} ₽
               </span>
               <CustomButton
                 title="Выбрать билет"

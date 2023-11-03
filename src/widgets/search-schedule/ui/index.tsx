@@ -9,12 +9,13 @@ import { Direction, searchDirections } from "@/helpers/searchDirections";
 import Dropdown from "@/shared/ui/dropdown/ui";
 import {
   useGetDirectionsQuery,
-  useSearchTripCitiesMutation,
+  useLazySearchTripCitiesQuery,
 } from "@/services/BibipTripService";
 import { useDispatch } from "react-redux";
 import { fromDirection, toDirection } from "@/slices/direction-slice";
-import formatDate from "@/helpers/formatDate";
+import { formatDate } from "@/helpers/formatDate";
 import { useRouter } from "next/navigation";
+import { saveTrips } from "@/slices/trips-slice";
 
 interface ExampleCustomInputProps {
   value: string;
@@ -45,20 +46,17 @@ const SearchSelect = () => {
   registerLocale("ru", ruLocale);
   const dispatch = useDispatch();
   const router = useRouter();
-  const [gotAnswer, setGotAnswer] = useState(false);
 
   const {
     data: directionData,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
   } = useGetDirectionsQuery();
 
-  const [getTickets, { isLoading: isUpdating, isSuccess: isGotAnswer }] =
-    useSearchTripCitiesMutation();
+  const [
+    getTickets,
+    { data: tickets, isLoading: isUpdating, isSuccess: isGotAnswer },
+  ] = useLazySearchTripCitiesQuery();
 
   const onSaveTrip = () => {
     if (from && to && startDate) {
@@ -73,8 +71,10 @@ const SearchSelect = () => {
   };
 
   if (isGotAnswer) {
+    dispatch(saveTrips(tickets));
     router.push("/direction-bus");
   }
+
   return (
     <div className="relative flex items-center my-10 justify-between px-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-[70px]">
       <div className="relative">
