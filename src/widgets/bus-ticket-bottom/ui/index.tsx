@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 
 const BusTicketBottom = ({ trip }: { trip: Trip }) => {
   return (
@@ -10,37 +11,43 @@ const BusTicketBottom = ({ trip }: { trip: Trip }) => {
             <span className="a9va aa9v a9va-no aa9v-no"></span>
             <span className="aav9 aa9v1 aav9-no aa9v1-no"></span>
           </div>
-          <div className="v8aa v8aa-no">
-            <span className="aav9 aa9v aav9-no"></span>
-            <span className="a9va aa9v a9va-no aa9v-no"></span>
-            <span className="aav9 aa9v1 aav9-no aa9v1-no"></span>
-          </div>
+          {/*<div className="v8aa v8aa-no">*/}
+          {/*  <span className="aav9 aa9v aav9-no"></span>*/}
+          {/*  <span className="a9va aa9v a9va-no aa9v-no"></span>*/}
+          {/*  <span className="aav9 aa9v1 aav9-no aa9v1-no"></span>*/}
+          {/*</div>*/}
         </div>
         <div>
-          <p className="font-semibold text-[12px]">Казань</p>
+          <p className="font-semibold text-[12px]">{trip.Departure.Name}</p>
           <div className="text-[#676767] text-[10px] font-light flex items-center mb-[35px]">
-            <span>11 мая, 15:00 </span>
+            <span>
+              {formatDayOfMonth(trip.DepartureTime)},{" "}
+              {formatHours(trip.DepartureTime)}{" "}
+            </span>
             <span className="text-[#BFD4E4] px-2 text-[20px] leading-0">
               &bull;
             </span>
             <p> Автовокзал</p>
           </div>
-          <p className="font-semibold text-[12px]">Казань</p>
+          <p className="font-semibold text-[12px]">{trip.Destination.Name}</p>
           <div className="text-[#676767] text-[10px] font-light flex items-center mb-[35px]">
-            <span>11 мая, 15:00 </span>
+            <span>
+              {formatDayOfMonth(trip.ArrivalTime)},{" "}
+              {formatHours(trip.ArrivalTime)}{" "}
+            </span>
             <span className="text-[#BFD4E4] px-2 text-[20px] leading-0">
               &bull;
             </span>
             <p> Автовокзал</p>
           </div>
-          <p className="font-semibold text-[12px]">Казань</p>
-          <div className="text-[#676767] text-[10px] font-light flex items-center">
-            <span>11 мая, 15:00 </span>
-            <span className="text-[#BFD4E4] px-2 text-[20px] leading-0">
-              &bull;{" "}
-            </span>
-            <p>Автовокзал</p>
-          </div>
+          {/*<p className="font-semibold text-[12px]">Казань</p>*/}
+          {/*<div className="text-[#676767] text-[10px] font-light flex items-center">*/}
+          {/*  <span>11 мая, 15:00 </span>*/}
+          {/*  <span className="text-[#BFD4E4] px-2 text-[20px] leading-0">*/}
+          {/*    &bull;{" "}*/}
+          {/*  </span>*/}
+          {/*  <p>Автовокзал</p>*/}
+          {/*</div>*/}
         </div>
       </div>
       <div className="w-[240px]">
