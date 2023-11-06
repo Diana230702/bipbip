@@ -9,6 +9,7 @@ import {
   sortArrayByArrivalTime,
   sortArrayByCost,
   sortArrayByDepartureTime,
+  sortArrayByDestination,
 } from "@/helpers/sortArray";
 
 const DirectionBus = () => {
@@ -55,6 +56,19 @@ const DirectionBus = () => {
     }
   };
 
+  const handleSortArrayByDurationClick = () => {
+    if (trips && trips.trips) {
+      let sortedTrips;
+      if (isSortedAsc) {
+        sortedTrips = sortArrayByDestination(trips.trips);
+      } else {
+        sortedTrips = sortArrayByDestination(trips.trips).reverse();
+      }
+      setSortedTrips(sortedTrips);
+      setIsSortedAsc(!isSortedAsc);
+    }
+  };
+
   const tripsToDisplay = sortedTrips.length > 0 ? sortedTrips : trips.trips;
 
   return (
@@ -73,7 +87,7 @@ const DirectionBus = () => {
             handleSortByCost={handleSortByCostClick}
             handleSortByDepartureTime={handleSortByDepartureClick}
             handleSortByArrivalTime={handleSortByArrivalClick}
-            handleSortByTravelTime={() => ""}
+            handleSortByTravelTime={handleSortArrayByDurationClick}
           />
           {tripsToDisplay &&
             tripsToDisplay.map((trip: Trip) => (

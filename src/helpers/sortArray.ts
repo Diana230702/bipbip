@@ -25,3 +25,13 @@ export const sortArrayByArrivalTime = (trips: Trip[]): Trip[] => {
     return dateA - dateB;
   });
 };
+
+export const sortArrayByDestination = (trips: Trip[]) => {
+  return [...trips].sort((a, b) => {
+    const durationA = a.Duration;
+    const durationB = b.Duration;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return durationA - durationB;
+  });
+};
