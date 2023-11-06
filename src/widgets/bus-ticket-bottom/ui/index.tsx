@@ -1,9 +1,6 @@
-import { DirectionInfo } from "@/entities";
-import { DirectionCount, DirectionUser, CustomButton } from "@/shared";
 import Image from "next/image";
-import { FC } from "react";
 
-const BusTicketBottom = () => {
+const BusTicketBottom = ({ trip }: { trip: Trip }) => {
   return (
     <div className="bg-[#fff] rounded-[6px] flex items-start justify-between pb-[25px] px-[30px] pt-[30px] border-t border-[#DCE1E8]">
       <div className="flex items-start">
@@ -53,15 +50,15 @@ const BusTicketBottom = () => {
         </div>
         <p className="font-semibold text-[12px] my-[12px]">
           Бренд:
-          <span className="font-light"> ИП Амельченко Антон Сергеевич</span>
+          <span className="font-light"> {trip.CarrierData.CarrierName}</span>
         </p>
         <p className="font-semibold text-[12px] mb-[12px]">
           Автобус:
-          <span className="font-light"> KING-LONG (56), р449231</span>
+          <span className="font-light"> {trip.Bus.Name}</span>
         </p>
         <p className="font-semibold text-[12px] mb-[12px]">
           Перевозчик:
-          <span className="font-light"> ИП Амельченко Антон Сергеевич</span>
+          <span className="font-light"> {trip.Carrier}</span>
         </p>
         <p className="font-semibold text-[12px] mb-[12px]">
           Адрес:
@@ -78,11 +75,11 @@ const BusTicketBottom = () => {
       <div className="w-[210px]">
         <p className="font-semibold text-[12px] my-[12px]">
           Бренд:
-          <span className="font-light"> ИП Амельченко Антон Сергеевич</span>
+          <span className="font-light"> {trip.CarrierData.CarrierName}</span>
         </p>
         <p className="font-semibold text-[12px] mb-[12px]">
           Бренд:
-          <span className="font-light"> ИП Амельченко Антон Сергеевич</span>
+          <span className="font-light"> {trip.CarrierData.CarrierName}</span>
         </p>
         <p className="font-semibold text-[12px] text-[#23BB9C]">
           Условия возврата

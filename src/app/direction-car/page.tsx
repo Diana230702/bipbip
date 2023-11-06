@@ -24,13 +24,20 @@ const DirectionCar = () => {
         <ButtonFilter containerStyles="justify-start" />
         <SearchSelect />
         <div className="max-w-[840px] mx-auto">
-          <DirectionFilter route="4 поездки" passengers="1" />
+          <DirectionFilter
+            route="4 поездки"
+            passengers="1"
+            handleSortByTravelTime={() => ""}
+            handleSortByArrivalTime={() => ""}
+            handleSortByCost={() => ""}
+            handleSortByDepartureTime={() => ""}
+          />
           <CarTicket setShowModal={setShowModal} />
         </div>
         <Modal
           showModal={showModal}
           setShowModal={setShowModal}
-          content={<ModalContentCarTicket setShowModal={setShowModal}/>}
+          content={<ModalContentCarTicket setShowModal={setShowModal} />}
         />
       </div>
 

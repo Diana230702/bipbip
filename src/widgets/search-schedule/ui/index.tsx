@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, forwardRef, FC } from "react";
+import React, { useState, forwardRef, FC, useEffect } from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ruLocale from "date-fns/locale/ru";
@@ -70,10 +70,12 @@ const SearchSelect = () => {
     }
   };
 
-  if (isGotAnswer) {
-    dispatch(saveTrips(tickets));
-    router.push("/direction-bus");
-  }
+  useEffect(() => {
+    if (isGotAnswer) {
+      dispatch(saveTrips(tickets));
+      router.push("/direction-bus");
+    }
+  }, [isGotAnswer, tickets, dispatch, router]);
 
   return (
     <div className="relative flex items-center my-10 justify-between px-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-[70px]">
@@ -139,7 +141,7 @@ const SearchSelect = () => {
             setToDirections(
               searchDirections(
                 e.target.value,
-                directionData.travel_directions,
+                directionData && directionData.travel_directions,
                 fromStr,
               ),
             );

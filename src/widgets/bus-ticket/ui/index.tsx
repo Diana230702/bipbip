@@ -81,7 +81,7 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
           </div>
         </div>
       </div>
-      {showBottom && <BusTicketBottom />}
+      {showBottom && <BusTicketBottom trip={trip} />}
     </div>
   );
 };
