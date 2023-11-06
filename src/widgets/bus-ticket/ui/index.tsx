@@ -4,6 +4,7 @@ import { BusTicketBottom } from "@/widgets";
 import Image from "next/image";
 import { useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
+import { formatDuration } from "@/helpers/formatDuration";
 
 const BusTicket = ({ trip }: { trip: Trip }) => {
   const [showBottom, setShowBottom] = useState(false);
@@ -22,6 +23,7 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
               arrival={trip.Destination.Name}
               timeOfDeparture={formatHours(trip.DepartureTime)}
               timeOfArrival={formatHours(trip.ArrivalTime)}
+              timeInWay={formatDuration(Number(trip.Duration))}
             />
             <p className="text-[10px] text-[#FF5959]">
               {formatDayOfMonth(trip.ArrivalTime)}
