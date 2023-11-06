@@ -3,11 +3,59 @@
 import { ButtonFilter } from "@/entities";
 import { BusTicket, DirectionFilter, Footer, Header } from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import {
+  sortArrayByArrivalTime,
+  sortArrayByCost,
+  sortArrayByDepartureTime,
+} from "@/helpers/sortArray";
 
 const DirectionBus = () => {
   const trips = useSelector((state: any) => state.trips);
+  const [sortedTrips, setSortedTrips] = useState<Trip[]>([]);
+  const [isSortedAsc, setIsSortedAsc] = useState(true);
+
+  const handleSortByCostClick = () => {
+    if (trips && trips.trips) {
+      let sortedTrips;
+      if (isSortedAsc) {
+        sortedTrips = sortArrayByCost(trips.trips);
+      } else {
+        sortedTrips = sortArrayByCost(trips.trips).reverse();
+      }
+      setSortedTrips(sortedTrips);
+      setIsSortedAsc(!isSortedAsc);
+    }
+  };
+
+  const handleSortByDepartureClick = () => {
+    if (trips && trips.trips) {
+      let sortedTrips;
+      if (isSortedAsc) {
+        sortedTrips = sortArrayByDepartureTime(trips.trips);
+      } else {
+        sortedTrips = sortArrayByDepartureTime(trips.trips).reverse();
+      }
+      setSortedTrips(sortedTrips);
+      setIsSortedAsc(!isSortedAsc);
+    }
+  };
+
+  const handleSortByArrivalClick = () => {
+    if (trips && trips.trips) {
+      let sortedTrips;
+      if (isSortedAsc) {
+        sortedTrips = sortArrayByArrivalTime(trips.trips);
+      } else {
+        sortedTrips = sortArrayByArrivalTime(trips.trips).reverse();
+      }
+      setSortedTrips(sortedTrips);
+      setIsSortedAsc(!isSortedAsc);
+    }
+  };
+
+  const tripsToDisplay = sortedTrips.length > 0 ? sortedTrips : trips.trips;
 
   return (
     <>
@@ -19,9 +67,16 @@ const DirectionBus = () => {
         <ButtonFilter containerStyles="justify-start" />
         <SearchSelect />
         <div className="max-w-[840px] mx-auto">
-          <DirectionFilter route="20 Направлений" passengers="2" />
-          {trips.trips &&
-            trips.trips.map((trip: Trip) => (
+          <DirectionFilter
+            route={trips && trips.trips && trips.trips.length}
+            passengers="2"
+            handleSortByCost={handleSortByCostClick}
+            handleSortByDepartureTime={handleSortByDepartureClick}
+            handleSortByArrivalTime={handleSortByArrivalClick}
+            handleSortByTravelTime={() => ""}
+          />
+          {tripsToDisplay &&
+            tripsToDisplay.map((trip: Trip) => (
               <BusTicket key={trip.Id} trip={trip} />
             ))}
         </div>
