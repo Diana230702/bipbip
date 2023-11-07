@@ -20,7 +20,7 @@ const DirectionCar = () => {
         <Header />
       </div>
       <hr />
-      <div className="container mx-auto sm:px-10 px-5">
+      <div className="container mx-auto sm:px-10 px-5 mt-[25px]">
         <ButtonFilter containerStyles="justify-start" />
         <SearchSelect />
         <div className="max-w-[840px] mx-auto">

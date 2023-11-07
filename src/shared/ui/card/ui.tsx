@@ -7,8 +7,8 @@ const Card: FC<Card> = ({ src, alt, text, bg }) => {
       <div>
         <img src={src} alt={alt} className="mx-auto mb-8" />
       </div>
-      <div className="w-[160px] h-[200px] relative">
-        <p className="text-[20px] font-medium">{text}</p>
+      <div className="w-[160px] h-[190px] relative">
+        <p className="text-[18px] font-semiboldflex justify-between text-center mt-[80px]">{text}</p>
         <img src={bg} alt={alt} className="absolute top-[-29px]" />
       </div>
     </div>

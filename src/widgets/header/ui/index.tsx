@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export const Header = () => {
   return (
-    <div className="flex  items-center justify-between py-5">
+    <div className="flex items-center justify-between py-5 ">
       <Link href="/">
         <Image src="/logo-header.svg" width="130" height="130" alt="" />
         <p className="text-[#95A4BC] font-medium pt-1 text-[14px]">
@@ -19,4 +19,4 @@ export const Header = () => {
     </div>
   );
 };
-export default Header
+export default Header;

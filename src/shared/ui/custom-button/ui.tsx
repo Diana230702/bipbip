@@ -15,7 +15,7 @@ const CustomButton: FC<CustomButtonProps> = ({
 }) => {
   return (
     <button
-      className={`flex items-center rounded-[10px] py-[10px] min-w-[185px] font-medium ${containerStyles}`}
+      className={`flex items-center rounded-[10px] py-[10px]   ${containerStyles}`}
       type={btnType || "button"}
       onClick={onClick}
     >

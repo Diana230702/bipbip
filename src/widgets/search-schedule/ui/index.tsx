@@ -118,15 +118,18 @@ const SearchSelect = () => {
         <input
           type="text"
           placeholder="Откуда"
-          className="w-full py-3 pl-10 pr-10 rounded-r-none border-r border-[#F5F5F5] rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px] "
+          className={`w-full py-3 pl-12 pr-10 rounded-r-none border-r border-[#F5F5F5] rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px] ${
+            isFromInputFocused ? "pr-14" : ""
+          }`}
           value={fromStr}
+          onFocus={handleFromInputFocus}
           onChange={(e) => {
             setFromDirections(
               searchDirections(
                 e.target.value,
                 directionData && directionData.travel_directions,
-                fromStr,
-              ),
+                fromStr
+              )
             );
             setFromStr(e.target.value);
           }}
@@ -161,15 +164,18 @@ const SearchSelect = () => {
         <input
           type="text"
           placeholder="Куда"
-          className="w-full py-3 pl-10 pr-10 rounded-l-none rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px]"
+          className={`w-full py-3 pl-11 pr-10 rounded-l-none rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px] ${
+            isToInputFocused ? "pr-14" : ""
+          }`}
           value={toStr}
+          onFocus={handleToInputFocus}
           onChange={(e) => {
             setToDirections(
               searchDirections(
                 e.target.value,
                 directionData && directionData.travel_directions,
-                fromStr,
-              ),
+                toStr
+              )
             );
             setToStr(e.target.value);
           }}
@@ -199,21 +205,6 @@ const SearchSelect = () => {
           </div>
         </div>
       </div>
-      {/*<div>*/}
-      {/*  <DatePicker*/}
-      {/*    selected={startDate}*/}
-      {/*    onChange={(date) => setStartDate(date as Date)}*/}
-      {/*    // customInput={*/}
-      {/*    //   <ExampleCustomInput*/}
-      {/*    //     value={formatDate(startDate as Date)}*/}
-      {/*    //     onClick={() => {}}*/}
-      {/*    //   />*/}
-      {/*    // }*/}
-      {/*    locale={ruLocale}*/}
-      {/*    dateFormat="dd MMM eee"*/}
-      {/*    placeholderText="Выберите дату"*/}
-      {/*  />*/}
-      {/*</div>*/}
 
       <div className="ml-10 py-2">
         <CustomButton

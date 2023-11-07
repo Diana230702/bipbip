@@ -73,12 +73,15 @@ const DirectionBus = () => {
 
   return (
     <>
-      <div className="container mx-auto sm:px-10 px-5">
-        <Header />
+      <div className="bg-[#fff] relative pb-[130px]">
+        <div className="container mx-auto sm:px-10 px-5 ">
+          <Header />
+        </div>
+        <hr />
       </div>
-      <hr />
-      <div className="container mx-auto sm:px-10 px-5">
-        <ButtonFilter containerStyles="justify-start" />
+
+      <div className="container mx-auto sm:px-10 px-5 relative mt-[-150px]">
+        <ButtonFilter containerStyles="justify-start mt-[45px]" />
         <SearchSelect />
         <div className="max-w-[840px] mx-auto">
           <DirectionFilter
@@ -95,7 +98,6 @@ const DirectionBus = () => {
             ))}
         </div>
       </div>
-
       <Footer />
     </>
   );

@@ -3,7 +3,7 @@ import { DirectionCard } from "./type";
 
 const DirectionCard: FC<DirectionCard> = ({ imageSrc, destination, price }) => {
   return (
-    <div className="w-[310px] mr-auto last:mr-0">
+    <div className="w-[310px] mr-[20px] last:mr-0">
       <div>
         <img src={imageSrc} alt="city" className="w-full" />
       </div>
