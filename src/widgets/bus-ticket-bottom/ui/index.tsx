@@ -3,7 +3,7 @@ import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 
 const BusTicketBottom = ({ trip }: { trip: Trip }) => {
   return (
-    <div className="bg-[#fff] rounded-[6px] flex items-start justify-between pb-[25px] px-[30px] pt-[30px] border-t border-[#DCE1E8]">
+    <div className="bg-[#fff] rounded-[6px] flex items-start justify-between pb-[25px] px-[30px] pt-[30px] border-t border-[#DCE1E8] relative z-1">
       <div className="flex items-start">
         <div className="mr-10">
           <div className="v8aa v8aa-no">
@@ -24,22 +24,26 @@ const BusTicketBottom = ({ trip }: { trip: Trip }) => {
               {formatDayOfMonth(trip.DepartureTime)},{" "}
               {formatHours(trip.DepartureTime)}{" "}
             </span>
+
             <span className="text-[#BFD4E4] px-2 text-[20px] leading-0">
               &bull;
             </span>
             <p> Автовокзал</p>
           </div>
+
           <p className="font-semibold text-[12px]">{trip.Destination.Name}</p>
           <div className="text-[#676767] text-[10px] font-light flex items-center mb-[35px]">
             <span>
               {formatDayOfMonth(trip.ArrivalTime)},{" "}
               {formatHours(trip.ArrivalTime)}{" "}
             </span>
+
             <span className="text-[#BFD4E4] px-2 text-[20px] leading-0">
               &bull;
             </span>
             <p> Автовокзал</p>
           </div>
+
           {/*<p className="font-semibold text-[12px]">Казань</p>*/}
           {/*<div className="text-[#676767] text-[10px] font-light flex items-center">*/}
           {/*  <span>11 мая, 15:00 </span>*/}
@@ -70,6 +74,7 @@ const BusTicketBottom = ({ trip }: { trip: Trip }) => {
         <p className="font-semibold text-[12px] mb-[12px]">
           Адрес:
           <span className="font-light">
+            {" "}
             Россия, Пермский кр., Большесосновкий мну.- р, Полозовское г-п, д.
             Гари
           </span>
@@ -81,11 +86,12 @@ const BusTicketBottom = ({ trip }: { trip: Trip }) => {
       </div>
       <div className="w-[210px]">
         <p className="font-semibold text-[12px] my-[12px]">
-          Бренд:
+          Время работы:
           <span className="font-light"> {trip.CarrierData.CarrierName}</span>
         </p>
         <p className="font-semibold text-[12px] mb-[12px]">
-          Бренд:
+           //TODO Write api for this line
+          Дополнительно:
           <span className="font-light"> {trip.CarrierData.CarrierName}</span>
         </p>
         <p className="font-semibold text-[12px] text-[#23BB9C]">

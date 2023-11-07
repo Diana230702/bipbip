@@ -16,9 +16,9 @@ const BookingBus = () => {
         <div className="max-w-[840px] mx-auto">
           <TreeSite />
           <BookingState
-            activeStylesOne="bg-[#21D6B1] text-[#fff]"
-            activeStylesTwo="bg-[#fff]"
-            activeStylesThree="bg-[#fff]"
+            activeStylesOne="bg-[#21D6B1] text-[#fff] w-[180px]"
+            activeStylesTwo="bg-[#fff] w-[180px]"
+            activeStylesThree="bg-[#fff] w-[180px]"
           />
           <MoreTicket />
           <p className="text-center mt-[40px] mb-[15px] text-[14px] text-[#95A4BC]">

@@ -37,7 +37,7 @@ const ButtonFilter: FC<ButtonFilterProps> = ({ containerStyles }) => {
       <CustomButton
         icon={getIcon("car")}
         title="Автомобили"
-        containerStyles={`p-[10px] py-[9px] text-[12px] min-w-[100px] ${
+        containerStyles={`min-w-[100px] p-[10px] py-[9px] text-[12px] font-semibold ${
           activeButton === "car"
             ? "bg-[#ffa722] text-black"
             : "bg-[#E4E5EF] text-black"
