@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <div className="container mx-auto sm:px-10 px-5 mb-8">
+      <div className="container mx-auto px-5 mb-8 mt-[70px]">
         <ButtonFilter containerStyles="justify-center" />
         <SearchSelect />
         <CardsList />

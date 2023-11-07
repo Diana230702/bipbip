@@ -56,7 +56,7 @@ export const directionsChildrens = [
   },
   {
     imageSrc: "/card-children-11.png",
-    destination: "Казань - Йошкор-Ола",
+    destination: "Казань - Йошкар-Ола",
     price: "от 2 300 ₽",
   },
   {
