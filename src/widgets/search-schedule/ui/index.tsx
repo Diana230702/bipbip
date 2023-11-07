@@ -43,6 +43,9 @@ const SearchSelect = () => {
   const [fromDirections, setFromDirections] = useState<Direction[]>([]);
   const [toDirections, setToDirections] = useState<Direction[]>([]);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [isFromInputFocused, setIsFromInputFocused] = useState(false);
+  const [isToInputFocused, setIsToInputFocused] = useState(false);
+
   registerLocale("ru", ruLocale);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -69,6 +72,21 @@ const SearchSelect = () => {
       });
     }
   };
+  const handleFromInputFocus = () => {
+    setIsFromInputFocused(true);
+  };
+
+  const handleToInputFocus = () => {
+    setIsToInputFocused(true);
+  };
+
+  const clearFromInput = () => {
+    setFromStr("");
+  };
+
+  const clearToInput = () => {
+    setToStr("");
+  };
 
   useEffect(() => {
     if (isGotAnswer) {
@@ -78,14 +96,14 @@ const SearchSelect = () => {
   }, [isGotAnswer, tickets, dispatch, router]);
 
   return (
-    <div className="relative flex items-center my-10 justify-between px-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-[70px]">
+    <div className="py-[10px] relative flex items-center mb-7 mt-6 justify-between pr-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-[70px]">
       <div className="relative">
         <Image
           src="/location.svg"
           alt=""
-          width="30"
-          height="30"
-          className="absolute top-[10px] left-[10px]"
+          width="24"
+          height="24"
+          className="absolute top-[11px] left-[12px]"
         />
         {fromDirections && fromDirections.length !== 0 ? (
           <Dropdown
@@ -113,12 +131,20 @@ const SearchSelect = () => {
             setFromStr(e.target.value);
           }}
         />
+        {isFromInputFocused && (
+          <button
+            onClick={clearFromInput}
+            className="absolute right-3 top-[11px] transform  w-6 h-6 text-gray-400"
+          >
+            <Image src="/x-circle.svg" width={24} height={25} alt="circle" />
+          </button>
+        )}
       </div>
       <div className="relative">
         <Image
           src="/location-tick.svg"
-          width="30"
-          height="30"
+          width="24"
+          height="24"
           alt=""
           className="absolute top-[10px] left-[5px]"
         />
@@ -148,22 +174,46 @@ const SearchSelect = () => {
             setToStr(e.target.value);
           }}
         />
+        {isToInputFocused && (
+          <button
+            onClick={clearToInput}
+            className="absolute right-3 top-[11px] transform  w-6 h-6 text-gray-400"
+          >
+            <Image src="/x-circle.svg" width={24} height={25} alt="circle" />
+          </button>
+        )}
       </div>
-      <div className="relative flex ">
-        <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date as Date)}
-          // customInput={
-          //   <ExampleCustomInput
-          //     value={formatDate(startDate as Date)}
-          //     onClick={() => {}}
-          //   />
-          // }
-          locale={ruLocale}
-          dateFormat="dd MMM eee"
-          placeholderText="Выберите дату"
-        />
+      <div className="relative flex">
+        <div className="flex">
+          <Image src="/note.svg" width={24} height={25} alt="note" />
+          <div className="ml-[14px]">
+            <p className="text-[#95A5BC] text-[12px] ">Дата отправления</p>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date as Date)}
+              locale={ruLocale}
+              dateFormat="dd MMM eeeeee"
+              placeholderText="Выберите дату"
+              className="text-[14px]"
+            />
+          </div>
+        </div>
       </div>
+      {/*<div>*/}
+      {/*  <DatePicker*/}
+      {/*    selected={startDate}*/}
+      {/*    onChange={(date) => setStartDate(date as Date)}*/}
+      {/*    // customInput={*/}
+      {/*    //   <ExampleCustomInput*/}
+      {/*    //     value={formatDate(startDate as Date)}*/}
+      {/*    //     onClick={() => {}}*/}
+      {/*    //   />*/}
+      {/*    // }*/}
+      {/*    locale={ruLocale}*/}
+      {/*    dateFormat="dd MMM eee"*/}
+      {/*    placeholderText="Выберите дату"*/}
+      {/*  />*/}
+      {/*</div>*/}
 
       <div className="ml-10 py-2">
         <CustomButton
