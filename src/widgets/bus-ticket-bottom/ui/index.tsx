@@ -73,24 +73,22 @@ const BusTicketBottom = ({ trip }: { trip: Trip }) => {
         </p>
         <p className="font-semibold text-[12px] mb-[12px]">
           Адрес:
-          <span className="font-light">
-            {" "}
-            Россия, Пермский кр., Большесосновкий мну.- р, Полозовское г-п, д.
-            Гари
-          </span>
+          <span className="font-light">{trip.Departure.Address}</span>
         </p>
         <p className="font-semibold text-[12px] mb-[12px]">
           ОГРН:
-          <span className="font-light"> 4343513586492</span>
+          <span className="font-light">{trip.CarrierData.CarrierTaxId}</span>
         </p>
       </div>
       <div className="w-[210px]">
         <p className="font-semibold text-[12px] my-[12px]">
           Время работы:
-          <span className="font-light"> {trip.CarrierData.CarrierName}</span>
+          <span className="font-light">
+            {" "}
+            {trip.CarrierData.CarrierWorkingHours}
+          </span>
         </p>
         <p className="font-semibold text-[12px] mb-[12px]">
-           //TODO Write api for this line
           Дополнительно:
           <span className="font-light"> {trip.CarrierData.CarrierName}</span>
         </p>
