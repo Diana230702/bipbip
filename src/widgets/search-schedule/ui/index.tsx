@@ -128,8 +128,8 @@ const SearchSelect = () => {
               searchDirections(
                 e.target.value,
                 directionData && directionData.travel_directions,
-                fromStr
-              )
+                fromStr,
+              ),
             );
             setFromStr(e.target.value);
           }}
@@ -174,8 +174,8 @@ const SearchSelect = () => {
               searchDirections(
                 e.target.value,
                 directionData && directionData.travel_directions,
-                toStr
-              )
+                toStr,
+              ),
             );
             setToStr(e.target.value);
           }}

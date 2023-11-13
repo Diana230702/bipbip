@@ -1,7 +1,6 @@
 import { DirectionInfo } from "@/entities";
 import { CustomButton, DirectionCount } from "@/shared";
 import Image from "next/image";
-import Link from "next/link";
 import { FC } from "react";
 interface ModalContentProfileProps {
   setShowModal: (showModal: boolean) => void;
@@ -18,7 +17,7 @@ const ModalContentProfile: FC<ModalContentProfileProps> = ({
               className="absolute right-5 top-6 cursor-pointer"
               onClick={() => setShowModal(false)}
             >
-              <img
+              <Image
                 src="/close-modal.svg"
                 alt=""
                 className="w-[18px] h-[18px]"
