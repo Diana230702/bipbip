@@ -62,13 +62,13 @@ const SearchSelect: FC<SearchSelectProps> = ({
 
   const onSaveTrip = async () => {
     if (from && to && startDate) {
+      updateLocalTripStorage(from, to, String(startDate));
       try {
         const res = await getTickets({
           departureCity: from.locality,
           destinationCity: to.locality,
           date: formatDate(startDate),
         });
-        updateLocalTripStorage(from, to, String(startDate));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         setResFromFetch(res?.data?.trips);
