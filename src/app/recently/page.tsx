@@ -8,8 +8,11 @@ import {
   Header,
   SearchSelect,
 } from "@/widgets";
+import { useGetDirectionsQuery } from "@/services/BibipTripService";
 
 const Recently = () => {
+  const { data: Directions } = useGetDirectionsQuery();
+
   return (
     <>
       <div className="container mx-auto sm:px-10 px-5">
@@ -18,7 +21,7 @@ const Recently = () => {
       <hr />
       <div className="container mx-auto sm:px-10 px-5">
         <ButtonFilter containerStyles="justify-start" />
-        <SearchSelect />
+        <SearchSelect directions={Directions} setResFromFetch={() => null} />
 
         <RecentlyCard />
         <AppQr />

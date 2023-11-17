@@ -22,7 +22,6 @@ export const formatDate = (dateString: Date | string) => {
     date = new Date(dateString);
   }
   const formattedDate = format(date, "yyyy-MM-dd", { locale: ruLocale });
-  const dayOfWeek = format(date, "eee", { locale: ruLocale });
 
   return `${formattedDate}`;
 };

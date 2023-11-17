@@ -1,32 +1,38 @@
 import Image from "next/image";
-import { sortedNumbersPlace } from "../model";
 
-const ChoosePlace = () => {
-  const chunkSize = 11;
-  const chunkedNumbersPlace = [];
+const ChoosePlace = ({ seatsScheme }: { seatsScheme: Seat[] }) => {
+  const totalSeats = seatsScheme.length;
+  const chunkSize = Math.ceil(totalSeats / 4); // 4 - это произвольное количество рядов
 
-  for (let i = 0; i < sortedNumbersPlace.length; i += chunkSize) {
-    chunkedNumbersPlace.push(sortedNumbersPlace.slice(i, i + chunkSize));
+  const chunkedSeats = [];
+  for (let i = 0; i < totalSeats; i += chunkSize) {
+    chunkedSeats.push(seatsScheme.slice(i, i + chunkSize));
   }
 
   return (
     <div className="border border-[#95A5BC] rounded-[40px] px-[80px] py-[18px] mt-[40px] relative">
-      {chunkedNumbersPlace.map((chunk, chunkIndex) => (
+      {chunkedSeats.map((chunk, chunkIndex) => (
         <div className="flex justify-between" key={chunkIndex}>
-          {chunk.map((num, i) => (
-            <div
-              className={`bg-[#E4E9F0] rounded-[6px] w-[45px] h-[45px] text-[#95A4BC] cursor-pointer ${
-                i === 10 && chunkIndex === 1 ? "mb-[55px]" : "mb-[12px]"
-              }`}
-              key={i}
-            >
-              <p className="flex justify-center py-3 text-[14px]">
-                {num.value}
-              </p>
-            </div>
-          ))}
+          {chunk.map((seat, i) =>
+            seat.SeatNum === 0 ? (
+              <div
+                className={`bg-[#E4E9F0] rounded-[6px] w-[45px] h-[45px] text-[#95A4BC] cursor-pointer mb-[12px] `}
+                key={i}
+              ></div>
+            ) : (
+              <div
+                className={`w-[45px] h-[45px] border-[#22BB9C] rounded-[6px] border-2 px-[9px] pt-[9px] bg-[#fff] mb-[12px]`}
+                key={i}
+              >
+                <p className="flex justify-center text-[14px] text-[#95A4BC]">
+                  {seat.SeatNum}
+                </p>
+              </div>
+            ),
+          )}
         </div>
       ))}
+
       <Image
         src="/car-steering-wheel.png"
         width={45}

@@ -5,6 +5,22 @@ import Image from "next/image";
 import { useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 import { formatDuration } from "@/helpers/formatDuration";
+import Link from "next/link";
+import { updateLocalStorage } from "@/helpers/updateLocalStorage";
+
+export interface LocalStorageTrip {
+  tripId: string;
+  departureId: string;
+  destinationId: string;
+  bus: string;
+  busModel: string;
+  departureTime: string;
+  arrivalTime: string;
+  departureName: string;
+  destinationName: string;
+  price: string;
+  carrier: string;
+}
 
 const BusTicket = ({ trip }: { trip: Trip }) => {
   const [showBottom, setShowBottom] = useState(false);
@@ -66,7 +82,7 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
               </div>
               <div className="bg-[#F5F6F8] rounded-[6px] width-[135px]">
                 <p className="mx-2 items-center text-[#676767] text-[12px]">
-                  Свободно:{" "}
+                  Свободно:
                   <span className="text-[#95A4BC]">
                     {trip.FreeSeatsAmount} мест
                   </span>
@@ -75,10 +91,13 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
               <span className="mx-2 block text-[24px] mt-[35px] font-semibold">
                 {trip.PassengerFareCost} ₽
               </span>
-              <CustomButton
-                title="Выбрать билет"
-                containerStyles="text-white px-8 direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
-              />
+              <Link href={`/direction-bus/${trip.Id}`}>
+                <CustomButton
+                  title="Выбрать билет"
+                  containerStyles="text-white px-8 direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
+                  onClick={() => updateLocalStorage(trip)}
+                />
+              </Link>
             </div>
           </div>
         </div>

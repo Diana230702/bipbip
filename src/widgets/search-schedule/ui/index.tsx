@@ -1,77 +1,98 @@
 "use client";
-import React, { useState, forwardRef, FC, useEffect } from "react";
-import DatePicker, { registerLocale } from "react-datepicker";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ruLocale from "date-fns/locale/ru";
 import Image from "next/image";
 import { CustomButton } from "@/shared";
-import { Direction, searchDirections } from "@/helpers/searchDirections";
+import { searchDirections } from "@/helpers/searchDirections";
 import Dropdown from "@/shared/ui/dropdown/ui";
-import {
-  useGetDirectionsQuery,
-  useLazySearchTripCitiesQuery,
-} from "@/services/BibipTripService";
-import { useDispatch } from "react-redux";
-import { fromDirection, toDirection } from "@/slices/direction-slice";
-import { formatDate } from "@/helpers/formatDate";
 import { useRouter } from "next/navigation";
-import { saveTrips } from "@/slices/trips-slice";
+import { useLazySearchTripCitiesQuery } from "@/services/BibipTripService";
+import { formatDate } from "@/helpers/formatDate";
 
-interface ExampleCustomInputProps {
-  value: string;
-  onClick: () => void;
+interface SearchSelectProps {
+  directions: DirectionsResponse | undefined;
+  setResFromFetch: Dispatch<SetStateAction<null>>;
 }
 
-const ExampleCustomInput: FC<ExampleCustomInputProps> = forwardRef<
-  HTMLButtonElement,
-  ExampleCustomInputProps
->(({ value, onClick }, ref) => (
-  <div className="bg-[#fff] py-[12px] w-[200px]">
-    <p className="text-[#95A5BC] text-[12px] ml-8 mb-1">Дата отправления</p>
-    <button className="flex" onClick={onClick} ref={ref}>
-      <Image src="/note.svg" width="25" height="25" alt="" className="mr-2" />
-      <span className="text-[14px]">{value}</span>
-    </button>
-  </div>
-));
-
-const SearchSelect = () => {
-  const [from, setFrom] = useState<Direction | undefined>(undefined);
-  const [fromStr, setFromStr] = useState("");
-  const [to, setTo] = useState<Direction>();
-  const [toStr, setToStr] = useState("");
-  const [fromDirections, setFromDirections] = useState<Direction[]>([]);
-  const [toDirections, setToDirections] = useState<Direction[]>([]);
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
+const SearchSelect: FC<SearchSelectProps> = ({
+  directions,
+  setResFromFetch,
+}) => {
+  let storedDataForTripsString;
+  if (typeof window !== "undefined" && window.localStorage) {
+    storedDataForTripsString = localStorage.getItem("dataForBuyTicket") || "";
+  }
+  const storedDataForTrips = JSON.parse(storedDataForTripsString ?? "null");
+  const [from, setFrom] = useState<TravelDirection | undefined>(
+    storedDataForTrips?.from ? storedDataForTrips.from : null,
+  );
+  const [to, setTo] = useState<TravelDirection>(
+    storedDataForTrips?.to ? storedDataForTrips.to : null,
+  );
+  const [fromDirections, setFromDirections] = useState<TravelDirection[]>([]);
+  const [fromStr, setFromStr] = useState(
+    storedDataForTrips && storedDataForTrips.from
+      ? storedDataForTrips.from.locality
+      : "",
+  );
+  const [toDirections, setToDirections] = useState<TravelDirection[]>([]);
+  const [toStr, setToStr] = useState(
+    storedDataForTrips && storedDataForTrips.to
+      ? storedDataForTrips.to.locality
+      : "",
+  );
+  const [startDate, setStartDate] = useState<Date | null>(
+    storedDataForTrips?.startDate
+      ? new Date(storedDataForTrips.startDate)
+      : new Date(),
+  );
   const [isFromInputFocused, setIsFromInputFocused] = useState(false);
   const [isToInputFocused, setIsToInputFocused] = useState(false);
-
-  registerLocale("ru", ruLocale);
-  const dispatch = useDispatch();
   const router = useRouter();
+  const [getTickets, { isSuccess }] = useLazySearchTripCitiesQuery();
 
-  const {
-    data: directionData,
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-  } = useGetDirectionsQuery();
-
-  const [
-    getTickets,
-    { data: tickets, isLoading: isUpdating, isSuccess: isGotAnswer },
-  ] = useLazySearchTripCitiesQuery();
-
-  const onSaveTrip = () => {
+  const onSaveTrip = async () => {
     if (from && to && startDate) {
-      dispatch(fromDirection({ from }));
-      dispatch(toDirection({ to }));
-      getTickets({
-        departureCity: from.locality,
-        destinationCity: to.locality,
-        date: formatDate(startDate),
-      });
+      try {
+        const res = await getTickets({
+          departureCity: from.locality,
+          destinationCity: to.locality,
+          date: formatDate(startDate),
+        });
+
+        if (typeof window !== "undefined" && window.localStorage) {
+          localStorage.setItem(
+            "dataForBuyTicket",
+            JSON.stringify({
+              from,
+              to,
+              startDate,
+            }),
+          );
+        }
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        setResFromFetch(res?.data?.trips);
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("/direction-bus");
+    }
+  }, [isSuccess, router]);
+
   const handleFromInputFocus = () => {
     setIsFromInputFocused(true);
   };
@@ -88,13 +109,6 @@ const SearchSelect = () => {
     setToStr("");
   };
 
-  useEffect(() => {
-    if (isGotAnswer) {
-      dispatch(saveTrips(tickets));
-      router.push("/direction-bus");
-    }
-  }, [isGotAnswer, tickets, dispatch, router]);
-
   return (
     <div className="py-[10px] relative flex items-center mb-7 mt-6 justify-between pr-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-[70px]">
       <div className="relative">
@@ -108,8 +122,8 @@ const SearchSelect = () => {
         {fromDirections && fromDirections.length !== 0 ? (
           <Dropdown
             content={fromDirections}
-            /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-            // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
             setFrom={setFrom}
             setFromDirections={setFromDirections}
             setFromStr={setFromStr}
@@ -127,7 +141,9 @@ const SearchSelect = () => {
             setFromDirections(
               searchDirections(
                 e.target.value,
-                directionData && directionData.travel_directions,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                directions,
                 fromStr,
               ),
             );
@@ -154,8 +170,8 @@ const SearchSelect = () => {
         {toDirections && toDirections.length !== 0 ? (
           <Dropdown
             content={toDirections}
-            /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-            // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
             setFrom={setTo}
             setFromDirections={setToDirections}
             setFromStr={setToStr}
@@ -173,7 +189,9 @@ const SearchSelect = () => {
             setToDirections(
               searchDirections(
                 e.target.value,
-                directionData && directionData.travel_directions,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                directions,
                 toStr,
               ),
             );

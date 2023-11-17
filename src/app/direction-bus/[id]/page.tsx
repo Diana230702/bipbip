@@ -1,11 +1,24 @@
 "use client";
-import { ChoosePlace, Footer, Header, SearchSelect } from "@/widgets";
-import { ButtonFilter, TreeSite } from "@/entities";
+import { ChoosePlace, Footer, Header } from "@/widgets";
+import { TreeSite } from "@/entities";
 import { BookingPlaceInfo, BookingState } from "@/shared";
 import { MoreTicket } from "@/features";
 import Image from "next/image";
+import { useGetOccupiedSeatsQuery } from "@/services/BibipTripService";
 
 const BookingBus = () => {
+  let dataForSeats;
+  if (typeof window !== "undefined" && window.localStorage) {
+    dataForSeats = localStorage.getItem("dataForSeats");
+  }
+  const storedSeatsDataForTrips = JSON.parse(dataForSeats ?? "null");
+
+  const { data: seats } = useGetOccupiedSeatsQuery({
+    tripId: storedSeatsDataForTrips.tripId,
+    destinationId: storedSeatsDataForTrips.destinationId,
+    departureId: storedSeatsDataForTrips.departureId,
+  });
+
   return (
     <>
       <div className="container mx-auto sm:px-10 px-5">
@@ -28,10 +41,12 @@ const BookingBus = () => {
             <Image width={25} height={25} src="/bus-gray.svg" alt="" />
             <p className="text-[#22BB9C] ml-1 text-[16px]">
               Автобус:
-              <span className="uppercase text-[#000]"> ХЕНДАЙ (43)</span>
+              <span className="uppercase text-[#000]">
+                {storedSeatsDataForTrips.busModel}
+              </span>
             </p>
           </div>
-          <ChoosePlace />
+          <ChoosePlace seatsScheme={seats?.Bus?.SeatsScheme ?? []} />
           <BookingPlaceInfo />
         </div>
       </div>
