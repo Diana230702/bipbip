@@ -28,12 +28,12 @@ const MoreTicket = () => {
       >
         <div>
           <p className="text-[14px]">
-            {storedDataForTrips.from.locality} -{" "}
-            {storedDataForTrips.to.locality}
+            {storedDataForTrips!.from.locality} -{" "}
+            {storedDataForTrips!.to.locality}
           </p>
           <p className="text-[#95A4BC] text-[12px]">
-            {formatDate(storedDataForTrips.startDate)}, 1 пассажир,{" "}
-            {storedSeatsDataForTrips.price} ₽
+            {formatDate(storedDataForTrips!.startDate)}, 1 пассажир,{" "}
+            {storedSeatsDataForTrips!.price} ₽
           </p>
         </div>
         <div>
@@ -51,19 +51,19 @@ const MoreTicket = () => {
         <div className="flex items-baseline justify-between absolute py-[15px] px-[25px] bg-[#fff] w-full left-0 z-10 rounded-b-[10px]">
           <div>
             <span className="text-[12px] block mt-[30px]  mb-[10px]">
-              {formatHours(storedSeatsDataForTrips.departureTime)},{" "}
-              {formatDayOfMonth(storedSeatsDataForTrips.departureTime)}
+              {formatHours(storedSeatsDataForTrips!.departureTime)},{" "}
+              {formatDayOfMonth(storedSeatsDataForTrips!.departureTime)}
             </span>
             <p className="text-[#676767] text-[12px] mb-[18px]">
-              {storedSeatsDataForTrips.departureName}
+              {storedSeatsDataForTrips!.departureName}
             </p>
 
             <span className="text-[12px] text-[#676767] block mb-[10px]">
-              {formatHours(storedSeatsDataForTrips.arrivalTime)},{" "}
-              {formatDayOfMonth(storedSeatsDataForTrips.arrivalTime)}
+              {formatHours(storedSeatsDataForTrips!.arrivalTime)},{" "}
+              {formatDayOfMonth(storedSeatsDataForTrips!.arrivalTime)}
             </span>
             <p className="text-[#676767] text-[12px]">
-              {storedSeatsDataForTrips.destinationName}
+              {storedSeatsDataForTrips!.destinationName}
             </p>
           </div>
           <div>
@@ -78,7 +78,7 @@ const MoreTicket = () => {
               />
               <Image src="/plug-2.svg" width="20" height="20" alt="plug" />
             </div>
-            <p className="text-[12px]">{storedSeatsDataForTrips.carrier}</p>
+            <p className="text-[12px]">{storedSeatsDataForTrips!.carrier}</p>
             <p className="text-[#676767] text-[12px]">Перевозчик</p>
           </div>
         </div>

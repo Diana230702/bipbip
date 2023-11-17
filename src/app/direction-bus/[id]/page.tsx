@@ -9,9 +9,9 @@ import { storedSeatsDataForTrips } from "@/var/localStorage";
 
 const BookingBus = () => {
   const { data: seats } = useGetOccupiedSeatsQuery({
-    tripId: storedSeatsDataForTrips.tripId,
-    destinationId: storedSeatsDataForTrips.destinationId,
-    departureId: storedSeatsDataForTrips.departureId,
+    tripId: storedSeatsDataForTrips!.tripId,
+    destinationId: storedSeatsDataForTrips!.destinationId,
+    departureId: storedSeatsDataForTrips!.departureId,
   });
 
   return (
@@ -37,7 +37,7 @@ const BookingBus = () => {
             <p className="text-[#22BB9C] ml-1 text-[16px]">
               Автобус:
               <span className="uppercase text-[#000]">
-                {storedSeatsDataForTrips.busModel}
+                {storedSeatsDataForTrips!.busModel}
               </span>
             </p>
           </div>

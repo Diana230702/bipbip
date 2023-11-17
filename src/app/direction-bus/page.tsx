@@ -27,18 +27,18 @@ const DirectionBus = () => {
 
   const { data: availableTicketsQuery } = useSearchTripCitiesQuery({
     departureCity:
-      storedDataForTrips &&
+      storedDataForTrips! &&
       storedDataForTrips.from &&
       storedDataForTrips.from.locality
         ? storedDataForTrips.from.locality
         : "",
     destinationCity:
-      storedDataForTrips &&
+      storedDataForTrips! &&
       storedDataForTrips.to &&
       storedDataForTrips.to.locality
         ? storedDataForTrips.to.locality
         : "",
-    date: storedDataForTrips ? formatDate(storedDataForTrips.startDate) : "",
+    date: storedDataForTrips! ? formatDate(storedDataForTrips.startDate) : "",
   });
 
   useEffect(() => {

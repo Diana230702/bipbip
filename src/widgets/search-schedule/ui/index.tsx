@@ -28,25 +28,29 @@ const SearchSelect: FC<SearchSelectProps> = ({
   setResFromFetch,
 }) => {
   const [from, setFrom] = useState<TravelDirection | undefined>(
-    storedDataForTrips?.from ? storedDataForTrips.from : null,
+    storedDataForTrips! && storedDataForTrips?.from
+      ? storedDataForTrips.from
+      : null,
   );
   const [to, setTo] = useState<TravelDirection>(
-    storedDataForTrips?.to ? storedDataForTrips.to : null,
+    storedDataForTrips! && storedDataForTrips?.to
+      ? storedDataForTrips.to
+      : null,
   );
   const [fromDirections, setFromDirections] = useState<TravelDirection[]>([]);
   const [fromStr, setFromStr] = useState(
-    storedDataForTrips && storedDataForTrips.from
+    storedDataForTrips! && storedDataForTrips && storedDataForTrips.from
       ? storedDataForTrips.from.locality
       : "",
   );
   const [toDirections, setToDirections] = useState<TravelDirection[]>([]);
   const [toStr, setToStr] = useState(
-    storedDataForTrips && storedDataForTrips.to
+    storedDataForTrips! && storedDataForTrips && storedDataForTrips.to
       ? storedDataForTrips.to.locality
       : "",
   );
   const [startDate, setStartDate] = useState<Date | null>(
-    storedDataForTrips?.startDate
+    storedDataForTrips! && storedDataForTrips?.startDate
       ? new Date(storedDataForTrips.startDate)
       : new Date(),
   );

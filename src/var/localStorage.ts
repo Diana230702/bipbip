@@ -20,7 +20,7 @@ if (typeof window !== "undefined" && window.localStorage) {
   dataForSeats = localStorage.getItem("dataForSeats");
 }
 
-let storedSeatsDataForTrips;
+let storedSeatsDataForTrips: LocalStorageTrip | null;
 
 try {
   storedSeatsDataForTrips = dataForSeats ? JSON.parse(dataForSeats) : null;
