@@ -1,3 +1,5 @@
+import { LocalStorageDirection } from "@/var/localStorage";
+
 export function updateLocalStorage(trip: Trip) {
   if (typeof window !== "undefined" && window.localStorage) {
     localStorage.setItem(
@@ -14,6 +16,23 @@ export function updateLocalStorage(trip: Trip) {
         destinationName: trip.Destination.Name,
         price: trip.PassengerFareCost,
         carrier: trip.CarrierData.CarrierName,
+      }),
+    );
+  }
+}
+
+export function updateLocalTripStorage(
+  from: { id: string; name: string; locality: string },
+  to: { id: string; name: string; locality: string },
+  startDate: Date,
+) {
+  if (typeof window !== "undefined" && window.localStorage) {
+    localStorage.setItem(
+      "dataForBuyTicket",
+      JSON.stringify({
+        from,
+        to,
+        startDate,
       }),
     );
   }

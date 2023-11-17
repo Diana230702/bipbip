@@ -44,3 +44,17 @@ export interface LocalStorageTrip {
   price: string;
   carrier: string;
 }
+
+export interface LocalStorageDirection {
+  from: {
+    id: string;
+    name: string;
+    locality: string;
+  };
+  to: {
+    id: string;
+    name: string;
+    locality: string;
+  };
+  startDate: string;
+}

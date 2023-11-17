@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useLazySearchTripCitiesQuery } from "@/services/BibipTripService";
 import { formatDate } from "@/helpers/formatDate";
 import { storedDataForTrips } from "@/var/localStorage";
+import { updateLocalTripStorage } from "@/helpers/updateLocalStorage";
 
 interface SearchSelectProps {
   directions: DirectionsResponse | undefined;
@@ -67,17 +68,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
           destinationCity: to.locality,
           date: formatDate(startDate),
         });
-
-        if (typeof window !== "undefined" && window.localStorage) {
-          localStorage.setItem(
-            "dataForBuyTicket",
-            JSON.stringify({
-              from,
-              to,
-              startDate,
-            }),
-          );
-        }
+        updateLocalTripStorage(from, to, startDate);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         setResFromFetch(res?.data?.trips);
