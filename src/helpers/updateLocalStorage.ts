@@ -24,7 +24,7 @@ export function updateLocalStorage(trip: Trip) {
 export function updateLocalTripStorage(
   from: { id: string; name: string; locality: string },
   to: { id: string; name: string; locality: string },
-  startDate: Date,
+  startDate: string,
 ) {
   if (typeof window !== "undefined" && window.localStorage) {
     localStorage.setItem(

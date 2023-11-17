@@ -68,7 +68,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
           destinationCity: to.locality,
           date: formatDate(startDate),
         });
-        updateLocalTripStorage(from, to, startDate);
+        updateLocalTripStorage(from, to, String(startDate));
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         setResFromFetch(res?.data?.trips);
