@@ -16,6 +16,7 @@ import Dropdown from "@/shared/ui/dropdown/ui";
 import { useRouter } from "next/navigation";
 import { useLazySearchTripCitiesQuery } from "@/services/BibipTripService";
 import { formatDate } from "@/helpers/formatDate";
+import { storedDataForTrips } from "@/var/localStorage";
 
 interface SearchSelectProps {
   directions: DirectionsResponse | undefined;
@@ -26,11 +27,6 @@ const SearchSelect: FC<SearchSelectProps> = ({
   directions,
   setResFromFetch,
 }) => {
-  let storedDataForTripsString;
-  if (typeof window !== "undefined" && window.localStorage) {
-    storedDataForTripsString = localStorage.getItem("dataForBuyTicket") || "";
-  }
-  const storedDataForTrips = JSON.parse(storedDataForTripsString ?? "null");
   const [from, setFrom] = useState<TravelDirection | undefined>(
     storedDataForTrips?.from ? storedDataForTrips.from : null,
   );

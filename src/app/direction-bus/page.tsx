@@ -16,16 +16,11 @@ import {
 } from "@/services/BibipTripService";
 import { formatDate } from "@/helpers/formatDate";
 import { isArray } from "is-what";
-
-let storedDataForTripsString: string | null;
+import { storedDataForTrips } from "@/var/localStorage";
 
 const DirectionBus = () => {
   const [sortedTrips, setSortedTrips] = useState<Trip[]>([]);
   const [isSortedAsc, setIsSortedAsc] = useState(true);
-  if (typeof window !== "undefined" && window.localStorage) {
-    storedDataForTripsString = localStorage.getItem("dataForBuyTicket");
-  }
-  const storedDataForTrips = JSON.parse(storedDataForTripsString ?? "null");
   const { data: Directions } = useGetDirectionsQuery();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [resFromFetch, setResFromFetch] = useState(null);

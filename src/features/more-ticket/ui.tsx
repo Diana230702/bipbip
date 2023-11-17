@@ -8,20 +8,13 @@ import {
   formatDayOfMonth,
   formatHours,
 } from "@/helpers/formatDate";
-import { LocalStorageTrip } from "@/widgets/bus-ticket/ui";
+import {
+  storedDataForTrips,
+  storedSeatsDataForTrips,
+} from "@/var/localStorage";
 
 const MoreTicket = () => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  let dataForTrip;
-  let dataForSeats;
-  if (typeof window !== "undefined" && window.localStorage) {
-    dataForTrip = localStorage.getItem("dataForBuyTicket");
-    dataForSeats = localStorage.getItem("dataForSeats");
-  }
-  const storedDataForTrip = JSON.parse(dataForTrip ?? "null");
-  const storedDataForSeats: LocalStorageTrip = JSON.parse(
-    dataForSeats ?? "null",
-  );
 
   const toggleDetails = () => {
     setIsDetailsOpen(!isDetailsOpen);
@@ -35,11 +28,12 @@ const MoreTicket = () => {
       >
         <div>
           <p className="text-[14px]">
-            {storedDataForTrip.from.locality} - {storedDataForTrip.to.locality}
+            {storedDataForTrips.from.locality} -{" "}
+            {storedDataForTrips.to.locality}
           </p>
           <p className="text-[#95A4BC] text-[12px]">
-            {formatDate(storedDataForTrip.startDate)}, 1 пассажир,{" "}
-            {storedDataForSeats.price} ₽
+            {formatDate(storedDataForTrips.startDate)}, 1 пассажир,{" "}
+            {storedSeatsDataForTrips.price} ₽
           </p>
         </div>
         <div>
@@ -57,19 +51,19 @@ const MoreTicket = () => {
         <div className="flex items-baseline justify-between absolute py-[15px] px-[25px] bg-[#fff] w-full left-0 z-10 rounded-b-[10px]">
           <div>
             <span className="text-[12px] block mt-[30px]  mb-[10px]">
-              {formatHours(storedDataForSeats.departureTime)},{" "}
-              {formatDayOfMonth(storedDataForSeats.departureTime)}
+              {formatHours(storedSeatsDataForTrips.departureTime)},{" "}
+              {formatDayOfMonth(storedSeatsDataForTrips.departureTime)}
             </span>
             <p className="text-[#676767] text-[12px] mb-[18px]">
-              {storedDataForSeats.departureName}
+              {storedSeatsDataForTrips.departureName}
             </p>
 
             <span className="text-[12px] text-[#676767] block mb-[10px]">
-              {formatHours(storedDataForSeats.arrivalTime)},{" "}
-              {formatDayOfMonth(storedDataForSeats.arrivalTime)}
+              {formatHours(storedSeatsDataForTrips.arrivalTime)},{" "}
+              {formatDayOfMonth(storedSeatsDataForTrips.arrivalTime)}
             </span>
             <p className="text-[#676767] text-[12px]">
-              {storedDataForSeats.destinationName}
+              {storedSeatsDataForTrips.destinationName}
             </p>
           </div>
           <div>
@@ -84,7 +78,7 @@ const MoreTicket = () => {
               />
               <Image src="/plug-2.svg" width="20" height="20" alt="plug" />
             </div>
-            <p className="text-[12px]">{storedDataForSeats.carrier}</p>
+            <p className="text-[12px]">{storedSeatsDataForTrips.carrier}</p>
             <p className="text-[#676767] text-[12px]">Перевозчик</p>
           </div>
         </div>

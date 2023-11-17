@@ -8,20 +8,6 @@ import { formatDuration } from "@/helpers/formatDuration";
 import Link from "next/link";
 import { updateLocalStorage } from "@/helpers/updateLocalStorage";
 
-export interface LocalStorageTrip {
-  tripId: string;
-  departureId: string;
-  destinationId: string;
-  bus: string;
-  busModel: string;
-  departureTime: string;
-  arrivalTime: string;
-  departureName: string;
-  destinationName: string;
-  price: string;
-  carrier: string;
-}
-
 const BusTicket = ({ trip }: { trip: Trip }) => {
   const [showBottom, setShowBottom] = useState(false);
 

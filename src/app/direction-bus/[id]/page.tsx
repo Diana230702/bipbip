@@ -5,14 +5,9 @@ import { BookingPlaceInfo, BookingState } from "@/shared";
 import { MoreTicket } from "@/features";
 import Image from "next/image";
 import { useGetOccupiedSeatsQuery } from "@/services/BibipTripService";
+import { storedSeatsDataForTrips } from "@/var/localStorage";
 
 const BookingBus = () => {
-  let dataForSeats;
-  if (typeof window !== "undefined" && window.localStorage) {
-    dataForSeats = localStorage.getItem("dataForSeats");
-  }
-  const storedSeatsDataForTrips = JSON.parse(dataForSeats ?? "null");
-
   const { data: seats } = useGetOccupiedSeatsQuery({
     tripId: storedSeatsDataForTrips.tripId,
     destinationId: storedSeatsDataForTrips.destinationId,
