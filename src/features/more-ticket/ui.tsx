@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { DirectionCount } from "@/shared";
 import Image from "next/image";

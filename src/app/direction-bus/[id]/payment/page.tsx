@@ -1,15 +1,7 @@
 "use client";
-import {
-  ChoosePlace,
-  Footer,
-  Header,
-  ModalContentPayment,
-  SearchSelect,
-} from "@/widgets";
-import { ButtonFilter, PaymentInfo, TreeSite } from "@/entities";
-import { BookingPlaceInfo, BookingState, Modal } from "@/shared";
-import { MoreTicket } from "@/features";
-import Image from "next/image";
+import { Footer, Header, ModalContentPayment } from "@/widgets";
+import { PaymentInfo, TreeSite } from "@/entities";
+import { BookingState, Modal } from "@/shared";
 import { useState } from "react";
 
 const PayBus = () => {
