@@ -11,9 +11,12 @@ import {
 import SearchSelect from "@/widgets/search-schedule/ui";
 import React, { useState } from "react";
 import { Modal } from "@/shared";
+import { useGetDirectionsQuery } from "@/services/BibipTripService";
 
 const DirectionCar = () => {
   const [showModal, setShowModal] = useState(false);
+  const { data: Directions } = useGetDirectionsQuery();
+
   return (
     <>
       <div className="container mx-auto sm:px-10 px-5">
@@ -22,7 +25,7 @@ const DirectionCar = () => {
       <hr />
       <div className="container mx-auto sm:px-10 px-5 mt-[25px]">
         <ButtonFilter containerStyles="justify-start" />
-        <SearchSelect />
+        <SearchSelect directions={Directions} setResFromFetch={() => null} />
         <div className="max-w-[840px] mx-auto">
           <DirectionFilter
             route="4 поездки"

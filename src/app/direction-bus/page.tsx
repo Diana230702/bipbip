@@ -3,27 +3,66 @@
 import { ButtonFilter } from "@/entities";
 import { BusTicket, DirectionFilter, Footer, Header } from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import {
   sortArrayByArrivalTime,
   sortArrayByCost,
   sortArrayByDepartureTime,
   sortArrayByDestination,
 } from "@/helpers/sortArray";
+import {
+  useGetDirectionsQuery,
+  useSearchTripCitiesQuery,
+} from "@/services/BibipTripService";
+import { formatDate } from "@/helpers/formatDate";
+import { isArray } from "is-what";
+
+let storedDataForTripsString: string | null;
 
 const DirectionBus = () => {
-  const trips = useSelector((state: any) => state.trips);
   const [sortedTrips, setSortedTrips] = useState<Trip[]>([]);
   const [isSortedAsc, setIsSortedAsc] = useState(true);
+  if (typeof window !== "undefined" && window.localStorage) {
+    storedDataForTripsString = localStorage.getItem("dataForBuyTicket");
+  }
+  const storedDataForTrips = JSON.parse(storedDataForTripsString ?? "null");
+  const { data: Directions } = useGetDirectionsQuery();
+  const [trips, setTrips] = useState<Trip[]>([]);
+  const [resFromFetch, setResFromFetch] = useState(null);
+
+  const { data: availableTicketsQuery } = useSearchTripCitiesQuery({
+    departureCity:
+      storedDataForTrips &&
+      storedDataForTrips.from &&
+      storedDataForTrips.from.locality
+        ? storedDataForTrips.from.locality
+        : "",
+    destinationCity:
+      storedDataForTrips &&
+      storedDataForTrips.to &&
+      storedDataForTrips.to.locality
+        ? storedDataForTrips.to.locality
+        : "",
+    date: storedDataForTrips ? formatDate(storedDataForTrips.startDate) : "",
+  });
+
+  useEffect(() => {
+    const availableTrips = availableTicketsQuery?.trips || [];
+
+    if (resFromFetch) {
+      setTrips(resFromFetch);
+    } else {
+      if (availableTrips) setTrips(availableTrips);
+    }
+  }, [resFromFetch, availableTicketsQuery]);
 
   const handleSortByCostClick = () => {
-    if (trips && trips.trips) {
+    if (trips) {
       let sortedTrips;
       if (isSortedAsc) {
-        sortedTrips = sortArrayByCost(trips.trips);
+        sortedTrips = sortArrayByCost(trips);
       } else {
-        sortedTrips = sortArrayByCost(trips.trips).reverse();
+        sortedTrips = sortArrayByCost(trips).reverse();
       }
       setSortedTrips(sortedTrips);
       setIsSortedAsc(!isSortedAsc);
@@ -31,12 +70,12 @@ const DirectionBus = () => {
   };
 
   const handleSortByDepartureClick = () => {
-    if (trips && trips.trips) {
+    if (trips) {
       let sortedTrips;
       if (isSortedAsc) {
-        sortedTrips = sortArrayByDepartureTime(trips.trips);
+        sortedTrips = sortArrayByDepartureTime(trips);
       } else {
-        sortedTrips = sortArrayByDepartureTime(trips.trips).reverse();
+        sortedTrips = sortArrayByDepartureTime(trips).reverse();
       }
       setSortedTrips(sortedTrips);
       setIsSortedAsc(!isSortedAsc);
@@ -44,12 +83,12 @@ const DirectionBus = () => {
   };
 
   const handleSortByArrivalClick = () => {
-    if (trips && trips.trips) {
+    if (trips) {
       let sortedTrips;
       if (isSortedAsc) {
-        sortedTrips = sortArrayByArrivalTime(trips.trips);
+        sortedTrips = sortArrayByArrivalTime(trips);
       } else {
-        sortedTrips = sortArrayByArrivalTime(trips.trips).reverse();
+        sortedTrips = sortArrayByArrivalTime(trips).reverse();
       }
       setSortedTrips(sortedTrips);
       setIsSortedAsc(!isSortedAsc);
@@ -57,19 +96,19 @@ const DirectionBus = () => {
   };
 
   const handleSortArrayByDurationClick = () => {
-    if (trips && trips.trips) {
+    if (trips && trips) {
       let sortedTrips;
       if (isSortedAsc) {
-        sortedTrips = sortArrayByDestination(trips.trips);
+        sortedTrips = sortArrayByDestination(trips);
       } else {
-        sortedTrips = sortArrayByDestination(trips.trips).reverse();
+        sortedTrips = sortArrayByDestination(trips).reverse();
       }
       setSortedTrips(sortedTrips);
       setIsSortedAsc(!isSortedAsc);
     }
   };
 
-  const tripsToDisplay = sortedTrips.length > 0 ? sortedTrips : trips.trips;
+  const tripsToDisplay = sortedTrips.length > 0 ? sortedTrips : trips;
 
   return (
     <>
@@ -79,23 +118,30 @@ const DirectionBus = () => {
         </div>
         <hr />
       </div>
-
       <div className="container mx-auto sm:px-10 px-5 relative mt-[-150px]">
         <ButtonFilter containerStyles="justify-start mt-[45px]" />
-        <SearchSelect />
+        <SearchSelect
+          /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+          // @ts-ignore
+          directions={Directions}
+          setResFromFetch={setResFromFetch}
+        />
         <div className="max-w-[840px] mx-auto">
           <DirectionFilter
-            route={trips && trips.trips && trips.trips.length}
+            /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+            // @ts-ignore
+            route={trips && trips.length}
             passengers="2"
             handleSortByCost={handleSortByCostClick}
             handleSortByDepartureTime={handleSortByDepartureClick}
             handleSortByArrivalTime={handleSortByArrivalClick}
             handleSortByTravelTime={handleSortArrayByDurationClick}
           />
-          {tripsToDisplay &&
-            tripsToDisplay.map((trip: Trip) => (
-              <BusTicket key={trip.Id} trip={trip} />
-            ))}
+          {isArray(tripsToDisplay)
+            ? tripsToDisplay.map((trip: Trip) => (
+                <BusTicket key={trip.Id} trip={trip} />
+              ))
+            : null}
         </div>
       </div>
       <Footer />

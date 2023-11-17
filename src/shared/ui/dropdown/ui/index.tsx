@@ -1,4 +1,3 @@
-import { Direction } from "@/helpers/searchDirections";
 import { Dispatch, SetStateAction } from "react";
 
 const Dropdown = ({
@@ -7,9 +6,9 @@ const Dropdown = ({
   setFromDirections,
   setFromStr,
 }: {
-  content: Direction[];
-  setFrom: Dispatch<SetStateAction<Direction>>;
-  setFromDirections: Dispatch<SetStateAction<Direction[]>>;
+  content: TravelDirection[];
+  setFrom: Dispatch<SetStateAction<TravelDirection>>;
+  setFromDirections: Dispatch<SetStateAction<TravelDirection[]>>;
   setFromStr: Dispatch<SetStateAction<string>>;
 }) => (
   <div className="relative inline-block top-9">

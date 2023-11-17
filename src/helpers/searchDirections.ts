@@ -1,27 +1,28 @@
-export interface Direction {
-  id: string;
-  locality: string;
-  name: string;
-}
-
 export function searchDirections(
   startingLetters: string,
-  directions: Direction[],
+  directions: DirectionsResponse,
   from: string,
 ) {
-  if (startingLetters.trim() === "") {
+  if (
+    startingLetters.trim() === "" ||
+    !directions ||
+    !directions.travel_directions
+  ) {
     return [];
   }
   const results =
     directions &&
-    directions.filter((direction) => {
+    directions.travel_directions.filter((direction) => {
       const name = direction.name.toUpperCase();
       const input = startingLetters.toUpperCase();
       return name.includes(input);
     });
 
   const indexOfFrom =
-    results && results.findIndex((direction) => direction?.locality === from);
+    results &&
+    results.findIndex((direction) => {
+      return direction?.locality === from;
+    });
 
   if (indexOfFrom !== -1) {
     results && results.splice(indexOfFrom, 1);

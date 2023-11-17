@@ -5,6 +5,12 @@ type Points = {
   destinationCity: string;
   date: string;
 };
+
+type Seats = {
+  tripId: string;
+  departureId: string;
+  destinationId: string;
+};
 export const bibipTripApi = createApi({
   reducerPath: "directionsAPI",
   tagTypes: ["Directions"],
@@ -12,16 +18,37 @@ export const bibipTripApi = createApi({
     baseUrl: "https://bibiptrip.com/api/avibus",
   }), // Define your API base URL
   endpoints: (builder) => ({
-    getDirections: builder.query({
+    getDirections: builder.query<DirectionsResponse, void>({
       query: () => `/directions/`,
     }),
-    searchTripCities: builder.query<Trip[], Points>({
-      query: (points: Points) => ({
-        url: `search_trips_cities/?departure_city=${points.departureCity}&destination_city=${points.destinationCity}&date=${points.date}`,
-      }),
+    searchTripCities: builder.query<
+      TripsResponse,
+      { departureCity: string; destinationCity: string; date: string }
+    >({
+      query: (args) => {
+        const { departureCity, destinationCity, date } = args;
+        return {
+          url: `search_trips_cities/?departure_city=${departureCity}&destination_city=${destinationCity}&date=${date}`,
+        };
+      },
+    }),
+    getOccupiedSeats: builder.query<
+      ResponseBusSchemeData,
+      { tripId: string; departureId: string; destinationId: string }
+    >({
+      query: (args) => {
+        const { tripId, departureId, destinationId } = args;
+        return {
+          url: `occupied_seats/?trip_id=${tripId}&departure=${departureId}&destination=${destinationId}`,
+        };
+      },
     }),
   }),
 });
 
-export const { useGetDirectionsQuery, useLazySearchTripCitiesQuery } =
-  bibipTripApi;
+export const {
+  useGetDirectionsQuery,
+  useSearchTripCitiesQuery,
+  useLazySearchTripCitiesQuery,
+  useGetOccupiedSeatsQuery,
+} = bibipTripApi;

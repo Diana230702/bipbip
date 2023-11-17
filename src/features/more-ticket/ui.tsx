@@ -1,9 +1,25 @@
 import { useState } from "react";
 import { DirectionCount } from "@/shared";
 import Image from "next/image";
+import {
+  formatDate,
+  formatDayOfMonth,
+  formatHours,
+} from "@/helpers/formatDate";
+import { LocalStorageTrip } from "@/widgets/bus-ticket/ui";
 
 const MoreTicket = () => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  let dataForTrip;
+  let dataForSeats;
+  if (typeof window !== "undefined" && window.localStorage) {
+    dataForTrip = localStorage.getItem("dataForBuyTicket");
+    dataForSeats = localStorage.getItem("dataForSeats");
+  }
+  const storedDataForTrip = JSON.parse(dataForTrip ?? "null");
+  const storedDataForSeats: LocalStorageTrip = JSON.parse(
+    dataForSeats ?? "null",
+  );
 
   const toggleDetails = () => {
     setIsDetailsOpen(!isDetailsOpen);
@@ -16,9 +32,12 @@ const MoreTicket = () => {
         onClick={toggleDetails}
       >
         <div>
-          <p className="text-[14px]">Казань - Нижнекамск</p>
+          <p className="text-[14px]">
+            {storedDataForTrip.from.locality} - {storedDataForTrip.to.locality}
+          </p>
           <p className="text-[#95A4BC] text-[12px]">
-            14.05.2023, 1 пассажир, 514.80 ₽
+            {formatDate(storedDataForTrip.startDate)}, 1 пассажир,{" "}
+            {storedDataForSeats.price} ₽
           </p>
         </div>
         <div>
@@ -36,18 +55,19 @@ const MoreTicket = () => {
         <div className="flex items-baseline justify-between absolute py-[15px] px-[25px] bg-[#fff] w-full left-0 z-10 rounded-b-[10px]">
           <div>
             <span className="text-[12px] block mt-[30px]  mb-[10px]">
-              15:00, 11 мая
+              {formatHours(storedDataForSeats.departureTime)},{" "}
+              {formatDayOfMonth(storedDataForSeats.departureTime)}
             </span>
             <p className="text-[#676767] text-[12px] mb-[18px]">
-              Автостанция Новоясенская, м. Новоясенская, Новоясенский тупик, д.
-              4
+              {storedDataForSeats.departureName}
             </p>
 
             <span className="text-[12px] text-[#676767] block mb-[10px]">
-              08:00, 12 мая
+              {formatHours(storedDataForSeats.arrivalTime)},{" "}
+              {formatDayOfMonth(storedDataForSeats.arrivalTime)}
             </span>
             <p className="text-[#676767] text-[12px]">
-              Автовокзал №2, наб. Обводного Канала, д. 36
+              {storedDataForSeats.destinationName}
             </p>
           </div>
           <div>
@@ -62,7 +82,7 @@ const MoreTicket = () => {
               />
               <Image src="/plug-2.svg" width="20" height="20" alt="plug" />
             </div>
-            <p className="text-[12px]">ООО “Буревестник”</p>
+            <p className="text-[12px]">{storedDataForSeats.carrier}</p>
             <p className="text-[#676767] text-[12px]">Перевозчик</p>
           </div>
         </div>

@@ -116,3 +116,40 @@ type DefaultValueVariant = {
   ValueProperty4: null | string;
   ValueProperty5: null | string;
 };
+
+interface TravelDirection {
+  id: string;
+  name: string;
+  locality: string;
+}
+
+interface DirectionsResponse {
+  travel_directions: TravelDirection[];
+}
+
+interface TripsResponse {
+  trips: Trip[] | undefined;
+}
+
+type Seat = {
+  XPos: number;
+  YPos: number;
+  SeatNum: number;
+};
+
+type BusScheme = {
+  Id: string;
+  Model: string;
+  LicencePlate: string;
+  BaggageCapacity: number;
+  GarageNum: string | null;
+  Name: string;
+  SeatCapacity: number;
+  SeatsClass: string;
+  SeatsScheme: Seat[];
+};
+
+interface ResponseBusSchemeData {
+  return: null;
+  Bus: Bus | null;
+}
