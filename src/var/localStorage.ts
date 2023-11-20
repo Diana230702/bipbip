@@ -1,35 +1,48 @@
-let storedDataForTripsString;
-if (typeof window !== "undefined" && window.localStorage) {
-  storedDataForTripsString = localStorage.getItem("dataForBuyTicket") || "";
-}
+const getStoredDataForTrips = () => {
+  let storedDataForTripsString;
 
-let storedDataForTrips;
+  if (typeof window !== "undefined" && window.localStorage) {
+    storedDataForTripsString = localStorage.getItem("dataForBuyTicket") || "";
+  }
 
-try {
-  storedDataForTrips = storedDataForTripsString
-    ? JSON.parse(storedDataForTripsString)
-    : null;
-} catch (error) {
-  console.error("Error parsing JSON:", error);
-  storedDataForTrips = null;
-}
-export { storedDataForTrips };
+  let storedDataForTrips;
 
-let dataForSeats;
-if (typeof window !== "undefined" && window.localStorage) {
-  dataForSeats = localStorage.getItem("dataForSeats");
-}
+  try {
+    storedDataForTrips = storedDataForTripsString
+      ? JSON.parse(storedDataForTripsString)
+      : null;
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    storedDataForTrips = null;
+  }
 
-let storedSeatsDataForTrips: LocalStorageTrip | null;
+  return storedDataForTrips;
+};
 
-try {
-  storedSeatsDataForTrips = dataForSeats ? JSON.parse(dataForSeats) : null;
-} catch (error) {
-  console.error("Error parsing JSON:", error);
-  storedSeatsDataForTrips = null;
-}
+export { getStoredDataForTrips };
 
-export { storedSeatsDataForTrips };
+// seatStorageUtils.js
+
+const getStoredSeatsDataForTrips = () => {
+  let dataForSeats;
+
+  if (typeof window !== "undefined" && window.localStorage) {
+    dataForSeats = localStorage.getItem("dataForSeats");
+  }
+
+  let storedSeatsDataForTrips;
+
+  try {
+    storedSeatsDataForTrips = dataForSeats ? JSON.parse(dataForSeats) : null;
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    storedSeatsDataForTrips = null;
+  }
+
+  return storedSeatsDataForTrips;
+};
+
+export { getStoredSeatsDataForTrips };
 
 export interface LocalStorageTrip {
   tripId: string;

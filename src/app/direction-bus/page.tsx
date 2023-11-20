@@ -16,9 +16,12 @@ import {
 } from "@/services/BibipTripService";
 import { formatDate } from "@/helpers/formatDate";
 import { isArray } from "is-what";
-import { storedDataForTrips } from "@/var/localStorage";
+import { getStoredDataForTrips } from "@/var/localStorage";
 
 const DirectionBus = () => {
+  const [storedDataForTrips, setStoredDataForTrips] = useState(
+    getStoredDataForTrips(),
+  );
   const [sortedTrips, setSortedTrips] = useState<Trip[]>([]);
   const [isSortedAsc, setIsSortedAsc] = useState(true);
   const { data: Directions } = useGetDirectionsQuery();
@@ -43,7 +46,7 @@ const DirectionBus = () => {
 
   useEffect(() => {
     const availableTrips = availableTicketsQuery?.trips || [];
-
+    setStoredDataForTrips(getStoredDataForTrips());
     if (resFromFetch) {
       setTrips(resFromFetch);
     } else {

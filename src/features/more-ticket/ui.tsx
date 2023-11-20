@@ -4,17 +4,28 @@ import { useState } from "react";
 import { DirectionCount } from "@/shared";
 import Image from "next/image";
 import {
-  formatDate,
+  formatDateWithDots,
   formatDayOfMonth,
   formatHours,
 } from "@/helpers/formatDate";
 import {
-  storedDataForTrips,
-  storedSeatsDataForTrips,
+  getStoredDataForTrips,
+  getStoredSeatsDataForTrips,
 } from "@/var/localStorage";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const MoreTicket = () => {
+  const [storedDataForTrips, setStoredDataForTrips] = useState(
+    getStoredDataForTrips(),
+  );
+  const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
+    getStoredSeatsDataForTrips(),
+  );
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const selectedSeats = useSelector(
+    (state: RootState) => state.selectedSeats.selectedSeats,
+  );
 
   const toggleDetails = () => {
     setIsDetailsOpen(!isDetailsOpen);
@@ -32,8 +43,12 @@ const MoreTicket = () => {
             {storedDataForTrips!.to.locality}
           </p>
           <p className="text-[#95A4BC] text-[12px]">
-            {formatDate(storedDataForTrips!.startDate)}, 1 пассажир,{" "}
-            {storedSeatsDataForTrips!.price} ₽
+            {formatDateWithDots(storedDataForTrips!.startDate)},{" "}
+            {selectedSeats.length}{" "}
+            {selectedSeats.length === 0 ? "пассажиров" : ""}
+            {selectedSeats.length === 1 ? "пассажир" : ""}
+            {selectedSeats.length > 1 ? "пассажира" : ""},{" "}
+            {selectedSeats.length * Number(storedSeatsDataForTrips!.price)} ₽
           </p>
         </div>
         <div>
@@ -41,7 +56,7 @@ const MoreTicket = () => {
             src="/arrow-right-ticket.svg"
             width="20"
             height="20"
-            className="cursor-pointer"
+            className={`cursor-pointer ${isDetailsOpen ? "" : "rotate-180"}`}
             alt="arrow-right"
           />
         </div>

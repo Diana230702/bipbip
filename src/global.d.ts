@@ -137,6 +137,10 @@ type Seat = {
   SeatNum: number;
 };
 
+interface ReservedSeat extends Seat {
+  Reserved: boolean;
+}
+
 type BusScheme = {
   Id: string;
   Model: string;
@@ -150,6 +154,16 @@ type BusScheme = {
 };
 
 interface ResponseBusSchemeData {
-  return: null;
-  Bus: Bus | null;
+  return: {
+    Elements: BusReserved[];
+  };
+  Bus: Bus;
+}
+
+interface BusReserved {
+  ForCurrentOrder: boolean;
+  Number: number;
+  ParentTicketSeatNum: number;
+  Status: string;
+  Type: string;
 }

@@ -16,7 +16,7 @@ import Dropdown from "@/shared/ui/dropdown/ui";
 import { useRouter } from "next/navigation";
 import { useLazySearchTripCitiesQuery } from "@/services/BibipTripService";
 import { formatDate } from "@/helpers/formatDate";
-import { storedDataForTrips } from "@/var/localStorage";
+import { getStoredDataForTrips } from "@/var/localStorage";
 import { updateLocalTripStorage } from "@/helpers/updateLocalStorage";
 
 interface SearchSelectProps {
@@ -28,6 +28,9 @@ const SearchSelect: FC<SearchSelectProps> = ({
   directions,
   setResFromFetch,
 }) => {
+  const [storedDataForTrips, setStoredDataForTrips] = useState(
+    getStoredDataForTrips(),
+  );
   const [from, setFrom] = useState<TravelDirection | undefined>(
     storedDataForTrips! && storedDataForTrips?.from
       ? storedDataForTrips.from
@@ -39,17 +42,9 @@ const SearchSelect: FC<SearchSelectProps> = ({
       : null,
   );
   const [fromDirections, setFromDirections] = useState<TravelDirection[]>([]);
-  const [fromStr, setFromStr] = useState(
-    storedDataForTrips! && storedDataForTrips && storedDataForTrips.from
-      ? storedDataForTrips.from.locality
-      : "",
-  );
+  const [fromStr, setFromStr] = useState(from?.locality || "");
   const [toDirections, setToDirections] = useState<TravelDirection[]>([]);
-  const [toStr, setToStr] = useState(
-    storedDataForTrips! && storedDataForTrips && storedDataForTrips.to
-      ? storedDataForTrips.to.locality
-      : "",
-  );
+  const [toStr, setToStr] = useState(to?.locality || "");
   const [startDate, setStartDate] = useState<Date | null>(
     storedDataForTrips! && storedDataForTrips?.startDate
       ? new Date(storedDataForTrips.startDate)
@@ -65,8 +60,8 @@ const SearchSelect: FC<SearchSelectProps> = ({
       updateLocalTripStorage(from, to, String(startDate));
       try {
         const res = await getTickets({
-          departureCity: from.locality,
-          destinationCity: to.locality,
+          departureCity: from?.locality,
+          destinationCity: to?.locality,
           date: formatDate(startDate),
         });
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -79,6 +74,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
   };
 
   useEffect(() => {
+    setStoredDataForTrips(getStoredDataForTrips());
     if (isSuccess) {
       router.push("/direction-bus");
     }

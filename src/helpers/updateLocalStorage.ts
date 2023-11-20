@@ -1,5 +1,3 @@
-import { LocalStorageDirection } from "@/var/localStorage";
-
 export function updateLocalStorage(trip: Trip) {
   if (typeof window !== "undefined" && window.localStorage) {
     localStorage.setItem(
@@ -26,6 +24,8 @@ export function updateLocalTripStorage(
   to: { id: string; name: string; locality: string },
   startDate: string,
 ) {
+  console.log(from);
+  console.log(to);
   if (typeof window !== "undefined" && window.localStorage) {
     localStorage.setItem(
       "dataForBuyTicket",

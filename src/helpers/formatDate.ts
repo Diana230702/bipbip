@@ -26,6 +26,16 @@ export const formatDate = (dateString: Date | string) => {
   return `${formattedDate}`;
 };
 
+export const formatDateWithDots = (dateString: Date | string) => {
+  let date = dateString;
+  if (typeof date === "string") {
+    date = new Date(dateString);
+  }
+  const formattedDate = format(date, "yyyy.MM.dd", { locale: ruLocale });
+
+  return `${formattedDate}`;
+};
+
 export const formatDayOfMonth = (dateString: string) => {
   const date = new Date(dateString);
   const day = date.getDate();

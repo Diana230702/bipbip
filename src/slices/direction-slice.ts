@@ -10,6 +10,9 @@ const directionSlice = createSlice({
     toDirection: (state, action) => {
       return action.payload.to;
     },
+    date: (state, action) => {
+      return action.payload.startDate;
+    },
   },
 });
 

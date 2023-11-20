@@ -5,14 +5,23 @@ import { BookingPlaceInfo, BookingState } from "@/shared";
 import { MoreTicket } from "@/features";
 import Image from "next/image";
 import { useGetOccupiedSeatsQuery } from "@/services/BibipTripService";
-import { storedSeatsDataForTrips } from "@/var/localStorage";
+import { useEffect, useState } from "react";
+import { getStoredSeatsDataForTrips } from "@/var/localStorage";
 
 const BookingBus = () => {
+  const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
+    getStoredSeatsDataForTrips(),
+  );
+
   const { data: seats } = useGetOccupiedSeatsQuery({
     tripId: storedSeatsDataForTrips!.tripId,
     destinationId: storedSeatsDataForTrips!.destinationId,
     departureId: storedSeatsDataForTrips!.departureId,
   });
+
+  useEffect(() => {
+    setStoredSeatsDataForTrips(getStoredSeatsDataForTrips());
+  }, []);
 
   return (
     <>
@@ -35,14 +44,20 @@ const BookingBus = () => {
           <div className="flex justify-center">
             <Image width={25} height={25} src="/bus-gray.svg" alt="" />
             <p className="text-[#22BB9C] ml-1 text-[16px]">
-              Автобус:
+              Автобус:{" "}
               <span className="uppercase text-[#000]">
                 {storedSeatsDataForTrips!.busModel}
               </span>
             </p>
           </div>
-          <ChoosePlace seatsScheme={seats?.Bus?.SeatsScheme ?? []} />
-          <BookingPlaceInfo />
+          <ChoosePlace
+            seatsScheme={seats?.Bus?.SeatsScheme ?? []}
+            reserved={seats?.return?.Elements ?? []}
+          />
+          <BookingPlaceInfo
+            seatsScheme={seats?.Bus?.SeatsScheme ?? []}
+            reserved={seats?.return?.Elements ?? []}
+          />
         </div>
       </div>
       <Footer />
