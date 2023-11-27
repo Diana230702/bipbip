@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { ModalProps } from "./type";
 
 const Modal: FC<ModalProps> = ({ showModal, setShowModal, content }) => {
