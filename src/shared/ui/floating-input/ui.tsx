@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { FloatingInputProps } from "./type";
 
 const FloatingInput: FC<FloatingInputProps> = ({
@@ -6,22 +6,21 @@ const FloatingInput: FC<FloatingInputProps> = ({
   mockText,
   readOnly,
   containerStyles,
+  type,
+  name,
+  onChange,
+  inputValue,
 }) => {
-  const [inputValue, setInputValue] = useState("");
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
   return (
     <div className={`relative mb-5 ${containerStyles}`}>
       <input
-        type="text"
-        value={mockText !== undefined ? mockText.toString() : ""}
+        type={type}
+        value={inputValue}
+        name={name}
         className={`bg-[#fff] w-[200px] h-[60px] px-[18px] py-[10px] text-[10px] rounded-[10px] ${
           inputValue ? "placeholder:text-[10px] placeholder:-top-[10px]" : ""
         } ${mockText ? "border border-[#22BB9C]" : null}`}
-        onChange={handleInputChange}
+        onChange={onChange}
         readOnly={readOnly}
       />
       <div
@@ -31,6 +30,11 @@ const FloatingInput: FC<FloatingInputProps> = ({
       >
         {placeholder}
       </div>
+      {mockText && !inputValue && (
+        <div className="absolute left-[12px] bottom-[20px] text-[10px] text-[#22BB9C]">
+          {mockText}
+        </div>
+      )}
     </div>
   );
 };

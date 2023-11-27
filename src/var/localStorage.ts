@@ -5,7 +5,7 @@ const getStoredDataForTrips = () => {
     storedDataForTripsString = localStorage.getItem("dataForBuyTicket") || "";
   }
 
-  let storedDataForTrips;
+  let storedDataForTrips: LocalStorageDirection | null;
 
   try {
     storedDataForTrips = storedDataForTripsString
@@ -30,7 +30,7 @@ const getStoredSeatsDataForTrips = () => {
     dataForSeats = localStorage.getItem("dataForSeats");
   }
 
-  let storedSeatsDataForTrips;
+  let storedSeatsDataForTrips: LocalStorageTrip | null;
 
   try {
     storedSeatsDataForTrips = dataForSeats ? JSON.parse(dataForSeats) : null;
@@ -56,6 +56,7 @@ export interface LocalStorageTrip {
   destinationName: string;
   price: string;
   carrier: string;
+  orderId: string | null;
 }
 
 export interface LocalStorageDirection {
