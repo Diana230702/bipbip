@@ -1,25 +1,64 @@
-import {
-  CustomButton,
-  CustomSelect,
-  DirectionCount,
-  FloatingInput,
-} from "@/shared";
+import { CustomButton, DirectionCount, FloatingInput } from "@/shared";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { getStoredSeatsDataForTrips } from "@/var/localStorage";
+import TicketInfo from "@/widgets/ticket-info/ui";
+import { useSetTicketDataMutation } from "@/services/BibipTripService";
 
 interface PaymentInfo {
   setShowModal: (showModal: boolean) => void;
+  order: Order;
 }
-const PaymentInfo: FC<PaymentInfo> = ({ setShowModal }) => {
-  const [inputValue, setInputValue] = useState("");
+const PaymentInfo: FC<PaymentInfo> = ({ setShowModal, order }) => {
   const genderOptions = ["Мужской", "Женский"];
   const geoOptions = ["Российская федерация", "Казахстан"];
-  const documentOptions = ["Паспорт", "Загран"];
+  const documentOptions = [
+    "Паспорт гражданина РФ",
+    "Удостоверение личности моряка (паспорт моряка)",
+    "Загранпаспорт гражданина РФ",
+    "Военный билет",
+    "Свидетельство о рождении",
+    "Паспорт гражданина Казахстана",
+  ];
+  const selectedSeats = useSelector(
+    (state: RootState) => state.selectedSeats.selectedSeats,
+  );
+  const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
+    getStoredSeatsDataForTrips(),
+  );
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+  const [dataForTicket, setDataForTicket] = useState();
+
+  const [setTicketData, { isLoading, isError, data }] =
+    useSetTicketDataMutation();
+
+  useEffect(() => {
+    setStoredSeatsDataForTrips(getStoredSeatsDataForTrips());
+  }, []);
+
+  const submitTicketData = async (data: OrderTicket) => {
+    try {
+      const res = await setTicketData({
+        order_id: storedSeatsDataForTrips?.orderId,
+        passengers: [data],
+      });
+
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
   };
+
+  const handleSubmit = (dataForTicket: OrderTicket) => {
+    submitTicketData(dataForTicket).then((res) => console.log(res));
+    setShowModal(true);
+  };
+
+  console.log(dataForTicket);
 
   return (
     <div className="flex items-baseline mt-[70px]">
@@ -29,35 +68,16 @@ const PaymentInfo: FC<PaymentInfo> = ({ setShowModal }) => {
           Указанные данные необходимы для совершения бронирования и будут
           проверены при посадке в автобус.
         </p>
-        <div className="flex">
-          <div className="flex flex-col mr-[12px]">
-            <FloatingInput placeholder="Фамилия" />
-            <FloatingInput placeholder="Отчество" />
-            <CustomSelect placeholder="Пол" options={genderOptions} />
-            <CustomSelect placeholder="Документ" options={documentOptions} />
-            <FloatingInput
-              placeholder="Ваше место в автобусе"
-              mockText={`Место: ${4}`}
-              readOnly={true}
-            />
-          </div>
-          <div>
-            <FloatingInput placeholder="Имя" />
-            <FloatingInput placeholder="Дата рождения" />
-            <CustomSelect placeholder="Гражданство" options={geoOptions} />
-            <FloatingInput
-              placeholder="Номер документа"
-              mockText="Серия и номер: 10 цифр"
-            />
-          </div>
-        </div>
-        <CustomButton
-          icon="/user-add.svg"
-          title="Добавить пассажира"
-          containerStyles=" border-dashed border border-[#95A4BC] w-[410px] left-[100px] "
-          textStyles="text-[14px] text-[#95A4BC] ml-2"
-          iconStyles="absolute left-[100px]"
-        />
+        {selectedSeats.map((seat) => (
+          <TicketInfo
+            key={seat}
+            gender={genderOptions}
+            documentType={documentOptions}
+            place={String(seat)}
+            citizenship={geoOptions}
+            setDataForTicket={setDataForTicket}
+          />
+        ))}
         <p className="text-[16px] mt-[30px] mb-[5px]">
           Информация о покупателе
         </p>
@@ -72,39 +92,49 @@ const PaymentInfo: FC<PaymentInfo> = ({ setShowModal }) => {
             mockText={`simplemail@mail.ru`}
             readOnly={true}
             containerStyles="mr-[12px]"
+            inputValue={`simplemail@mail.ru`}
+            onChange={() => null}
           />
           <FloatingInput
             placeholder="Имя"
             mockText={`Вячеслав`}
             readOnly={true}
+            inputValue={"Вячеслав"}
+            onChange={() => null}
           />
         </div>
       </div>
       <div className="bg-[#fff] px-[25px] pt-[20px] pb-[30px] rounded-[10px]">
         <p className="text-[16px]">О маршруте</p>
-        <CustomSelect
-          placeholder="Казань - Нижнекамск"
-          options={genderOptions}
-          containerStyles="bg-[#E4E9F0]"
-        />
+        <p className="text-[12px] my-1">
+          {order.Departure.Locality} - {order.Destination.Locality}
+        </p>
         <div className="rounded-[10px] bg-[#AEC7F954] w-[335px] flex justify-center py-[12px] mb-[15px]">
           <Image src="/receipt.svg" width={20} height={20} alt="receipt" />
           <p className="ml-[8px] text-[#3573F0] text-[12px]">
             Билет можно не печатать
           </p>
         </div>
-        <p className="text-[12px] font-semibold mb-[8px]">15:00, 11 мая</p>
+        <p className="text-[12px] font-semibold mb-[8px]">
+          {formatHours(order.DepartureTime)},{" "}
+          {formatDayOfMonth(order.DepartureTime)}
+        </p>
         <p className="text-[#676767] text-[12px] mb-[18px]">
-          Автостанция Новоясенская, м. Новоясенская, Новоясенский тупик, д. 4
+          {order.Departure.Name}
         </p>
 
-        <p className="text-[12px] font-semibold mb-[8px]">08:00, 12 мая</p>
+        <p className="text-[12px] font-semibold mb-[8px]">
+          {formatHours(order.Trip.ArrivalTime)},{" "}
+          {formatDayOfMonth(order.Trip.ArrivalTime)}
+        </p>
         <p className="text-[#676767] text-[12px] mb-[18px]">
-          Автовокзал №2, наб. Обводного Канала, д. 36
+          {order.Destination.Name}
         </p>
 
         <p className="text-[12px] font-semibold mb-[8px]">Место</p>
-        <p className="text-[#676767] text-[12px] mb-[18px]">4</p>
+        <p className="text-[#676767] text-[12px] mb-[18px]">
+          {selectedSeats.join(" ")}
+        </p>
         <div className="flex">
           <DirectionCount icon="/car-white.svg" count={"8,7"} />
           <Image
@@ -117,14 +147,18 @@ const PaymentInfo: FC<PaymentInfo> = ({ setShowModal }) => {
           <Image src="/plug-2.svg" width="20" height="20" alt="plug" />
         </div>
 
-        <p className="text-[12px] font-semibold mt-[8px]">ООО “Буревестник”</p>
+        <p className="text-[12px] font-semibold mt-[8px]">
+          {order.Trip.CarrierData.CarrierName}
+        </p>
         <p className="text-[#676767] text-[12px] pb-[22px] border-b border-[#DADADA]">
           Перевозчик
         </p>
 
         <div className="flex items-center justify-between pt-[12px]">
           <p className="text-[16px]">К оплате</p>
-          <span className="text-[#21D6B1] text-[20px]">514.80 ₽</span>
+          <span className="text-[#21D6B1] text-[20px]">
+            {selectedSeats.length * Number(storedSeatsDataForTrips?.price)} ₽
+          </span>
         </div>
         <p className="text-[#95A4BC] font-light text-[12px] mt-[16px] mb-[20px]">
           Ваши платежные и личные данные надежно защищены в соответствие с
@@ -168,7 +202,7 @@ const PaymentInfo: FC<PaymentInfo> = ({ setShowModal }) => {
         </div>
         <div className="flex justify-end mt-[38px]">
           <CustomButton
-            onClick={() => setShowModal(true)}
+            onClick={() => dataForTicket && handleSubmit(dataForTicket)}
             title="Перейти к оплате"
             containerStyles="text-white w-[213px] px-8 direction-gardient text-[12px] justify-center h-[40px]"
           />

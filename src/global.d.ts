@@ -167,3 +167,38 @@ interface BusReserved {
   Status: string;
   Type: string;
 }
+
+interface Order {
+  Amount: string;
+  Currency: Currency;
+  Customer: null | string;
+  Departure: Location;
+  DepartureTime: string;
+  Destination: Location;
+  LoyaltyCard: null | string;
+  Number: string;
+  OccupiedSeats: BusReserved[];
+  Reserve: null | string;
+  SecondsToUnlockSeats: null | string;
+  Service: null | string;
+  Tickets: [];
+  Trip: Trip;
+}
+
+interface PersonalData {
+  name: string;
+  value: string;
+  value_kind: string;
+}
+
+interface Passenger {
+  number: string;
+  seat_num: string;
+  fare_name: string;
+  personal_data: PersonalData[];
+}
+
+interface OrderTicket {
+  order_id: string;
+  passengers: Passenger[];
+}

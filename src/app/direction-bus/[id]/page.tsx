@@ -57,6 +57,7 @@ const BookingBus = () => {
           <BookingPlaceInfo
             seatsScheme={seats?.Bus?.SeatsScheme ?? []}
             reserved={seats?.return?.Elements ?? []}
+            tripId={storedSeatsDataForTrips?.tripId}
           />
         </div>
       </div>

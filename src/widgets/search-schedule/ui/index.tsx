@@ -31,15 +31,13 @@ const SearchSelect: FC<SearchSelectProps> = ({
   const [storedDataForTrips, setStoredDataForTrips] = useState(
     getStoredDataForTrips(),
   );
-  const [from, setFrom] = useState<TravelDirection | undefined>(
-    storedDataForTrips! && storedDataForTrips?.from
+  const [from, setFrom] = useState<TravelDirection | null>(
+    storedDataForTrips && storedDataForTrips?.from
       ? storedDataForTrips.from
       : null,
   );
-  const [to, setTo] = useState<TravelDirection>(
-    storedDataForTrips! && storedDataForTrips?.to
-      ? storedDataForTrips.to
-      : null,
+  const [to, setTo] = useState<TravelDirection | null>(
+    storedDataForTrips && storedDataForTrips?.to ? storedDataForTrips.to : null,
   );
   const [fromDirections, setFromDirections] = useState<TravelDirection[]>([]);
   const [fromStr, setFromStr] = useState(from?.locality || "");

@@ -1,17 +1,23 @@
 import { CustomButton } from "@/shared";
 import { RootState } from "@/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearSelectedSeats } from "@/slices/seats-slice";
+import { useEffect } from "react";
+import Link from "next/link";
 
 const BookingPlaceInfo = ({
   seatsScheme,
   reserved,
+  tripId,
 }: {
   seatsScheme: Seat[];
   reserved: BusReserved[];
+  tripId: string | undefined;
 }) => {
   const selectedSeats = useSelector(
     (state: RootState) => state.selectedSeats.selectedSeats,
   );
+  const dispatch = useDispatch();
 
   const allSeats: Seat[] = [];
   for (let i = 0; i < seatsScheme.length; i++) {
@@ -19,6 +25,14 @@ const BookingPlaceInfo = ({
       allSeats.push(seatsScheme[i]);
     }
   }
+
+  const handlePopstate = () => {
+    dispatch(clearSelectedSeats());
+  };
+
+  useEffect(() => {
+    handlePopstate();
+  }, []);
 
   return (
     <div className="flex items-baseline justify-between mt-[40px] text-[14px]">
@@ -47,10 +61,12 @@ const BookingPlaceInfo = ({
             ? "Места не выбраны"
             : selectedSeats.join(", ") + " места"}
         </p>
-        <CustomButton
-          title="Далее"
-          containerStyles="text-white px-8 w-full direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
-        />
+        <Link href={`/direction-bus/${tripId}/payment`}>
+          <CustomButton
+            title="Далее"
+            containerStyles="text-white px-8 w-full direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
+          />
+        </Link>
       </div>
     </div>
   );

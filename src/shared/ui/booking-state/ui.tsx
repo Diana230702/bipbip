@@ -20,13 +20,13 @@ const BookingState: FC<BookingStateState> = ({
       ></CustomButton>
       <CustomButton
         title="2 Оформление"
-        textStyles="font-bold text-[14px] "
-        containerStyles={`${activeStylesTwo} relative  text-[#95A4BC] rounded-[44px]  booking-state-button-two`}
+        textStyles="font-bold text-[14px]"
+        containerStyles={`${activeStylesTwo} relative  text-[#95A4BC] rounded-[44px]  booking-state-button-two w-[170px]`}
       />
       <CustomButton
         title="3 Оплата"
         textStyles="font-bold text-[14px]"
-        containerStyles={`${activeStylesThree} text-[#95A4BC] rounded-[44px] z-1`}
+        containerStyles={`${activeStylesThree} text-[#95A4BC] rounded-[44px] z-1 w-[170px]`}
       />
     </div>
   );
