@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+export const baseUrl = `https://bibiptrip.com/api/avibus/`;
 export const bibipTripApi = createApi({
   reducerPath: "directionsAPI",
   tagTypes: ["Directions"],
@@ -43,7 +44,15 @@ export const bibipTripApi = createApi({
         };
       },
     }),
-    addTickets: builder.query({
+    addTickets: builder.query<
+      any,
+      {
+        orderId: string;
+        fareName: string;
+        seatNum: string;
+        parentSeatNum: string;
+      }
+    >({
       query: (args) => {
         const { orderId, fareName, seatNum, parentSeatNum } = args;
         return {
@@ -52,11 +61,58 @@ export const bibipTripApi = createApi({
       },
     }),
     setTicketData: builder.mutation({
-      query: (requestData) => ({
-        url: `/set_ticket_data/`,
-        method: "POST",
-        body: requestData,
-      }),
+      query: (requestData) => {
+        console.log("Request Data", requestData);
+        return {
+          url: `/set_ticket_data/`,
+          method: "POST",
+          body: requestData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+      },
+    }),
+    reserveOrder: builder.query({
+      query: (args) => {
+        const { orderId, customerEmail } = args;
+        return {
+          url: `reserve_order/?order_id=${orderId}&customer_email=${customerEmail}`,
+        };
+      },
+    }),
+    makePayment: builder.mutation({
+      query: (args) => {
+        const { orderId, amount } = args;
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Ikl2YW4iLCJ0aW1lc3RhbXAiOiIxNzAxMzQwMzY2LjgzODQyMTgifQ.nOK5TYY-a4uKU_l1DReOQyfqa-ghMcWD-J1BDJw3RKM";
+        return {
+          url: `make_payment/?order_id=${orderId}&amount=${amount}`,
+          headers: {
+            Authorization: `${token}`,
+          },
+        };
+      },
+    }),
+    cancelPayment: builder.query({
+      query: (args) => {
+        const { orderId, amount, fareName, seatNum } = args;
+        return {
+          url: `api/avibus/cancel_payment/?order_id=${orderId}&amount=${amount}&fare_name=${fareName}&seat_num=${seatNum}`,
+        };
+      },
+    }),
+    checkBalance: builder.mutation({
+      query: (userData) => {
+        return {
+          url: "/balance/",
+          method: "GET",
+          body: userData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+      },
     }),
   }),
 });
@@ -67,5 +123,8 @@ export const {
   useLazySearchTripCitiesQuery,
   useGetOccupiedSeatsQuery,
   useStartSaleSessionQuery,
+  useLazyAddTicketsQuery,
   useSetTicketDataMutation,
+  useLazyReserveOrderQuery,
+  useMakePaymentMutation,
 } = bibipTripApi;

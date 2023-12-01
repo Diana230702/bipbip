@@ -9,4 +9,5 @@ export interface FloatingInputProps {
   name?: string;
   onChange: Dispatch<SetStateAction<any>>;
   inputValue: string;
+  required: boolean;
 }

@@ -3,62 +3,118 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import { getStoredSeatsDataForTrips } from "@/var/localStorage";
 import TicketInfo from "@/widgets/ticket-info/ui";
-import { useSetTicketDataMutation } from "@/services/BibipTripService";
+import {
+  useMakePaymentMutation,
+  useLazyReserveOrderQuery,
+  useSetTicketDataMutation,
+  useLazyAddTicketsQuery,
+  baseUrl,
+} from "@/services/BibipTripService";
+import { fetchPassengersNumbers } from "@/helpers/fetchPassengersNumbers";
 
 interface PaymentInfo {
   setShowModal: (showModal: boolean) => void;
   order: Order;
+  selectedSeats: number[];
 }
-const PaymentInfo: FC<PaymentInfo> = ({ setShowModal, order }) => {
-  const genderOptions = ["Мужской", "Женский"];
-  const geoOptions = ["Российская федерация", "Казахстан"];
-  const documentOptions = [
-    "Паспорт гражданина РФ",
-    "Удостоверение личности моряка (паспорт моряка)",
-    "Загранпаспорт гражданина РФ",
-    "Военный билет",
-    "Свидетельство о рождении",
-    "Паспорт гражданина Казахстана",
-  ];
-  const selectedSeats = useSelector(
-    (state: RootState) => state.selectedSeats.selectedSeats,
-  );
+const PaymentInfo: FC<PaymentInfo> = ({
+  setShowModal,
+  order,
+  selectedSeats,
+}) => {
   const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
     getStoredSeatsDataForTrips(),
   );
+  const [passengers, setPassengers] = useState<TicketData[]>([]);
+  const [triggerFunc, result] = useSetTicketDataMutation();
+  const [reserveOrderTrigger] = useLazyReserveOrderQuery();
+  const [makePaymentTrigger] = useMakePaymentMutation();
+  const [addTicketTrigger, { data: tickets, isSuccess: isDataSuccess }] =
+    useLazyAddTicketsQuery();
+  const [dataForOrder, setDataForOrder] = useState<any[]>([]);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-  const [dataForTicket, setDataForTicket] = useState();
-
-  const [setTicketData, { isLoading, isError, data }] =
-    useSetTicketDataMutation();
-
-  useEffect(() => {
-    setStoredSeatsDataForTrips(getStoredSeatsDataForTrips());
-  }, []);
-
-  const submitTicketData = async (data: OrderTicket) => {
+  const handleClick = async () => {
     try {
-      const res = await setTicketData({
-        order_id: storedSeatsDataForTrips?.orderId,
-        passengers: [data],
-      });
+      if (passengers.length === 1) {
+        await triggerFunc(
+          JSON.stringify({
+            order_id: order.Number,
+            passengers: passengers,
+          }),
+        );
+      } else {
+        for (let i = 0; i < passengers.length; i++) {
+          await triggerFunc(
+            JSON.stringify({
+              order_id: order.Number,
+              passengers: [passengers[i]],
+            }),
+          );
+        }
+      }
 
-      console.log(res);
+      await reserveOrderTrigger({
+        orderId: order.Number,
+        customerEmail: "example@mail.com",
+      });
+      await makePaymentTrigger({
+        orderId: order.Number,
+        amount: "89",
+      });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
-  const handleSubmit = (dataForTicket: OrderTicket) => {
-    submitTicketData(dataForTicket).then((res) => console.log(res));
-    setShowModal(true);
-  };
+  const [loadingData, setLoadingData] = useState(false);
 
-  console.log(dataForTicket);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (loadingData) {
+          return;
+        }
+
+        setLoadingData(true);
+
+        const responses = await Promise.all(
+          selectedSeats.map(async (seat) => {
+            const response = await fetch(
+              `${baseUrl}add_tickets/?order_id=${
+                order.Number
+              }&fare_name=Пассажирский&seat_num=${String(
+                seat,
+              )}&parent_seat_num=${String(seat)}`,
+            );
+
+            const data = await response.json();
+            return data;
+          }),
+        );
+
+        setDataForOrder(responses);
+        setIsDataLoaded(true); // Помечаем, что данные загружены
+
+        setPassengers(
+          fetchPassengersNumbers({
+            selectedSeats,
+            reservedSeats: responses,
+          }),
+        );
+      } catch (error) {
+        console.error(`Произошла ошибка при загрузке данных: ${error}`);
+      } finally {
+        setLoadingData(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(passengers);
 
   return (
     <div className="flex items-baseline mt-[70px]">
@@ -68,16 +124,17 @@ const PaymentInfo: FC<PaymentInfo> = ({ setShowModal, order }) => {
           Указанные данные необходимы для совершения бронирования и будут
           проверены при посадке в автобус.
         </p>
-        {selectedSeats.map((seat) => (
-          <TicketInfo
-            key={seat}
-            gender={genderOptions}
-            documentType={documentOptions}
-            place={String(seat)}
-            citizenship={geoOptions}
-            setDataForTicket={setDataForTicket}
-          />
-        ))}
+        {isDataLoaded &&
+          passengers &&
+          passengers.length > 0 &&
+          selectedSeats.map((seat, index) => (
+            <TicketInfo
+              key={seat}
+              place={String(seat)}
+              passengers={passengers}
+              index={index}
+            />
+          ))}
         <p className="text-[16px] mt-[30px] mb-[5px]">
           Информация о покупателе
         </p>
@@ -89,18 +146,16 @@ const PaymentInfo: FC<PaymentInfo> = ({ setShowModal, order }) => {
         <div className="flex">
           <FloatingInput
             placeholder="E-mail"
-            mockText={`simplemail@mail.ru`}
-            readOnly={true}
             containerStyles="mr-[12px]"
             inputValue={`simplemail@mail.ru`}
             onChange={() => null}
+            required={true}
           />
           <FloatingInput
-            placeholder="Имя"
-            mockText={`Вячеслав`}
-            readOnly={true}
+            placeholder="Номер телефона"
             inputValue={"Вячеслав"}
             onChange={() => null}
+            required={true}
           />
         </div>
       </div>
@@ -202,7 +257,10 @@ const PaymentInfo: FC<PaymentInfo> = ({ setShowModal, order }) => {
         </div>
         <div className="flex justify-end mt-[38px]">
           <CustomButton
-            onClick={() => dataForTicket && handleSubmit(dataForTicket)}
+            onClick={() => {
+              setShowModal(true);
+              handleClick().then((res) => console.log(res));
+            }}
             title="Перейти к оплате"
             containerStyles="text-white w-[213px] px-8 direction-gardient text-[12px] justify-center h-[40px]"
           />

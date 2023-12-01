@@ -10,6 +10,7 @@ const FloatingInput: FC<FloatingInputProps> = ({
   name,
   onChange,
   inputValue,
+  required,
 }) => {
   return (
     <div className={`relative mb-5 ${containerStyles}`}>
@@ -22,6 +23,7 @@ const FloatingInput: FC<FloatingInputProps> = ({
         } ${mockText ? "border border-[#22BB9C]" : null}`}
         onChange={onChange}
         readOnly={readOnly}
+        required={required}
       />
       <div
         className={`absolute left-[12px]  transition-all duration-300 text-[10px] ${

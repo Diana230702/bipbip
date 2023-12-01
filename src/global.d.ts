@@ -202,3 +202,29 @@ interface OrderTicket {
   order_id: string;
   passengers: Passenger[];
 }
+
+interface ReservedOrder {
+  TicketSeats: ReservedElement[];
+  return: Order;
+}
+
+interface ReservedElement {
+  Destination: string;
+  FareName: string;
+  ParentTicketSeatNum: null | number;
+  SeatNum: number;
+  TicketNumber: string;
+}
+
+interface TicketData {
+  number: string;
+  seat_num: string;
+  fare_name: string;
+  personal_data: PersonalDataItem[];
+}
+
+interface PersonalDataItem {
+  name: string;
+  value: string;
+  value_kind: string;
+}

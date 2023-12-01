@@ -14,6 +14,7 @@ const PayBus = () => {
   const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
     getStoredSeatsDataForTrips(),
   );
+
   const { data: order } = useStartSaleSessionQuery({
     tripId: storedSeatsDataForTrips!.tripId,
     destinationId: storedSeatsDataForTrips!.destinationId,
@@ -22,6 +23,7 @@ const PayBus = () => {
   const selectedSeats = useSelector(
     (state: RootState) => state.selectedSeats.selectedSeats,
   );
+
   const router = useRouter();
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const PayBus = () => {
     if (selectedSeats.length === 0) {
       router.push(`/direction-bus/${storedSeatsDataForTrips?.tripId}`);
     }
-  }, []);
+  }, [order]);
 
   return (
     <>
@@ -45,7 +47,13 @@ const PayBus = () => {
             activeStylesTwo="bg-[#21D6B1] text-[#fff] after:border-[#a6efe0] after:right-[-24px] w-[180px]"
             activeStylesThree="bg-[#fff] z-[1]"
           />
-          {order && <PaymentInfo setShowModal={setShowModal} order={order} />}
+          {order && (
+            <PaymentInfo
+              setShowModal={setShowModal}
+              order={order}
+              selectedSeats={selectedSeats}
+            />
+          )}
         </div>
       </div>
       <Modal

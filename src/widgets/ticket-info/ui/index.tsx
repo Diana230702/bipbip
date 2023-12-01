@@ -1,63 +1,39 @@
-import { CustomSelect, FloatingInput } from "@/shared";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-
-interface PassengerData {
-  lastName: string;
-  middleName: string;
-  gender: string;
-  documentType: string;
-  busPlace: string;
-  firstName: string;
-  birthDate: string;
-  citizenship: string;
-  documentNumber: string;
-}
+import { CustomButton, CustomSelect, FloatingInput } from "@/shared";
+import React, { FC, useState } from "react";
+import {
+  genderOptions as gender,
+  documentOptions as documentType,
+  geoOptions as citizenship,
+} from "@/var/variables";
+import DatePicker from "react-datepicker";
 
 interface TicketInfoProps {
-  gender: string[];
-  documentType: string[];
   place: string;
-  citizenship: string[];
-  setDataForTicket: Dispatch<SetStateAction<any>>;
+  passengers: TicketData[];
+  index: number;
 }
 
-const TicketInfo: FC<TicketInfoProps> = ({
-  gender,
-  documentType,
-  place,
-  citizenship,
-  setDataForTicket,
-}) => {
-  const [lastName, setLastName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [genderPassenger, setGenderPassenger] = useState("");
-  const [document, setDocument] = useState("");
-  const [name, setName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [userCitizen, setUserCitizen] = useState("");
-  const [documentNumber, setDocumentNumber] = useState("");
+const TicketInfo: FC<TicketInfoProps> = ({ place, passengers, index }) => {
+  // const jsonStringFromStorage = sessionStorage.getItem("booking:passengers");
+  // const passengers = JSON.parse(jsonStringFromStorage!);
 
-  useEffect(() => {
-    setDataForTicket({
-      lastName,
-      middleName,
-      genderPassenger,
-      document,
-      name,
-      birthDate,
-      userCitizen,
-      documentNumber,
-    });
-  }, [
-    lastName,
-    middleName,
-    genderPassenger,
-    document,
-    name,
-    birthDate,
-    userCitizen,
-    documentNumber,
-  ]);
+  const [lastName, setLastName] = useState("Дроздов");
+  const [middleName, setMiddleName] = useState("Филинович");
+  const [genderPassenger, setGenderPassenger] = useState("Мужской");
+  const [document, setDocument] = useState("Паспорт гражданина РФ");
+  const [firstName, setFirstName] = useState("Щегол");
+  const [birthDate, setBirthDate] = useState(new Date());
+  const [userCitizen, setUserCitizen] = useState("РОССИЯ");
+  const [documentNumber, setDocumentNumber] = useState("98 76 543210");
+
+  passengers[
+    index
+  ].personal_data[0].value = `${lastName} ${firstName} ${middleName}`;
+  passengers[index].personal_data[1].value = documentNumber;
+  passengers[index].personal_data[1].value_kind = document;
+  passengers[index].personal_data[5].value = new Date(birthDate).toISOString();
+  passengers[index].personal_data[6].value = genderPassenger;
+  passengers[index].personal_data[7].value = userCitizen;
 
   return (
     <div className="flex">
@@ -68,6 +44,7 @@ const TicketInfo: FC<TicketInfoProps> = ({
           name="lastName"
           inputValue={String(lastName)}
           onChange={(e) => setLastName(e.target.value)}
+          required={true}
         />
         <FloatingInput
           placeholder="Отчество"
@@ -75,6 +52,7 @@ const TicketInfo: FC<TicketInfoProps> = ({
           name="middleName"
           inputValue={middleName}
           onChange={(e) => setMiddleName(e.target.value)}
+          required={false}
         />
         <CustomSelect
           placeholder="Пол"
@@ -92,20 +70,22 @@ const TicketInfo: FC<TicketInfoProps> = ({
           readOnly={true}
           inputValue={place}
           onChange={() => null}
+          required={false}
         />
       </div>
       <div>
         <FloatingInput
           placeholder="Имя"
           type="text"
-          inputValue={name}
-          onChange={(e) => setName(e.target.value)}
+          inputValue={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required={true}
         />
-        <FloatingInput
-          placeholder="Дата рождения"
-          type="text"
-          inputValue={birthDate}
-          onChange={(e) => setBirthDate(e.target.value)}
+        <DatePicker
+          selected={birthDate}
+          onChange={(date) => setBirthDate(date as Date)}
+          placeholderText="Выберите дату"
+          className="text-[14px] px-[18px] py-[10px] rounded-[10px] w-[200px] h-[60px] mb-[20px]"
         />
         <CustomSelect
           placeholder="Гражданство"
@@ -117,6 +97,7 @@ const TicketInfo: FC<TicketInfoProps> = ({
           type="text"
           inputValue={documentNumber}
           onChange={(e) => setDocumentNumber(e.target.value)}
+          required={true}
         />
       </div>
     </div>
