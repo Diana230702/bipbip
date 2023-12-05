@@ -1,7 +1,9 @@
-import bus_white from "../../../../public/bus-white.svg";
-import car_white from "../../../../public/car-black.svg";
-import bus_gray from "../../../../public/bus-gray.svg";
-import car_gray from "../../../../public/car-gray.svg";
+import { 
+  car_gray,
+  bus_white,
+  car_white,
+  bus_gray
+} from "public"
 import { FC, useState } from "react";
 import { ButtonFilterProps } from "../type";
 import { CustomButton } from "@/shared";

@@ -75,7 +75,7 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
                 </p>
               </div>
               <span className="mx-2 block text-[24px] mt-[35px] font-semibold">
-                {trip.PassengerFareCost} ₽
+                {trip.PassengerFareCost} <span className="font-li"></span>
               </span>
               <Link href={`/direction-bus/${trip.Id}`}>
                 <CustomButton

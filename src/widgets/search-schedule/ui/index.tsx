@@ -29,15 +29,15 @@ const SearchSelect: FC<SearchSelectProps> = ({
   setResFromFetch,
 }) => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(
-    getStoredDataForTrips(),
+    getStoredDataForTrips()
   );
   const [from, setFrom] = useState<TravelDirection | null>(
     storedDataForTrips && storedDataForTrips?.from
       ? storedDataForTrips.from
-      : null,
+      : null
   );
   const [to, setTo] = useState<TravelDirection | null>(
-    storedDataForTrips && storedDataForTrips?.to ? storedDataForTrips.to : null,
+    storedDataForTrips && storedDataForTrips?.to ? storedDataForTrips.to : null
   );
   const [fromDirections, setFromDirections] = useState<TravelDirection[]>([]);
   const [fromStr, setFromStr] = useState(from?.locality || "");
@@ -46,7 +46,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
   const [startDate, setStartDate] = useState<Date | null>(
     storedDataForTrips! && storedDataForTrips?.startDate
       ? new Date(storedDataForTrips.startDate)
-      : new Date(),
+      : new Date()
   );
   const [isFromInputFocused, setIsFromInputFocused] = useState(false);
   const [isToInputFocused, setIsToInputFocused] = useState(false);
@@ -71,6 +71,10 @@ const SearchSelect: FC<SearchSelectProps> = ({
     }
   };
 
+  const handleFromInputFocus = () => {
+    setIsFromInputFocused(true);
+  };
+
   useEffect(() => {
     setStoredDataForTrips(getStoredDataForTrips());
     if (isSuccess) {
@@ -78,20 +82,15 @@ const SearchSelect: FC<SearchSelectProps> = ({
     }
   }, [isSuccess, router]);
 
-  const handleFromInputFocus = () => {
-    setIsFromInputFocused(true);
-  };
-
   const handleToInputFocus = () => {
     setIsToInputFocused(true);
   };
 
-  const clearFromInput = () => {
-    setFromStr("");
-  };
-
   const clearToInput = () => {
     setToStr("");
+  };
+  const clearFromInput = () => {
+    setFromStr("");
   };
 
   return (
@@ -129,8 +128,8 @@ const SearchSelect: FC<SearchSelectProps> = ({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 directions,
-                fromStr,
-              ),
+                fromStr
+              )
             );
             setFromStr(e.target.value);
           }}
@@ -177,8 +176,8 @@ const SearchSelect: FC<SearchSelectProps> = ({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 directions,
-                toStr,
-              ),
+                toStr
+              )
             );
             setToStr(e.target.value);
           }}
@@ -208,7 +207,6 @@ const SearchSelect: FC<SearchSelectProps> = ({
           </div>
         </div>
       </div>
-
       <div className="ml-10 py-2">
         <CustomButton
           title="Найти"
@@ -216,10 +214,6 @@ const SearchSelect: FC<SearchSelectProps> = ({
           onClick={onSaveTrip}
         />
       </div>
-
-      {/* <ul className="absolute top-[100px] left-0 right-0 border border-gray-300 bg-white z-10 rounded-md shadow-md">
-        <li className="px-4 py-2 cursor-pointer hover:bg-gray-100">Москва</li>
-      </ul> */}
     </div>
   );
 };
