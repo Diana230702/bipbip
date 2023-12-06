@@ -8,9 +8,7 @@ interface DirectionInfoProps {
   timeOfDeparture: string;
   timeOfArrival: string;
   containerStyles?: string;
-
   timeInWay?: string;
-
 }
 
 const DirectionInfo: FC<DirectionInfoProps> = ({
@@ -21,9 +19,7 @@ const DirectionInfo: FC<DirectionInfoProps> = ({
   timeOfDeparture,
   timeOfArrival,
   containerStyles,
-
   timeInWay,
-
 }) => {
   return (
     <div className="flex justify-between items-baseline w-[410px]">
@@ -36,7 +32,6 @@ const DirectionInfo: FC<DirectionInfoProps> = ({
       </div>
       <div className="w-[92px]">
         <span className="text-[#95A4BC] text-[12px]">~ {timeInWay}</span>
-
       </div>
       <div className="relative">
         <div
@@ -46,7 +41,6 @@ const DirectionInfo: FC<DirectionInfoProps> = ({
             <span className="aav9 aa9v"></span>
             <span className="a9va aa9v"></span>
             <span className="aav9 aa9v1"></span>
-
           </div>
         </div>
       </div>

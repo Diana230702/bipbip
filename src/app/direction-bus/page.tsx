@@ -1,7 +1,13 @@
 "use client";
 
 import { ButtonFilter } from "@/entities";
-import { BusTicket, DirectionFilter, Footer, Header } from "@/widgets";
+import {
+  BusTicket,
+  DirectionFilter,
+  Footer,
+  Header,
+  ModalContentProfile,
+} from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
 import React, { useEffect, useState } from "react";
 import {
@@ -17,6 +23,7 @@ import {
 import { formatDate } from "@/helpers/formatDate";
 import { isArray } from "is-what";
 import { getStoredDataForTrips } from "@/var/localStorage";
+import { CustomButton, Modal } from "@/shared";
 
 const DirectionBus = () => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(
