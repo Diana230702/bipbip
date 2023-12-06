@@ -6,7 +6,6 @@ import {
   DirectionFilter,
   Footer,
   Header,
-  ModalContentProfile,
 } from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
 import React, { useEffect, useState } from "react";
@@ -23,7 +22,7 @@ import {
 import { formatDate } from "@/helpers/formatDate";
 import { isArray } from "is-what";
 import { getStoredDataForTrips } from "@/var/localStorage";
-import { CustomButton, Modal } from "@/shared";
+import { getTokenFromSessionStorage } from "@/var/sessionStorage";
 
 const DirectionBus = () => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(
@@ -34,6 +33,8 @@ const DirectionBus = () => {
   const { data: Directions } = useGetDirectionsQuery();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [resFromFetch, setResFromFetch] = useState(null);
+  const [token, setToken] = useState< string>("");
+
 
   const { data: availableTicketsQuery } = useSearchTripCitiesQuery({
     departureCity:
@@ -53,13 +54,17 @@ const DirectionBus = () => {
 
   useEffect(() => {
     const availableTrips = availableTicketsQuery?.trips || [];
+    // @ts-ignore
+    setToken(getTokenFromSessionStorage());
     setStoredDataForTrips(getStoredDataForTrips());
     if (resFromFetch) {
       setTrips(resFromFetch);
     } else {
       if (availableTrips) setTrips(availableTrips);
     }
-  }, [resFromFetch, availableTicketsQuery]);
+  }, [resFromFetch, availableTicketsQuery, getStoredDataForTrips]);
+
+
 
   const handleSortByCostClick = () => {
     if (trips) {
@@ -145,7 +150,7 @@ const DirectionBus = () => {
           />
           {isArray(tripsToDisplay)
             ? tripsToDisplay.map((trip: Trip) => (
-                <BusTicket key={trip.Id} trip={trip} />
+                <BusTicket key={trip.Id} trip={trip} setToken={setToken} token={token} />
               ))
             : null}
         </div>

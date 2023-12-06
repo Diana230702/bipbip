@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction,  useState } from "react";
 import Image from "next/image";
 import { registration } from "@/services/registration";
 import {
@@ -14,12 +14,16 @@ interface ModalContentPayment {
   code: string;
   phoneNumber: string;
   setShowRegistrationModal: (showModal: boolean) => void;
+  setToken: Dispatch<SetStateAction<string>>
+  setLogin:Dispatch<SetStateAction<string>>
 }
 const ModalContentPayment: FC<ModalContentPayment> = ({
   setShowModal,
   code,
   phoneNumber,
   setShowRegistrationModal,
+  setToken,
+  setLogin
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [isError, setIsError] = useState(false);
@@ -42,7 +46,9 @@ const ModalContentPayment: FC<ModalContentPayment> = ({
             if (res.Authorization === "false") {
               setShowRegistrationModal(true);
             } else {
+              setToken(res.token)
               setTokenToSessionStorage(res.token);
+              setLogin(phoneNumber)
               setPhoneToSessionStorage(phoneNumber);
             }
           });
@@ -56,7 +62,10 @@ const ModalContentPayment: FC<ModalContentPayment> = ({
         setIsError(false);
       }
     }
+
   };
+
+
 
   return (
     <div className="flex items-center min-h-screen py-8 text-black">

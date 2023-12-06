@@ -2,17 +2,16 @@ import { DirectionInfo } from "@/entities";
 import { CustomButton, Modal } from "@/shared";
 import { BusTicketBottom, ModalContentPayment } from "@/widgets";
 import Image from "next/image";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 import { formatDuration } from "@/helpers/formatDuration";
-import Link from "next/link";
 import ModalContentAuth from "@/widgets/modal-content-auth/ui";
-import { getTokenFromSessionStorage } from "@/var/sessionStorage";
 import ModalContentRegistration from "@/widgets/modal-content-registration/ui";
+import { updateLocalStorage } from "@/helpers/updateLocalStorage";
+import {getTokenFromSessionStorage} from "@/var/sessionStorage"
 
-const BusTicket = ({ trip }: { trip: Trip }) => {
+const BusTicket = ({ trip, setToken, token }: { trip: Trip, setToken: Dispatch<SetStateAction<string>>, token: string }) => {
   const [showBottom, setShowBottom] = useState(false);
-  const token = getTokenFromSessionStorage();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
@@ -22,6 +21,12 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
   const toggleBottom = () => {
     setShowBottom((prevShowBottom) => !prevShowBottom);
   };
+
+
+  useEffect(() => {
+    // @ts-ignore
+    setToken(getTokenFromSessionStorage())
+  }, []);
 
   return (
     <div className="bg-[#fff] rounded-[6px] pt-[30px] overflow-hidden mb-3">
@@ -91,6 +96,7 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
                 containerStyles="text-white px-8 direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
                 onClick={() => {
                   if (token) {
+                    updateLocalStorage(trip)
                     return (window.location.href = `/direction-bus/${trip.Id}`);
                   }
                   return setIsAuthModalOpen(true);
@@ -122,6 +128,8 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
             code={code}
             phoneNumber={phoneNumber}
             setShowRegistrationModal={setIsRegistrationModalOpen}
+            setToken={setToken}
+            setLogin={setPhoneNumber}
           />
         }
       />

@@ -4,24 +4,22 @@ import { CustomButton, Modal } from "@/shared";
 import user from "../../../../public/user.svg";
 import { useEffect, useState } from "react";
 import ModalContentAuth from "@/widgets/modal-content-auth/ui";
-import {
-  getPhoneFromSessionStorage,
-  getTokenFromSessionStorage,
-} from "@/var/sessionStorage";
 import { ModalContentPayment } from "@/widgets";
-import ModalContentRegistration from "@/widgets/modal-content-registration/ui";
+import { getPhoneFromSessionStorage, getTokenFromSessionStorage } from "@/var/sessionStorage";
 export const Hero = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [code, setCode] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
-  const [login, setLogin] = useState<null | string>("");
-  const [token, setToken] = useState<null | string>("");
+  const [login, setLogin] = useState< string>("");
+  const [token, setToken] = useState< string>("");
 
   useEffect(() => {
-    setLogin(getPhoneFromSessionStorage());
-    setToken(getTokenFromSessionStorage());
+    // @ts-ignore
+    setToken(getTokenFromSessionStorage())
+    // @ts-ignore
+    setLogin(getPhoneFromSessionStorage())
   }, []);
 
   return (
@@ -61,16 +59,8 @@ export const Hero = () => {
             code={code}
             phoneNumber={phoneNumber}
             setShowRegistrationModal={setIsRegistrationModalOpen}
-          />
-        }
-      />
-      <Modal
-        showModal={isRegistrationModalOpen}
-        setShowModal={setIsRegistrationModalOpen}
-        content={
-          <ModalContentRegistration
-            setShowModal={setIsRegistrationModalOpen}
-            phoneNumber={phoneNumber}
+            setToken={setToken}
+            setLogin={setLogin}
           />
         }
       />
