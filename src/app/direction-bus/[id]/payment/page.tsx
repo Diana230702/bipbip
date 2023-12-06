@@ -1,7 +1,7 @@
 "use client";
-import { Footer, Header, ModalContentPayment } from "@/widgets";
+import { Footer, Header } from "@/widgets";
 import { PaymentInfo, TreeSite } from "@/entities";
-import { BookingState, Modal } from "@/shared";
+import { BookingState } from "@/shared";
 import { useEffect, useState } from "react";
 import { useStartSaleSessionQuery } from "@/services/BibipTripService";
 import { getStoredSeatsDataForTrips } from "@/var/localStorage";
@@ -56,11 +56,6 @@ const PayBus = () => {
           )}
         </div>
       </div>
-      <Modal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        content={<ModalContentPayment setShowModal={setShowModal} />}
-      />
       <Footer />
     </>
   );

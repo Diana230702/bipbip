@@ -22,6 +22,7 @@ export const bibipTripApi = createApi({
         };
       },
     }),
+
     getOccupiedSeats: builder.query<
       ResponseBusSchemeData,
       { tripId: string; departureId: string; destinationId: string }

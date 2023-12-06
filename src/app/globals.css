@@ -140,7 +140,7 @@ body {
   bottom: 0;
   width: 1px;
   border: 1px solid #a6efe0;
-  transform: rotateЫ(90deg);
+  transform: rotate(90deg);
   z-index: 0;
 }
 
