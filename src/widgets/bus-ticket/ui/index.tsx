@@ -1,15 +1,23 @@
 import { DirectionInfo } from "@/entities";
-import { CustomButton } from "@/shared";
-import { BusTicketBottom } from "@/widgets";
+import { CustomButton, Modal } from "@/shared";
+import { BusTicketBottom, ModalContentPayment } from "@/widgets";
 import Image from "next/image";
 import { useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 import { formatDuration } from "@/helpers/formatDuration";
 import Link from "next/link";
-import { updateLocalStorage } from "@/helpers/updateLocalStorage";
+import ModalContentAuth from "@/widgets/modal-content-auth/ui";
+import { getTokenFromSessionStorage } from "@/var/sessionStorage";
+import ModalContentRegistration from "@/widgets/modal-content-registration/ui";
 
 const BusTicket = ({ trip }: { trip: Trip }) => {
   const [showBottom, setShowBottom] = useState(false);
+  const token = getTokenFromSessionStorage();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
+  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
+  const [code, setCode] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const toggleBottom = () => {
     setShowBottom((prevShowBottom) => !prevShowBottom);
@@ -77,18 +85,56 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
               <span className="mx-2 block text-[24px] mt-[35px] font-semibold">
                 {trip.PassengerFareCost} <span className="font-li"></span>
               </span>
-              <Link href={`/direction-bus/${trip.Id}`}>
-                <CustomButton
-                  title="Выбрать билет"
-                  containerStyles="text-white px-8 direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
-                  onClick={() => updateLocalStorage(trip)}
-                />
-              </Link>
+
+              <CustomButton
+                title="Выбрать билет"
+                containerStyles="text-white px-8 direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
+                onClick={() => {
+                  if (token) {
+                    return <Link href={`/direction-bus/${trip.Id}`}> </Link>;
+                  }
+                  return setIsAuthModalOpen(true);
+                }}
+              />
             </div>
           </div>
         </div>
       </div>
       {showBottom && <BusTicketBottom trip={trip} />}
+      <Modal
+        showModal={isAuthModalOpen}
+        setShowModal={() => setIsAuthModalOpen(false)}
+        content={
+          <ModalContentAuth
+            setShowModal={setIsAuthModalOpen}
+            setIsCodeModalOpen={setIsCodeModalOpen}
+            setCode={setCode}
+            setCleanedPhoneNumber={setPhoneNumber}
+          />
+        }
+      />
+      <Modal
+        showModal={isCodeModalOpen}
+        setShowModal={setIsCodeModalOpen}
+        content={
+          <ModalContentPayment
+            setShowModal={setIsCodeModalOpen}
+            code={code}
+            phoneNumber={phoneNumber}
+            setShowRegistrationModal={setIsRegistrationModalOpen}
+          />
+        }
+      />
+      <Modal
+        showModal={isRegistrationModalOpen}
+        setShowModal={setIsRegistrationModalOpen}
+        content={
+          <ModalContentRegistration
+            setShowModal={setIsRegistrationModalOpen}
+            phoneNumber={phoneNumber}
+          />
+        }
+      />
     </div>
   );
 };

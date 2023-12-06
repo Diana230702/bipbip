@@ -1,13 +1,23 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from "react";
 import Image from "next/image";
 import { getBenefits } from "@/widgets/modal-content-auth/model";
 import { CustomButton } from "@/shared";
+import { getCode } from "@/services/getCode";
+import { cleanPhoneNumber } from "@/helpers/cleanPhoneNumber";
 
 interface ModalContentAuthProps {
-  onClose: () => void;
+  setShowModal: (showModal: boolean) => void;
+  setIsCodeModalOpen: (showModal: boolean) => void;
+  setCode: Dispatch<SetStateAction<string>>;
+  setCleanedPhoneNumber: Dispatch<SetStateAction<string>>;
 }
 
-const ModalContentAuth: FC<ModalContentAuthProps> = ({ onClose }) => {
+const ModalContentAuth: FC<ModalContentAuthProps> = ({
+  setShowModal,
+  setIsCodeModalOpen,
+  setCode,
+  setCleanedPhoneNumber,
+}) => {
   const [phoneNumber, setPhoneNumber] = useState("+7 (***) *** **-**");
   const prefixNumber = (str: string) => {
     if (str === "7") {
@@ -57,15 +67,32 @@ const ModalContentAuth: FC<ModalContentAuthProps> = ({ onClose }) => {
     setPhoneNumber(result); // Подставляем "+7" и ограничиваем длину для последующих цифр
   };
 
+  const handleClick = async (phoneNumber: string) => {
+    const formattedNumber = cleanPhoneNumber(phoneNumber);
+    try {
+      const response = await getCode({ login: formattedNumber });
+      setCode(response.code);
+      setCleanedPhoneNumber(phoneNumber);
+      setIsCodeModalOpen(true);
+      setShowModal(false);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.error("Error:", e.message);
+      } else {
+        console.error("Unexpected error type");
+      }
+    }
+  };
+
   return (
-    <div className="flex items-center min-h-screen p-8">
+    <div className="flex items-center min-h-screen p-8 text-black">
       <div className="relative w-full max-w-[730px] mx-auto bg-white shadow-lg rounded-[20px] p-[30px]">
         <div className="sm:flex items-center">
           <p className="text-black text-2xl">Войти</p>
           <div className="mt-10 text-center sm:px-[50px] sm:text-left ">
             <div
               className="absolute right-5 top-6 cursor-pointer"
-              onClick={onClose}
+              onClick={() => setShowModal(false)}
             >
               <Image
                 src="/close-modal.svg"
@@ -109,6 +136,7 @@ const ModalContentAuth: FC<ModalContentAuthProps> = ({ onClose }) => {
             <CustomButton
               title={"Выслать код в СМС"}
               containerStyles="bg-[#20DDB7] p-3 bg-gradient-to-r from-[#20DDB7] to-[#22BB9C] text-[12px] leading-3 mb-5"
+              onClick={() => handleClick(phoneNumber)}
             />
             <p className="text-[#95A4BC] text-[12px] leading-3 text-left">
               Условия <span className="text-[#3083FF]">публичной оферты</span> и
