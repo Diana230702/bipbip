@@ -38,7 +38,7 @@ export const Header = () => {
         textStyles="text-[12px]"
         onClick={() => {
           if (token) {
-            window.location.href = `/profile`;
+            return  window.location.href = `/profile`;
           }
           setIsAuthModalOpen(true);
         }}

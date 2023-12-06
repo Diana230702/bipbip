@@ -91,7 +91,7 @@ const BusTicket = ({ trip }: { trip: Trip }) => {
                 containerStyles="text-white px-8 direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
                 onClick={() => {
                   if (token) {
-                    return <Link href={`/direction-bus/${trip.Id}`}> </Link>;
+                    return (window.location.href = `/direction-bus/${trip.Id}`);
                   }
                   return setIsAuthModalOpen(true);
                 }}

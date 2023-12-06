@@ -32,7 +32,7 @@ export const Hero = () => {
         iconLeft={user}
         onClick={() => {
           if (token) {
-            window.location.href = `/profile`;
+            return (window.location.href = `/profile`);
           } else {
             setIsAuthModalOpen(true);
           }
