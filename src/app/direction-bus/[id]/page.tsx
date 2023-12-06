@@ -5,7 +5,7 @@ import { BookingPlaceInfo, BookingState } from "@/shared";
 import { MoreTicket } from "@/features";
 import Image from "next/image";
 import { useGetOccupiedSeatsQuery } from "@/services/BibipTripService";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getStoredSeatsDataForTrips } from "@/var/localStorage";
 
 const BookingBus = () => {

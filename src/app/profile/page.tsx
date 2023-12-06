@@ -27,7 +27,7 @@ const Profile = () => {
           <div className="flex justify-between">
             <ProfileTripHistory />
             <ProfileTicket setShowModal={setShowModal} />
-            {/* 
+            {/*
             <div className="w-[65%]">
               <HistoryTicket />
               <HistoryTicket />
@@ -35,11 +35,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <Modal
-        showModal={showModal}
-        setShowModal={setShowModal}
-        content={<ModalContentProfile setShowModal={setShowModal} />}
-      />
 
       <Footer />
     </>

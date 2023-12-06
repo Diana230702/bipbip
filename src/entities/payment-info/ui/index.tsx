@@ -1,18 +1,18 @@
-import { CustomButton, DirectionCount, FloatingInput } from "@/shared";
+import { CustomButton, DirectionCount, FloatingInput, Modal } from "@/shared";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 import { getStoredSeatsDataForTrips } from "@/var/localStorage";
 import TicketInfo from "@/widgets/ticket-info/ui";
 import {
-  useMakePaymentMutation,
-  useLazyReserveOrderQuery,
-  useSetTicketDataMutation,
-  useLazyAddTicketsQuery,
   baseUrl,
+  useLazyReserveOrderQuery,
+  useMakePaymentMutation,
+  useSetTicketDataMutation,
 } from "@/services/BibipTripService";
 import { fetchPassengersNumbers } from "@/helpers/fetchPassengersNumbers";
+import { ModalContentProfile } from "@/widgets";
 
 interface PaymentInfo {
   setShowModal: (showModal: boolean) => void;
@@ -24,18 +24,17 @@ const PaymentInfo: FC<PaymentInfo> = ({
   order,
   selectedSeats,
 }) => {
-  const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
-    getStoredSeatsDataForTrips(),
-  );
+  const storedSeatsDataForTrips = getStoredSeatsDataForTrips();
+
   const [passengers, setPassengers] = useState<TicketData[]>([]);
-  const [triggerFunc, result] = useSetTicketDataMutation();
+  const [triggerFunc] = useSetTicketDataMutation();
   const [reserveOrderTrigger] = useLazyReserveOrderQuery();
   const [makePaymentTrigger] = useMakePaymentMutation();
-  const [addTicketTrigger, { data: tickets, isSuccess: isDataSuccess }] =
-    useLazyAddTicketsQuery();
   const [dataForOrder, setDataForOrder] = useState<any[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
+  const price = selectedSeats.length * Number(storedSeatsDataForTrips!.price);
   const handleClick = async () => {
     try {
       if (passengers.length === 1) {
@@ -62,7 +61,7 @@ const PaymentInfo: FC<PaymentInfo> = ({
       });
       await makePaymentTrigger({
         orderId: order.Number,
-        amount: "89",
+        amount: String(price),
       });
     } catch (e) {
       console.error(e);
@@ -90,8 +89,7 @@ const PaymentInfo: FC<PaymentInfo> = ({
               )}&parent_seat_num=${String(seat)}`,
             );
 
-            const data = await response.json();
-            return data;
+            return await response.json();
           }),
         );
 
@@ -114,8 +112,6 @@ const PaymentInfo: FC<PaymentInfo> = ({
     fetchData();
   }, []);
 
-  console.log(passengers);
-
   return (
     <div className="flex items-baseline mt-[70px]">
       <div className="mr-[50px]">
@@ -127,6 +123,7 @@ const PaymentInfo: FC<PaymentInfo> = ({
         {isDataLoaded &&
           passengers &&
           passengers.length > 0 &&
+          dataForOrder &&
           selectedSeats.map((seat, index) => (
             <TicketInfo
               key={seat}
@@ -266,6 +263,21 @@ const PaymentInfo: FC<PaymentInfo> = ({
           />
         </div>
       </div>
+      <CustomButton
+        title={"Нажми"}
+        onClick={() => setIsSuccessModalOpen(true)}
+      />
+      <Modal
+        showModal={isSuccessModalOpen}
+        setShowModal={() => setIsSuccessModalOpen(false)}
+        content={
+          <ModalContentProfile
+            setShowModal={setIsSuccessModalOpen}
+            order={order}
+            selectedSeats={selectedSeats}
+          />
+        }
+      />
     </div>
   );
 };

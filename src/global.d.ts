@@ -69,7 +69,7 @@ interface Location {
   UTC: string;
   GPSCoordinates: string;
   LocationType: string;
-  Locality: null | string;
+  Locality: string;
   StoppingPlace: null | string;
   Address: string;
   Phone: null | string;
