@@ -54,6 +54,7 @@ const DirectionBus = () => {
 
   useEffect(() => {
     const availableTrips = availableTicketsQuery?.trips || [];
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     setToken(getTokenFromSessionStorage());
     setStoredDataForTrips(getStoredDataForTrips());

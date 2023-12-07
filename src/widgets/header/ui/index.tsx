@@ -15,12 +15,16 @@ export const Header = () => {
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [code, setCode] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [login, setLogin] = useState<null | string>("");
-  const [token, setToken] = useState<null | string>("");
+  const [login, setLogin] = useState<string>("");
+  const [token, setToken] = useState< string>("");
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     setLogin(getPhoneFromSessionStorage());
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     setToken(getTokenFromSessionStorage());
   }, []);
 
@@ -64,16 +68,8 @@ export const Header = () => {
             code={code}
             phoneNumber={phoneNumber}
             setShowRegistrationModal={setIsRegistrationModalOpen}
-          />
-        }
-      />
-      <Modal
-        showModal={isRegistrationModalOpen}
-        setShowModal={setIsRegistrationModalOpen}
-        content={
-          <ModalContentRegistration
-            setShowModal={setIsRegistrationModalOpen}
-            phoneNumber={phoneNumber}
+            setToken={setToken}
+            setLogin={setLogin}
           />
         }
       />

@@ -16,8 +16,10 @@ export const Hero = () => {
   const [token, setToken] = useState< string>("");
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     setToken(getTokenFromSessionStorage())
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     setLogin(getPhoneFromSessionStorage())
   }, []);

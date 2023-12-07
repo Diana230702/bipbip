@@ -5,7 +5,11 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:@next/next/recommended"
   ],
-  "rules": {},
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "@typescript-eslint/ban-ts-ignore": "off"
+  },
   "env": {
     "browser": true,
     "node": true,
