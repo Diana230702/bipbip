@@ -1,5 +1,6 @@
-// @ts-ignore
-const CryptoJS = require("crypto-js");
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+import CryptoJS from "crypto-js";
 
 export const createToken = (array: any[]) => {
   array.push({ Password: "7omyals84yq2x88k" });
@@ -13,7 +14,6 @@ export const createToken = (array: any[]) => {
     .map((obj) => Object.values(obj)[0])
     .join("");
   const hash = CryptoJS.SHA256(concatenatedValues).toString();
-
+  console.log(hash);
   return hash
 };
-

@@ -1,4 +1,4 @@
-import { CustomButton, CustomSelect, FloatingInput } from "@/shared";
+import { CustomSelect, FloatingInput } from "@/shared";
 import React, { FC, useState } from "react";
 import {
   genderOptions as gender,
