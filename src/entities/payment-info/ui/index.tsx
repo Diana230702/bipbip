@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
-import { getStoredSeatsDataForTrips } from "@/var/localStorage";
+import { getStoredOrderId, getStoredSeatsDataForTrips } from "@/var/localStorage";
 import TicketInfo from "@/widgets/ticket-info/ui";
 import {
   baseUrl,
@@ -13,6 +13,8 @@ import {
 } from "@/services/BibipTripService";
 import { fetchPassengersNumbers } from "@/helpers/fetchPassengersNumbers";
 import { ModalContentProfile } from "@/widgets";
+import { makePayment } from "@/services/makePayment";
+import { updateOrderIdAndPrice } from "@/helpers/updateLocalStorage";
 
 interface PaymentInfo {
   setShowModal: (showModal: boolean) => void;
@@ -29,10 +31,10 @@ const PaymentInfo: FC<PaymentInfo> = ({
   const [passengers, setPassengers] = useState<TicketData[]>([]);
   const [triggerFunc] = useSetTicketDataMutation();
   const [reserveOrderTrigger] = useLazyReserveOrderQuery();
-  const [makePaymentTrigger] = useMakePaymentMutation();
   const [dataForOrder, setDataForOrder] = useState<any[]>([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  updateOrderIdAndPrice(order.Number, storedSeatsDataForTrips!.price);
 
   const price = selectedSeats.length * Number(storedSeatsDataForTrips!.price);
   const handleClick = async () => {
@@ -59,10 +61,14 @@ const PaymentInfo: FC<PaymentInfo> = ({
         orderId: order.Number,
         customerEmail: "example@mail.com",
       });
-      await makePaymentTrigger({
+      const PaymentURL = await makePayment({
+        amount: "10",
         orderId: order.Number,
-        amount: String(price),
-      });
+        phoneNumber: "+79005320888",
+        email: "example@mail.ru"
+      })
+      window.open(PaymentURL);
+
     } catch (e) {
       console.error(e);
     }

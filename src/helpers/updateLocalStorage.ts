@@ -35,3 +35,15 @@ export function updateLocalTripStorage(
     );
   }
 }
+
+export function updateOrderIdAndPrice(orderId: string, price: string) {
+  if (typeof window !== "undefined" && window.localStorage) {
+    localStorage.setItem(
+      "orderId",
+      JSON.stringify({
+        orderId,
+        price,
+      }),
+    );
+  }
+}

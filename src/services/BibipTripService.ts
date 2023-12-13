@@ -84,9 +84,7 @@ export const bibipTripApi = createApi({
     }),
     makePayment: builder.mutation({
       query: (args) => {
-        const { orderId, amount } = args;
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6Ikl2YW4iLCJ0aW1lc3RhbXAiOiIxNzAxMzQwMzY2LjgzODQyMTgifQ.nOK5TYY-a4uKU_l1DReOQyfqa-ghMcWD-J1BDJw3RKM";
+        const { orderId, amount, token } = args;
         return {
           url: `make_payment/?order_id=${orderId}&amount=${amount}`,
           headers: {

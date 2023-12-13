@@ -28,6 +28,11 @@ export interface LocalStorageDirection {
   startDate: string;
 }
 
+export interface LocalStorageOrder {
+  orderId: string
+  price: string
+}
+
 const getStoredDataForTrips = () => {
   let storedDataForTripsString;
 
@@ -84,3 +89,27 @@ const getStoredSeatsDataForTrips = () => {
 };
 
 export { getStoredSeatsDataForTrips };
+
+
+const getStoredOrderId = () => {
+  let storedOrderId;
+
+  if (typeof window !== "undefined" && window.localStorage) {
+    storedOrderId = localStorage.getItem("orderId") || "";
+  }
+
+  let storedOrderIdForTrips: LocalStorageOrder | null;
+
+  try {
+    storedOrderIdForTrips = storedOrderId
+      ? JSON.parse(storedOrderId)
+      : null;
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    storedOrderIdForTrips = null;
+  }
+
+  return storedOrderIdForTrips;
+};
+
+export { getStoredOrderId };
