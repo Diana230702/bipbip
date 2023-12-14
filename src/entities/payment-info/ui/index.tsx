@@ -8,13 +8,13 @@ import TicketInfo from "@/widgets/ticket-info/ui";
 import {
   baseUrl,
   useLazyReserveOrderQuery,
-  useMakePaymentMutation,
   useSetTicketDataMutation,
 } from "@/services/BibipTripService";
 import { fetchPassengersNumbers } from "@/helpers/fetchPassengersNumbers";
 import { ModalContentProfile } from "@/widgets";
 import { makePayment } from "@/services/makePayment";
 import { updateOrderIdAndPrice } from "@/helpers/updateLocalStorage";
+import { Order, TicketData } from "@/global";
 
 interface PaymentInfo {
   setShowModal: (showModal: boolean) => void;

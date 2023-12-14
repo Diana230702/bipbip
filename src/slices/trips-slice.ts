@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Trip } from "@/global";
 
 const tripsSlice = createSlice({
   name: "trips",

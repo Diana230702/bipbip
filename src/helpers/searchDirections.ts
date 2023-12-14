@@ -1,3 +1,5 @@
+import { DirectionsResponse } from "@/global";
+
 export function searchDirections(
   startingLetters: string,
   directions: DirectionsResponse,

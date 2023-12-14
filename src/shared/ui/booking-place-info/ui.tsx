@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearSelectedSeats } from "@/slices/seats-slice";
 import { useEffect } from "react";
 import Link from "next/link";
+import { BusReserved, Seat } from "@/global";
 
 const BookingPlaceInfo = ({
   seatsScheme,

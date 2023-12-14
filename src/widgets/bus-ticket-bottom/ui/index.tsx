@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
+import { Trip } from "@/global";
 
 const BusTicketBottom = ({ trip }: { trip: Trip }) => {
   return (

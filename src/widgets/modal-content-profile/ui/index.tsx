@@ -8,6 +8,7 @@ import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 import { formatDuration } from "@/helpers/formatDuration";
 import {useLazyCancelPaymentQuery, useLazyCreateReturnOrderQuery} from "@/services/BibipTripService"
 import { getStoredSeatsDataForTrips } from "@/var/localStorage";
+import { Order } from "@/global";
 interface ModalContentProfileProps {
   setShowModal: (showModal: boolean) => void;
   order: Order;

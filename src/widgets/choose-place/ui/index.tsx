@@ -3,6 +3,7 @@ import { compareAndColorize } from "@/helpers/filterReservedSeats";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { addSelectedSeat, removeSelectedSeat } from "@/slices/seats-slice";
+import { BusReserved, Seat } from "@/global";
 
 const ChoosePlace = ({
   seatsScheme,

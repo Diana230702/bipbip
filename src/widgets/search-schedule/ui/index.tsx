@@ -18,6 +18,7 @@ import { useLazySearchTripCitiesQuery } from "@/services/BibipTripService";
 import { formatDate } from "@/helpers/formatDate";
 import { getStoredDataForTrips } from "@/var/localStorage";
 import { updateLocalTripStorage } from "@/helpers/updateLocalStorage";
+import { DirectionsResponse, TravelDirection } from "@/global";
 
 interface SearchSelectProps {
   directions: DirectionsResponse | undefined;

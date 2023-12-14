@@ -1,3 +1,5 @@
+import { Trip } from "@/global";
+
 export function updateLocalStorage(trip: Trip) {
   if (typeof window !== "undefined" && window.localStorage) {
     localStorage.setItem(

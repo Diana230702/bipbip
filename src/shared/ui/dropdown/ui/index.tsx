@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { TravelDirection } from "@/global";
 
 const Dropdown = ({
   content,

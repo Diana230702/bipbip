@@ -1,3 +1,5 @@
+import { BusReserved, Seat } from "@/global";
+
 export function compareAndColorize(
   array1: Seat[],
   array2: BusReserved[],

@@ -117,13 +117,13 @@ type DefaultValueVariant = {
   ValueProperty5: null | string;
 };
 
-interface TravelDirection {
+export interface TravelDirection {
   id: string;
   name: string;
   locality: string;
 }
 
-interface DirectionsResponse {
+export interface DirectionsResponse {
   travel_directions: TravelDirection[];
 }
 

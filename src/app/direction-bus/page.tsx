@@ -23,6 +23,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { isArray } from "is-what";
 import { getStoredDataForTrips } from "@/var/localStorage";
 import { getTokenFromSessionStorage } from "@/var/sessionStorage";
+import { Trip } from "@/global";
 
 const DirectionBus = () => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(

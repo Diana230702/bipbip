@@ -45,14 +45,14 @@ const ModalContentPayment: FC<ModalContentPayment> = ({
             email: undefined,
             firstName: undefined,
           }).then((res) => {
-            if (res.Authorization === "false") {
-
-            } else {
-              setToken(res.token)
-              setTokenToSessionStorage(res.token);
-              setLogin(phoneNumber)
-              setPhoneToSessionStorage(phoneNumber);
-            }
+            // if (res.Authorization === "false") {
+            //
+            // } else {
+            //   setToken(res.token)
+            //   setTokenToSessionStorage(res.token);
+            //   setLogin(phoneNumber)
+            //   setPhoneToSessionStorage(phoneNumber);
+            // }
           });
           setShowModal(false);
         } else {

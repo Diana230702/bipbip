@@ -1,3 +1,5 @@
+import { Trip } from "@/global";
+
 export const sortArrayByCost = (trips: Trip[]) => {
   return [...trips].sort((trip1: Trip, trip2: Trip) => {
     const cost1 = parseInt(trip1.PassengerFareCost, 10);

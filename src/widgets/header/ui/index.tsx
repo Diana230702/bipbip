@@ -8,7 +8,6 @@ import {
   getTokenFromSessionStorage,
 } from "@/var/sessionStorage";
 import { ModalContentPayment } from "@/widgets";
-import ModalContentRegistration from "@/widgets/modal-content-registration/ui";
 
 export const Header = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);

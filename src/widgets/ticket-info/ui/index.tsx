@@ -6,6 +6,7 @@ import {
   geoOptions as citizenship,
 } from "@/var/variables";
 import DatePicker from "react-datepicker";
+import { TicketData } from "@/global";
 
 interface TicketInfoProps {
   place: string;

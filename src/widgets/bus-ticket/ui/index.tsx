@@ -1,14 +1,15 @@
 import { DirectionInfo } from "@/entities";
 import { CustomButton, Modal } from "@/shared";
-import { BusTicketBottom, ModalContentPayment } from "@/widgets";
+import { BusTicketBottom } from "@/widgets";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 import { formatDuration } from "@/helpers/formatDuration";
 import ModalContentAuth from "@/widgets/modal-content-auth/ui";
-import ModalContentRegistration from "@/widgets/modal-content-registration/ui";
+// import ModalContentRegistration from "@/widgets/modal-content-registration/ui";
 import { updateLocalStorage } from "@/helpers/updateLocalStorage";
 import {getTokenFromSessionStorage} from "@/var/sessionStorage"
+import { Trip } from "@/global";
 
 const BusTicket = ({ trip, setToken, token }: { trip: Trip, setToken: Dispatch<SetStateAction<string>>, token: string }) => {
   const [showBottom, setShowBottom] = useState(false);
@@ -119,30 +120,30 @@ const BusTicket = ({ trip, setToken, token }: { trip: Trip, setToken: Dispatch<S
           />
         }
       />
-      <Modal
-        showModal={isCodeModalOpen}
-        setShowModal={setIsCodeModalOpen}
-        content={
-          <ModalContentPayment
-            setShowModal={setIsCodeModalOpen}
-            code={code}
-            phoneNumber={phoneNumber}
-            setShowRegistrationModal={setIsRegistrationModalOpen}
-            setToken={setToken}
-            setLogin={setPhoneNumber}
-          />
-        }
-      />
-      <Modal
-        showModal={isRegistrationModalOpen}
-        setShowModal={setIsRegistrationModalOpen}
-        content={
-          <ModalContentRegistration
-            setShowModal={setIsRegistrationModalOpen}
-            phoneNumber={phoneNumber}
-          />
-        }
-      />
+      {/*<Modal*/}
+      {/*  showModal={isCodeModalOpen}*/}
+      {/*  setShowModal={setIsCodeModalOpen}*/}
+      {/*  content={*/}
+      {/*    <ModalContentPayment*/}
+      {/*      setShowModal={setIsCodeModalOpen}*/}
+      {/*      code={code}*/}
+      {/*      phoneNumber={phoneNumber}*/}
+      {/*      setShowRegistrationModal={setIsRegistrationModalOpen}*/}
+      {/*      setToken={setToken}*/}
+      {/*      setLogin={setPhoneNumber}*/}
+      {/*    />*/}
+      {/*  }*/}
+      {/*/>*/}
+      {/*<Modal*/}
+      {/*  showModal={isRegistrationModalOpen}*/}
+      {/*  setShowModal={setIsRegistrationModalOpen}*/}
+      {/*  content={*/}
+      {/*    <ModalContentRegistration*/}
+      {/*      setShowModal={setIsRegistrationModalOpen}*/}
+      {/*      phoneNumber={phoneNumber}*/}
+      {/*    />*/}
+      {/*  }*/}
+      {/*/>*/}
     </div>
   );
 };

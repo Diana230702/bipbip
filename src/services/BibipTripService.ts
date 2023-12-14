@@ -1,3 +1,4 @@
+import { DirectionsResponse, Order, ResponseBusSchemeData, TripsResponse } from "@/global";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseUrl = `https://bibiptrip.com/api/avibus/`;
