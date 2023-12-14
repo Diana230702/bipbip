@@ -27,6 +27,8 @@ const ModalContentPayment: FC<ModalContentPayment> = ({
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [isError, setIsError] = useState(false);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     // Фильтрация ввода, чтобы оставить только числа
     const value = e.target.value.replace(/\D/g, "");
@@ -44,7 +46,7 @@ const ModalContentPayment: FC<ModalContentPayment> = ({
             firstName: undefined,
           }).then((res) => {
             if (res.Authorization === "false") {
-              setShowRegistrationModal(true);
+
             } else {
               setToken(res.token)
               setTokenToSessionStorage(res.token);
@@ -97,6 +99,34 @@ const ModalContentPayment: FC<ModalContentPayment> = ({
           Билеты из заказа будут автоматически привязаны к вашему номера
           телефона
         </p>
+        {/*{*/}
+        {/*  !isRegistred && <>*/}
+        {/*    <div className="flex flex-col  mb-5">*/}
+        {/*      <label htmlFor="email" className="p-2">*/}
+        {/*        Email*/}
+        {/*      </label>*/}
+        {/*      <input*/}
+        {/*        type="email"*/}
+        {/*        placeholder="Введите ваш email"*/}
+        {/*        className="p-2"*/}
+        {/*        required={true}*/}
+        {/*        onChange={(event) => setEmail(event.target.value)}*/}
+        {/*      />*/}
+        {/*    </div>*/}
+        {/*    <div className="flex flex-col">*/}
+        {/*      <label htmlFor="name" className="p-2">*/}
+        {/*        Ваше имя*/}
+        {/*      </label>*/}
+        {/*      <input*/}
+        {/*        type="text"*/}
+        {/*        placeholder="Введите ваше имя"*/}
+        {/*        className="p-2"*/}
+        {/*        required={true}*/}
+        {/*        onChange={(event) => setName(event.target.value)}*/}
+        {/*      />*/}
+        {/*    </div>*/}
+        {/*  </>*/}
+        {/*}*/}
         {/*<div className="rounded-[10px] bg-[#AEC7F954] w-[335px] flex justify-center py-[12px] mt-[15px] mb-[30px] mx-auto">*/}
         {/*  <p className="text-[#3573F0] text-[12px] font-light">*/}
         {/*    Изменить номер телефона*/}

@@ -14,7 +14,6 @@ const BusTicket = ({ trip, setToken, token }: { trip: Trip, setToken: Dispatch<S
   const [showBottom, setShowBottom] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
-  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
   const [code, setCode] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
