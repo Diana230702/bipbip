@@ -38,6 +38,7 @@ export const Hero = () => {
           }
         }}
       />
+      {isDropdownOpen && <DropdownProfile isOpen={isDropdownOpen}/>}
       <h1 className="text-[55px] font-bold italic">BiBipTrip</h1>
       <h2 className="text-[36px] italic">Покупка автобусных билетов</h2>
       <Modal

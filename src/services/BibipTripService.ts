@@ -129,7 +129,17 @@ export const bibipTripApi = createApi({
         };
       },
     }),
-
+    getTicketInfo: builder.query({
+      query: (args) => {
+        const {token} = args
+        return {
+          url: `get_ticket_info/`,
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      }
+    })
   }),
 });
 
@@ -144,5 +154,6 @@ export const {
   useLazyReserveOrderQuery,
   useMakePaymentMutation,
   useLazyCancelPaymentQuery,
-  useLazyCreateReturnOrderQuery
+  useLazyCreateReturnOrderQuery,
+  useGetTicketInfoQuery
 } = bibipTripApi;

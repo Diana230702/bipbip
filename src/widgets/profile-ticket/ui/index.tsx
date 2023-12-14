@@ -2,21 +2,36 @@ import { DirectionInfo } from "@/entities";
 import { CustomButton, DirectionCount, DirectionUser } from "@/shared";
 import Image from "next/image";
 import { FC } from "react";
+import { formatDateWithDots, formatHours } from "@/helpers/formatDate";
+import { TicketInfo } from "@/global";
 
 interface ProfileTicketProps {
   setShowModal: (showModal: boolean) => void;
+  ticket: TicketInfo
 }
-const ProfileTicket: FC<ProfileTicketProps> = ({ setShowModal }) => {
+
+function splitRouteName(routeName: string): string[] {
+  const result = routeName.split("—").map((part) => part.trim());
+  return result;
+}
+
+function splitAfterComma(inputString: string): string[] {
+  const result = inputString.split(",").map(part => part.trim());
+
+  return result
+}
+const ProfileTicket: FC<ProfileTicketProps> = ({ setShowModal, ticket }) => {
   return (
-    <div className="bg-[#fff] w-[550px] rounded-[10px] items-center justify-between p-8 pt-[50px] pb-[25px]">
+    <div className="bg-[#fff] w-[550px] rounded-[10px] items-center justify-between p-8 pt-[50px] pb-[25px] mb-4">
+      <p className="mb-5">{formatDateWithDots(ticket.departure_time)}</p>
       <div className="flex items-baseline">
         <DirectionInfo
-          departure="Казань"
-          departureStation="Казанский вокзал, Казань"
-          arrival="Нижнекамск"
-          arrivalStation="Автовокзал, Нижнекамск"
-          timeOfDeparture="17:50"
-          timeOfArrival="09:00"
+          departure={ticket.departure_name}
+          departureStation={splitRouteName(ticket.route_name)[0]}
+          arrival={ticket.destination_name}
+          arrivalStation={splitAfterComma(splitRouteName(ticket.route_name)[1])[0]}
+          timeOfDeparture={formatHours(ticket.departure_time)}
+          timeOfArrival={formatHours(ticket.arrival_time)}
           containerStyles="profile-line"
         />
       </div>
