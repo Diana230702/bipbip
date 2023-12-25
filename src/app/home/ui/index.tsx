@@ -5,23 +5,27 @@ import user from "../../../../public/user.svg";
 import { useEffect, useState } from "react";
 import ModalContentAuth from "@/widgets/modal-content-auth/ui";
 import { ModalContentPayment } from "@/widgets";
-import { getPhoneFromSessionStorage, getTokenFromSessionStorage } from "@/var/sessionStorage";
+import {
+  getPhoneFromSessionStorage,
+  getTokenFromSessionStorage,
+} from "@/var/sessionStorage";
 export const Hero = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [code, setCode] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
-  const [login, setLogin] = useState< string>("");
-  const [token, setToken] = useState< string>("");
+  const [login, setLogin] = useState<string>("");
+  const [token, setToken] = useState<string>("");
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setToken(getTokenFromSessionStorage())
+    setToken(getTokenFromSessionStorage());
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setLogin(getPhoneFromSessionStorage())
+    setLogin(getPhoneFromSessionStorage());
   }, []);
 
   return (
@@ -49,6 +53,7 @@ export const Hero = () => {
             setIsCodeModalOpen={setIsCodeModalOpen}
             setCode={setCode}
             setCleanedPhoneNumber={setPhoneNumber}
+            setIsRegistered={setIsRegistered}
           />
         }
       />
@@ -60,9 +65,9 @@ export const Hero = () => {
             setShowModal={setIsCodeModalOpen}
             code={code}
             phoneNumber={phoneNumber}
-            setShowRegistrationModal={setIsRegistrationModalOpen}
             setToken={setToken}
             setLogin={setLogin}
+            isRegistered={isRegistered}
           />
         }
       />

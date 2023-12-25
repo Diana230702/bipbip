@@ -1,13 +1,14 @@
 "use client";
 import { Footer, Header } from "@/widgets";
 import { PaymentInfo, TreeSite } from "@/entities";
-import { BookingState } from "@/shared";
+import { BookingState, Modal } from "@/shared";
 import { useEffect, useState } from "react";
 import { useStartSaleSessionQuery } from "@/services/BibipTripService";
 import { getStoredSeatsDataForTrips } from "@/var/localStorage";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { useRouter } from "next/navigation";
+import { ModalContentLoader } from "@/widgets/modal-content-loader/ui";
 
 const PayBus = () => {
   const [showModal, setShowModal] = useState(false);
@@ -15,7 +16,7 @@ const PayBus = () => {
     getStoredSeatsDataForTrips(),
   );
 
-  const { data: order } = useStartSaleSessionQuery({
+  const { data: order, isFetching } = useStartSaleSessionQuery({
     tripId: storedSeatsDataForTrips!.tripId,
     destinationId: storedSeatsDataForTrips!.destinationId,
     departureId: storedSeatsDataForTrips!.departureId,
@@ -56,6 +57,13 @@ const PayBus = () => {
           )}
         </div>
       </div>
+      {isFetching && (
+        <Modal
+          showModal={isFetching}
+          setShowModal={() => setShowModal(false)}
+          content={<ModalContentLoader setShowModal={() => null} />}
+        />
+      )}
       <Footer />
     </>
   );

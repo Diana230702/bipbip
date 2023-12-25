@@ -10,6 +10,7 @@ interface ModalContentAuthProps {
   setIsCodeModalOpen: (showModal: boolean) => void;
   setCode: Dispatch<SetStateAction<string>>;
   setCleanedPhoneNumber: Dispatch<SetStateAction<string>>;
+  setIsRegistered: Dispatch<SetStateAction<boolean>>;
 }
 
 const ModalContentAuth: FC<ModalContentAuthProps> = ({
@@ -17,6 +18,7 @@ const ModalContentAuth: FC<ModalContentAuthProps> = ({
   setIsCodeModalOpen,
   setCode,
   setCleanedPhoneNumber,
+  setIsRegistered,
 }) => {
   const [phoneNumber, setPhoneNumber] = useState("+7 (***) *** **-**");
   const prefixNumber = (str: string) => {
@@ -72,6 +74,7 @@ const ModalContentAuth: FC<ModalContentAuthProps> = ({
     try {
       const response = await getCode({ login: formattedNumber });
       setCode(response.code);
+      setIsRegistered(response.is_registered);
       setCleanedPhoneNumber(phoneNumber);
       setIsCodeModalOpen(true);
       setShowModal(false);

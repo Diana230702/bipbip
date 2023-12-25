@@ -3,7 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
-import { getStoredOrderId, getStoredSeatsDataForTrips } from "@/var/localStorage";
+import {
+  getStoredOrderId,
+  getStoredSeatsDataForTrips,
+} from "@/var/localStorage";
 import TicketInfo from "@/widgets/ticket-info/ui";
 import {
   baseUrl,
@@ -65,10 +68,9 @@ const PaymentInfo: FC<PaymentInfo> = ({
         amount: "10",
         orderId: order.Number,
         phoneNumber: "+79005320888",
-        email: "example@mail.ru"
-      })
+        email: "example@mail.ru",
+      });
       window.open(PaymentURL);
-
     } catch (e) {
       console.error(e);
     }

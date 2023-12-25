@@ -1,32 +1,39 @@
 import { DirectionInfo } from "@/entities";
 import { CustomButton, Modal } from "@/shared";
-import { BusTicketBottom } from "@/widgets";
+import { BusTicketBottom, ModalContentPayment } from "@/widgets";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 import { formatDuration } from "@/helpers/formatDuration";
 import ModalContentAuth from "@/widgets/modal-content-auth/ui";
-// import ModalContentRegistration from "@/widgets/modal-content-registration/ui";
 import { updateLocalStorage } from "@/helpers/updateLocalStorage";
-import {getTokenFromSessionStorage} from "@/var/sessionStorage"
+import { getTokenFromSessionStorage } from "@/var/sessionStorage";
 import { Trip } from "@/global";
 
-const BusTicket = ({ trip, setToken, token }: { trip: Trip, setToken: Dispatch<SetStateAction<string>>, token: string }) => {
+const BusTicket = ({
+  trip,
+  setToken,
+  token,
+}: {
+  trip: Trip;
+  setToken: Dispatch<SetStateAction<string>>;
+  token: string;
+}) => {
   const [showBottom, setShowBottom] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [code, setCode] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const toggleBottom = () => {
     setShowBottom((prevShowBottom) => !prevShowBottom);
   };
 
-
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setToken(getTokenFromSessionStorage())
+    setToken(getTokenFromSessionStorage());
   }, []);
 
   return (
@@ -97,7 +104,7 @@ const BusTicket = ({ trip, setToken, token }: { trip: Trip, setToken: Dispatch<S
                 containerStyles="text-white px-8 direction-gardient text-[12px] justify-center h-[40px] mt-[20px]"
                 onClick={() => {
                   if (token) {
-                    updateLocalStorage(trip)
+                    updateLocalStorage(trip);
                     return (window.location.href = `/direction-bus/${trip.Id}`);
                   }
                   return setIsAuthModalOpen(true);
@@ -117,33 +124,24 @@ const BusTicket = ({ trip, setToken, token }: { trip: Trip, setToken: Dispatch<S
             setIsCodeModalOpen={setIsCodeModalOpen}
             setCode={setCode}
             setCleanedPhoneNumber={setPhoneNumber}
+            setIsRegistered={setIsRegistered}
           />
         }
       />
-      {/*<Modal*/}
-      {/*  showModal={isCodeModalOpen}*/}
-      {/*  setShowModal={setIsCodeModalOpen}*/}
-      {/*  content={*/}
-      {/*    <ModalContentPayment*/}
-      {/*      setShowModal={setIsCodeModalOpen}*/}
-      {/*      code={code}*/}
-      {/*      phoneNumber={phoneNumber}*/}
-      {/*      setShowRegistrationModal={setIsRegistrationModalOpen}*/}
-      {/*      setToken={setToken}*/}
-      {/*      setLogin={setPhoneNumber}*/}
-      {/*    />*/}
-      {/*  }*/}
-      {/*/>*/}
-      {/*<Modal*/}
-      {/*  showModal={isRegistrationModalOpen}*/}
-      {/*  setShowModal={setIsRegistrationModalOpen}*/}
-      {/*  content={*/}
-      {/*    <ModalContentRegistration*/}
-      {/*      setShowModal={setIsRegistrationModalOpen}*/}
-      {/*      phoneNumber={phoneNumber}*/}
-      {/*    />*/}
-      {/*  }*/}
-      {/*/>*/}
+      <Modal
+        showModal={isCodeModalOpen}
+        setShowModal={setIsCodeModalOpen}
+        content={
+          <ModalContentPayment
+            setShowModal={setIsCodeModalOpen}
+            code={code}
+            phoneNumber={phoneNumber}
+            setToken={setToken}
+            setLogin={setPhoneNumber}
+            isRegistered={isRegistered}
+          />
+        }
+      />
     </div>
   );
 };

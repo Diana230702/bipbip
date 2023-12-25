@@ -247,3 +247,24 @@ export interface TicketInfo {
   total_amount: string;
   total_amount_avibus: string;
 }
+
+export type Ticket = {
+  order_id: string;
+  token: string;
+  route_name: string;
+  departure_name: string;
+  destination_name: string;
+  departure_time: string;
+  arrival_time: string;
+  seat_num: string;
+  total_amount_avibus: string;
+  total_amount: string;
+  ticket_num: string;
+  licence_plate: string;
+  departure_id: string;
+  payment_id: null | string;
+  receipt_email: null | string;
+  is_returned: boolean;
+  token_tinkoff: null | string;
+  payment_id_tinkoff: null | string;
+};

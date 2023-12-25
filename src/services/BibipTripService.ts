@@ -1,4 +1,9 @@
-import { DirectionsResponse, Order, ResponseBusSchemeData, TripsResponse } from "@/global";
+import {
+  DirectionsResponse,
+  Order,
+  ResponseBusSchemeData,
+  TripsResponse,
+} from "@/global";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseUrl = `https://bibiptrip.com/api/avibus/`;
@@ -103,20 +108,50 @@ export const bibipTripApi = createApi({
       },
     }),
     createReturnOrder: builder.query({
-      query: ({ticketNumber, seatNum, departure}: {ticketNumber: string, seatNum: string, departure: string}) =>
-        `avibus/create_return_order/?ticket_number=${ticketNumber}&seat_num=${seatNum}&departure=${departure}`
+      query: ({
+        ticketNumber,
+        seatNum,
+        departure,
+      }: {
+        ticketNumber: string;
+        seatNum: string;
+        departure: string;
+      }) =>
+        `/create_return_order/?ticket_number=${ticketNumber}&seat_num=${seatNum}&departure=${departure}`,
     }),
     addTicketReturn: builder.query({
-      query: ({returnOrderId, ticketNumber, seatNum, departure}: {returnOrderId: string, ticketNumber: string, seatNum: string, departure: string}) =>
-        `avibus/add_ticket_return/?return_order_id=${returnOrderId}&ticket_number=${ticketNumber}&seat_num=${seatNum}&departure=${departure}`,
+      query: ({
+        returnOrderId,
+        ticketNumber,
+        seatNum,
+        departure,
+      }: {
+        returnOrderId: string;
+        ticketNumber: string;
+        seatNum: string;
+        departure: string;
+      }) =>
+        `/add_ticket_return/?return_order_id=${returnOrderId}&ticket_number=${ticketNumber}&seat_num=${seatNum}&departure=${departure}`,
     }),
     deleteTicketReturn: builder.query({
-      query: ({returnOrderId, ticketNumber} : {returnOrderId: string, ticketNumber: string}) =>
-        `avibus/delete_ticket_return/?return_order_id=${returnOrderId}&ticket_number=${ticketNumber}`,
+      query: ({
+        returnOrderId,
+        ticketNumber,
+      }: {
+        returnOrderId: string;
+        ticketNumber: string;
+      }) =>
+        `/delete_ticket_return/?return_order_id=${returnOrderId}&ticket_number=${ticketNumber}`,
     }),
-    cancelReturnPayment: builder.query({
-      query: ({returnOrderId, amount}: {returnOrderId: string, amount: string}) =>
-        `avibus/return_payment/?return_order_id=${returnOrderId}&amount=${amount}`,
+    returnPayment: builder.query({
+      query: ({
+        returnOrderId,
+        amount,
+      }: {
+        returnOrderId: string;
+        amount: string;
+      }) =>
+        `/return_payment/?return_order_id=${returnOrderId}&amount=${amount}`,
     }),
     checkBalance: builder.mutation({
       query: (userData) => {
@@ -132,15 +167,15 @@ export const bibipTripApi = createApi({
     }),
     getTicketInfo: builder.query({
       query: (args) => {
-        const {token} = args
+        const { token } = args;
         return {
           url: `get_ticket_info/`,
           headers: {
             Authorization: `${token}`,
           },
-        }
-      }
-    })
+        };
+      },
+    }),
   }),
 });
 
@@ -156,5 +191,8 @@ export const {
   useMakePaymentMutation,
   useLazyCancelPaymentQuery,
   useLazyCreateReturnOrderQuery,
-  useGetTicketInfoQuery
+  useGetTicketInfoQuery,
+  useCreateReturnOrderQuery,
+  useLazyAddTicketReturnQuery,
+  useLazyReturnPaymentQuery,
 } = bibipTripApi;

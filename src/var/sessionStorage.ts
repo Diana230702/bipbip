@@ -39,3 +39,28 @@ const getPhoneFromSessionStorage = () => {
 };
 
 export { getPhoneFromSessionStorage };
+
+const setPaymentData = (paymentData: {
+  paymentId: string;
+  paymentToken: string;
+}) => {
+  if (typeof window !== "undefined") {
+    const paymentDataString = JSON.stringify(paymentData);
+    return sessionStorage.setItem("paymentId", paymentDataString);
+  }
+
+  return null;
+};
+
+export { setPaymentData };
+
+const getPaymentData = () => {
+  if (typeof window !== "undefined") {
+    const paymentDataString = sessionStorage.getItem("paymentData");
+    return paymentDataString ? JSON.parse(paymentDataString) : null;
+  }
+
+  return null;
+};
+
+export { getPaymentData };

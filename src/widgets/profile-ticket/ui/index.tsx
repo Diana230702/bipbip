@@ -1,13 +1,14 @@
 import { DirectionInfo } from "@/entities";
-import { CustomButton, DirectionCount, DirectionUser } from "@/shared";
+import { CustomButton, DirectionCount, DirectionUser, Modal } from "@/shared";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { formatDateWithDots, formatHours } from "@/helpers/formatDate";
-import { TicketInfo } from "@/global";
+import { Ticket } from "@/global";
+import { ModalTicketInfo } from "@/widgets/modal-ticket-info";
 
 interface ProfileTicketProps {
   setShowModal: (showModal: boolean) => void;
-  ticket: TicketInfo
+  ticket: Ticket;
 }
 
 function splitRouteName(routeName: string): string[] {
@@ -16,11 +17,13 @@ function splitRouteName(routeName: string): string[] {
 }
 
 function splitAfterComma(inputString: string): string[] {
-  const result = inputString.split(",").map(part => part.trim());
+  const result = inputString.split(",").map((part) => part.trim());
 
-  return result
+  return result;
 }
 const ProfileTicket: FC<ProfileTicketProps> = ({ setShowModal, ticket }) => {
+  const [showTicketInfo, setShowTicketInfo] = useState(false);
+
   return (
     <div className="bg-[#fff] w-[550px] rounded-[10px] items-center justify-between p-8 pt-[50px] pb-[25px] mb-4">
       <p className="mb-5">{formatDateWithDots(ticket.departure_time)}</p>
@@ -29,7 +32,9 @@ const ProfileTicket: FC<ProfileTicketProps> = ({ setShowModal, ticket }) => {
           departure={ticket.departure_name}
           departureStation={splitRouteName(ticket.route_name)[0]}
           arrival={ticket.destination_name}
-          arrivalStation={splitAfterComma(splitRouteName(ticket.route_name)[1])[0]}
+          arrivalStation={
+            splitAfterComma(splitRouteName(ticket.route_name)[1])[0]
+          }
           timeOfDeparture={formatHours(ticket.departure_time)}
           timeOfArrival={formatHours(ticket.arrival_time)}
           containerStyles="profile-line"
@@ -50,11 +55,18 @@ const ProfileTicket: FC<ProfileTicketProps> = ({ setShowModal, ticket }) => {
         <div>
           <CustomButton
             title="Открыть билет"
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowTicketInfo(true)}
             containerStyles="bg-[transparent] border-[1.5px] text-[#21D6B1] border-[#21D6B1] px-8 text-[12px]"
           />
         </div>
       </div>
+      <Modal
+        showModal={showTicketInfo}
+        setShowModal={setShowTicketInfo}
+        content={
+          <ModalTicketInfo setShowModal={setShowTicketInfo} ticket={ticket} />
+        }
+      />
     </div>
   );
 };

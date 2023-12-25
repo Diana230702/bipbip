@@ -1,80 +1,56 @@
-"use client";
-
-import { DirectionInfo } from "@/entities";
-import { CustomButton, DirectionCount } from "@/shared";
 import Image from "next/image";
-import { FC, useEffect, useState } from "react";
+import { DirectionInfo } from "@/entities";
 import { formatDayOfMonth, formatHours } from "@/helpers/formatDate";
 import { formatDuration } from "@/helpers/formatDuration";
+import { CustomButton, DirectionCount } from "@/shared";
+import { Ticket } from "@/global";
+import { Dispatch, SetStateAction } from "react";
 import {
-  useLazyCancelPaymentQuery,
+  useLazyAddTicketReturnQuery,
   useLazyCreateReturnOrderQuery,
+  useLazyReturnPaymentQuery,
 } from "@/services/BibipTripService";
-import { getStoredSeatsDataForTrips } from "@/var/localStorage";
-import { Order } from "@/global";
-interface ModalContentProfileProps {
-  setShowModal: (showModal: boolean) => void;
-  order: Order;
-  selectedSeats: number[];
-}
-const ModalContentProfile: FC<ModalContentProfileProps> = ({
+import { cancelPayment } from "@/services/cancelPayment";
+
+export const ModalTicketInfo = ({
+  ticket,
   setShowModal,
-  order,
-  selectedSeats,
+}: {
+  ticket: Ticket;
+  setShowModal: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [cancelPayment, { data: cancelPaymentRes }] =
-    useLazyCancelPaymentQuery();
   const [createReturnOrder] = useLazyCreateReturnOrderQuery();
-  const storeForDataTrips = getStoredSeatsDataForTrips();
-  const [isVisible, setIsVisible] = useState(false);
+  const [addTicketReturn] = useLazyAddTicketReturnQuery();
+  const [returnPayment] = useLazyReturnPaymentQuery();
 
   const handleCancelClick = async () => {
-    for (const seats of selectedSeats) {
-      if (!order) {
-        await cancelPayment({
-          orderId: storeForDataTrips!.orderId,
-          amount: storeForDataTrips!.price,
-          fareName: "Пассажирский",
-          seatNum: seats,
-        });
-      } else {
-        await cancelPayment({
-          orderId: order.Number,
-          amount: order.Amount,
-          fareName: "Пассажирский",
-          seatNum: seats,
-        });
-      }
-    }
+    // const res = await createReturnOrder({
+    //   ticketNumber: ticket.ticket_num,
+    //   seatNum: ticket.seat_num,
+    //   departure: ticket.departure_id,
+    // });
+    //
+    // await addTicketReturn({
+    //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //   // @ts-ignore
+    //   returnOrderId: res.data.Number,
+    //   ticketNumber: ticket.ticket_num,
+    //   seatNum: ticket.seat_num,
+    //   departure: ticket.departure_id,
+    // });
 
-    for (const seats of selectedSeats) {
-      if (!order) {
-        await createReturnOrder({
-          ticketNumber: cancelPaymentRes.ticketNumber,
-          departure: storeForDataTrips!.departureId,
-          seatNum: String(seats),
-        });
-      } else {
-        await createReturnOrder({
-          ticketNumber: cancelPaymentRes.ticketNumber,
-          departure: order.Trip.Departure.Id,
-          seatNum: String(seats),
-        });
-      }
-    }
+    await cancelPayment({
+      PaymentId: ticket.payment_id_tinkoff,
+      token: ticket.token_tinkoff,
+    });
+
+    // await returnPayment({
+    //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //   // @ts-ignore
+    //   returnOrderId: res.data.Number,
+    //   amount: ticket.total_amount,
+    // });
   };
-
-  useEffect(() => {
-    const tenMinutesInMilliseconds = 10 * 60 * 1000;
-
-    const timeoutId = setTimeout(() => {
-      setIsVisible(false);
-    }, tenMinutesInMilliseconds);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
 
   return (
     <div className="flex items-center min-h-screen py-8">
@@ -96,22 +72,22 @@ const ModalContentProfile: FC<ModalContentProfileProps> = ({
           </div>
         </div>
         <h4 className="text-[20px] font-semibold text-[#171716] mb-[30px]">
-          {order.Departure.Locality} - {order.Destination.Locality}
+          {ticket.departure_name} - {ticket.destination_name}
         </h4>
         <div className="border-b border-[#DADADA] pb-[18px]">
           <div className="flex items-baseline">
             <DirectionInfo
-              departure={order.Departure.Locality}
-              departureStation={order.Departure.Name}
-              arrival={order.Destination.Locality}
-              arrivalStation={order.Destination.Name}
-              timeOfDeparture={formatHours(order.Trip.DepartureTime)}
-              timeOfArrival={formatHours(order.Trip.ArrivalTime)}
+              departure={ticket.departure_name}
+              departureStation={ticket.departure_name}
+              arrival={ticket.destination_name}
+              arrivalStation={ticket.destination_name}
+              timeOfDeparture={formatHours(ticket.departure_time)}
+              timeOfArrival={formatHours(ticket.arrival_time)}
               containerStyles="profile-line"
-              timeInWay={formatDuration(Number(order.Trip.Duration))}
+              timeInWay={formatDuration(Number(ticket.departure_time))}
             />
             <p className="text-[10px] text-[#FF5959]">
-              {formatDayOfMonth(order.Trip.ArrivalTime)}
+              {formatDayOfMonth(ticket.arrival_time)}
             </p>
           </div>
         </div>
@@ -119,9 +95,6 @@ const ModalContentProfile: FC<ModalContentProfileProps> = ({
           <div className="flex justify-between">
             <div className="flex">
               <DirectionCount icon="/bus-white.svg" count={"8,7"} />
-              <p className="text-[#3573F0] underline">
-                {order.Trip.CarrierData.CarrierName}
-              </p>
             </div>
             <div className="flex">
               <Image
@@ -136,10 +109,8 @@ const ModalContentProfile: FC<ModalContentProfileProps> = ({
           </div>
           <div className="bg-[#E4E9F0] p-1 flex justify-center rounded-[6px] w-[110px] mt-[12px]">
             <p className="text-[#676767] text-[12px]">
-              Место:{" "}
-              <span className="text-[#95A4BC]">
-                {selectedSeats.join(",")} место
-              </span>
+              Место:
+              <span className="text-[#95A4BC]">{ticket.seat_num} место</span>
             </p>
           </div>
           <div className="flex items-start mt-[30px]">
@@ -154,30 +125,30 @@ const ModalContentProfile: FC<ModalContentProfileProps> = ({
             </div>
             <div>
               <p className="font-semibold text-[12px]">
-                {order.Destination.Locality}
+                {ticket.destination_name}
               </p>
               <div className="text-[#676767] text-[10px] font-light flex items-center mb-[35px]">
                 <span>
-                  {formatDayOfMonth(order.Trip.ArrivalTime)},{" "}
-                  {formatHours(order.Trip.ArrivalTime)}{" "}
+                  {formatDayOfMonth(ticket.departure_time)},{" "}
+                  {formatHours(ticket.departure_time)}{" "}
                 </span>
                 <span className="text-[#BFD4E4] px-2 text-[20px] leading-0">
                   &bull;
                 </span>
-                <p>{order.Destination.Name}</p>
+                <p>{ticket.destination_name}</p>
               </div>
               <p className="font-semibold text-[12px]">
-                {order.Departure.Locality}
+                {ticket.departure_name}
               </p>
               <div className="text-[#676767] text-[10px] font-light flex items-center mb-[35px]">
                 <span>
-                  {formatDayOfMonth(order.Trip.DepartureTime)},{" "}
-                  {formatHours(order.Trip.DepartureTime)}{" "}
+                  {formatDayOfMonth(ticket.arrival_time)},{" "}
+                  {formatHours(ticket.arrival_time)}{" "}
                 </span>
                 <span className="text-[#BFD4E4] px-2 text-[20px] leading-0">
                   &bull;
                 </span>
-                <p>{order.Departure.Name}</p>
+                <p>{ticket.departure_name}</p>
               </div>
             </div>
           </div>
@@ -187,13 +158,11 @@ const ModalContentProfile: FC<ModalContentProfileProps> = ({
               Билет можно не печатать
             </p>
           </div>
-          {isVisible && (
-            <CustomButton
-              title="Отменить бронь"
-              containerStyles="bg-[#FF3A44] text-white w-full my-[30px]"
-              onClick={handleCancelClick}
-            />
-          )}
+          <CustomButton
+            title="Отменить бронь"
+            containerStyles="bg-[#FF3A44] text-white w-full my-[30px]"
+            onClick={handleCancelClick}
+          />
         </div>
         {/* <div className="rounded-[10px] bg-[#AEC7F954] w-[335px] flex justify-center py-[12px] mt-[15px] mb-[30px] mx-auto">
           <p className="text-[#3573F0] text-[12px] font-light">
@@ -204,5 +173,3 @@ const ModalContentProfile: FC<ModalContentProfileProps> = ({
     </div>
   );
 };
-
-export default ModalContentProfile;

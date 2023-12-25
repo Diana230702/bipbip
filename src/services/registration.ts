@@ -15,7 +15,7 @@ export const registration = async ({
     body: JSON.stringify({
       login: phoneNumber,
       email,
-      first_name: firstName,
+      firstname: firstName,
     }),
   });
 

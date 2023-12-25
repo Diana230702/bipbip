@@ -1,19 +1,20 @@
 "use client";
 import { ChoosePlace, Footer, Header } from "@/widgets";
 import { TreeSite } from "@/entities";
-import { BookingPlaceInfo, BookingState } from "@/shared";
+import { BookingPlaceInfo, BookingState, Modal } from "@/shared";
 import { MoreTicket } from "@/features";
 import Image from "next/image";
 import { useGetOccupiedSeatsQuery } from "@/services/BibipTripService";
 import React, { useEffect, useState } from "react";
 import { getStoredSeatsDataForTrips } from "@/var/localStorage";
+import { ModalContentLoader } from "@/widgets/modal-content-loader/ui";
 
 const BookingBus = () => {
   const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
     getStoredSeatsDataForTrips(),
   );
 
-  const { data: seats } = useGetOccupiedSeatsQuery({
+  const { data: seats, isFetching } = useGetOccupiedSeatsQuery({
     tripId: storedSeatsDataForTrips!.tripId,
     destinationId: storedSeatsDataForTrips!.destinationId,
     departureId: storedSeatsDataForTrips!.departureId,
@@ -44,7 +45,7 @@ const BookingBus = () => {
           <div className="flex justify-center">
             <Image width={25} height={25} src="/bus-gray.svg" alt="" />
             <p className="text-[#22BB9C] ml-1 text-[16px]">
-              Автобус:{" "}
+              Автобус:
               <span className="uppercase text-[#000]">
                 {storedSeatsDataForTrips!.busModel}
               </span>
@@ -61,6 +62,13 @@ const BookingBus = () => {
           />
         </div>
       </div>
+      {isFetching && (
+        <Modal
+          showModal={isFetching}
+          setShowModal={() => null}
+          content={<ModalContentLoader setShowModal={() => null} />}
+        />
+      )}
       <Footer />
     </>
   );

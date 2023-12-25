@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ruLocale from "date-fns/locale/ru";
 import Image from "next/image";
-import { CustomButton } from "@/shared";
+import { CustomButton, Modal } from "@/shared";
 import { searchDirections } from "@/helpers/searchDirections";
 import Dropdown from "@/shared/ui/dropdown/ui";
 import { useRouter } from "next/navigation";
@@ -19,6 +19,7 @@ import { formatDate } from "@/helpers/formatDate";
 import { getStoredDataForTrips } from "@/var/localStorage";
 import { updateLocalTripStorage } from "@/helpers/updateLocalStorage";
 import { DirectionsResponse, TravelDirection } from "@/global";
+import { ModalContentLoader } from "@/widgets/modal-content-loader/ui";
 
 interface SearchSelectProps {
   directions: DirectionsResponse | undefined;
@@ -30,15 +31,15 @@ const SearchSelect: FC<SearchSelectProps> = ({
   setResFromFetch,
 }) => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(
-    getStoredDataForTrips()
+    getStoredDataForTrips(),
   );
   const [from, setFrom] = useState<TravelDirection | null>(
     storedDataForTrips && storedDataForTrips?.from
       ? storedDataForTrips.from
-      : null
+      : null,
   );
   const [to, setTo] = useState<TravelDirection | null>(
-    storedDataForTrips && storedDataForTrips?.to ? storedDataForTrips.to : null
+    storedDataForTrips && storedDataForTrips?.to ? storedDataForTrips.to : null,
   );
   const [fromDirections, setFromDirections] = useState<TravelDirection[]>([]);
   const [fromStr, setFromStr] = useState(from?.locality || "");
@@ -47,12 +48,13 @@ const SearchSelect: FC<SearchSelectProps> = ({
   const [startDate, setStartDate] = useState<Date | null>(
     storedDataForTrips! && storedDataForTrips?.startDate
       ? new Date(storedDataForTrips.startDate)
-      : new Date()
+      : new Date(),
   );
   const [isFromInputFocused, setIsFromInputFocused] = useState(false);
   const [isToInputFocused, setIsToInputFocused] = useState(false);
   const router = useRouter();
-  const [getTickets, { isSuccess }] = useLazySearchTripCitiesQuery();
+  const [getTickets, { isSuccess, isLoading }] = useLazySearchTripCitiesQuery();
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
 
   const onSaveTrip = async () => {
     if (from && to && startDate) {
@@ -129,8 +131,8 @@ const SearchSelect: FC<SearchSelectProps> = ({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 directions,
-                fromStr
-              )
+                fromStr,
+              ),
             );
             setFromStr(e.target.value);
           }}
@@ -177,8 +179,8 @@ const SearchSelect: FC<SearchSelectProps> = ({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 directions,
-                toStr
-              )
+                toStr,
+              ),
             );
             setToStr(e.target.value);
           }}
@@ -208,6 +210,11 @@ const SearchSelect: FC<SearchSelectProps> = ({
           </div>
         </div>
       </div>
+      <Modal
+        showModal={isLoading}
+        setShowModal={setIsLoadingModal}
+        content={<ModalContentLoader setShowModal={setIsLoadingModal} />}
+      />
       <div className="ml-10 py-2">
         <CustomButton
           title="Найти"

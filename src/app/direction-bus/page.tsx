@@ -1,12 +1,7 @@
 "use client";
 
 import { ButtonFilter } from "@/entities";
-import {
-  BusTicket,
-  DirectionFilter,
-  Footer,
-  Header,
-} from "@/widgets";
+import { BusTicket, DirectionFilter, Footer, Header } from "@/widgets";
 import SearchSelect from "@/widgets/search-schedule/ui";
 import React, { useEffect, useState } from "react";
 import {
@@ -24,6 +19,8 @@ import { isArray } from "is-what";
 import { getStoredDataForTrips } from "@/var/localStorage";
 import { getTokenFromSessionStorage } from "@/var/sessionStorage";
 import { Trip } from "@/global";
+import { Modal } from "@/shared";
+import { ModalContentLoader } from "@/widgets/modal-content-loader/ui";
 
 const DirectionBus = () => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(
@@ -31,11 +28,11 @@ const DirectionBus = () => {
   );
   const [sortedTrips, setSortedTrips] = useState<Trip[]>([]);
   const [isSortedAsc, setIsSortedAsc] = useState(true);
-  const { data: Directions } = useGetDirectionsQuery();
+  const { data: Directions, isFetching } = useGetDirectionsQuery();
   const [trips, setTrips] = useState<Trip[]>([]);
   const [resFromFetch, setResFromFetch] = useState(null);
-  const [token, setToken] = useState< string>("");
-
+  const [token, setToken] = useState<string>("");
+  const [isLoadingModal, setIsLoadingModal] = useState(false);
 
   const { data: availableTicketsQuery } = useSearchTripCitiesQuery({
     departureCity:
@@ -65,8 +62,6 @@ const DirectionBus = () => {
       if (availableTrips) setTrips(availableTrips);
     }
   }, [resFromFetch, availableTicketsQuery, getStoredDataForTrips]);
-
-
 
   const handleSortByCostClick = () => {
     if (trips) {
@@ -152,11 +147,23 @@ const DirectionBus = () => {
           />
           {isArray(tripsToDisplay)
             ? tripsToDisplay.map((trip: Trip) => (
-                <BusTicket key={trip.Id} trip={trip} setToken={setToken} token={token} />
+                <BusTicket
+                  key={trip.Id}
+                  trip={trip}
+                  setToken={setToken}
+                  token={token}
+                />
               ))
             : null}
         </div>
       </div>
+      {isFetching && (
+        <Modal
+          showModal={isFetching}
+          setShowModal={() => setIsLoadingModal(false)}
+          content={<ModalContentLoader setShowModal={setIsLoadingModal} />}
+        />
+      )}
       <Footer />
     </>
   );

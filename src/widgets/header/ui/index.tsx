@@ -15,8 +15,8 @@ export const Header = () => {
   const [code, setCode] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [login, setLogin] = useState<string>("");
-  const [token, setToken] = useState< string>("");
-  const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
+  const [token, setToken] = useState<string>("");
+  const [isRegistered, setIsRegistered] = useState(false);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -41,7 +41,7 @@ export const Header = () => {
         textStyles="text-[12px]"
         onClick={() => {
           if (token) {
-            return  window.location.href = `/profile`;
+            return (window.location.href = `/profile`);
           }
           setIsAuthModalOpen(true);
         }}
@@ -55,6 +55,7 @@ export const Header = () => {
             setIsCodeModalOpen={setIsCodeModalOpen}
             setCleanedPhoneNumber={setPhoneNumber}
             setCode={setCode}
+            setIsRegistered={setIsRegistered}
           />
         }
       />
@@ -66,9 +67,9 @@ export const Header = () => {
             setShowModal={setIsCodeModalOpen}
             code={code}
             phoneNumber={phoneNumber}
-            setShowRegistrationModal={setIsRegistrationModalOpen}
             setToken={setToken}
             setLogin={setLogin}
+            isRegistered={isRegistered}
           />
         }
       />

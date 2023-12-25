@@ -1,20 +1,26 @@
 "use client";
 import { baseUrl } from "@/services/BibipTripService";
 import { getStoredOrderId } from "@/var/localStorage";
-import { getTokenFromSessionStorage } from "@/var/sessionStorage";
+import {
+  getPaymentData,
+  getTokenFromSessionStorage,
+} from "@/var/sessionStorage";
 import Link from "next/link";
 import { useEffect } from "react";
 
 const SuccessPayment = () => {
   const order = getStoredOrderId();
   const token = getTokenFromSessionStorage();
+  const paymentInfo = getPaymentData();
 
   useEffect(() => {
     const makePayment = async () => {
       try {
-         await fetch(
+        await fetch(
           `${baseUrl}make_payment/?order_id=${order!.orderId}&amount=${
             order!.price
+          }&token_tinkoff=${paymentInfo.paymentToken}&payment_id_tinkoff=${
+            paymentInfo.paymentId
           }`,
           {
             headers: {
