@@ -20,7 +20,7 @@ const CustomButton: FC<CustomButtonProps> = ({
       onClick={onClick}
     >
       {icon && (
-        <div className={`${iconStyles}  relative w-6 h-6`}>
+        <div className={`${iconStyles}  relative min-w-6 w-6 h-6`}>
           <Image src={icon} alt="allow_left" fill className="object-contain" />
         </div>
       )}

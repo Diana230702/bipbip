@@ -3,4 +3,5 @@ export interface Card {
   alt: string;
   text: string;
   bg: string;
+  className?: string;
 }

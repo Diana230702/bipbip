@@ -29,7 +29,7 @@ export default function Home() {
         <CardsList />
 
         <div className="w-[90%] mx-auto">
-          <CustomText textStyles="text-[36px]" />
+          <CustomText textStyles="md:text-[36px] text-[30px]" />
 
           <DirectionCardsList />
           <AppQr />

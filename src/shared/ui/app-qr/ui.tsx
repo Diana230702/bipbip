@@ -1,7 +1,7 @@
 const AppQr = () => {
   return (
-    <div className="flex justify-between my-[200px]">
-      <div className="w-[50%]">
+    <div className="flex justify-between my-12 md:flex-nowrap flex-wrap items-center lg:my-[200px]">
+      <div className="md:w-[50%]">
         <p className="text-[#171716] font-bold text-[20px] mb-[22px]">
           Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis
           suscipit laboriosam, nisi ut al
@@ -11,7 +11,7 @@ const AppQr = () => {
           suscipit laboriosam, nisi ut al
         </p>
       </div>
-      <div className="flex">
+      <div className="flex justify-around w-full md:w-fit mt-7">
         <div className="mr-10">
           <p className="text-[#95A4BC] font-semibold mb-3 text-[17px]">
             AppStore

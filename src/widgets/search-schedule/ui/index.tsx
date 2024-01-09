@@ -31,15 +31,15 @@ const SearchSelect: FC<SearchSelectProps> = ({
   setResFromFetch,
 }) => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(
-    getStoredDataForTrips(),
+    getStoredDataForTrips()
   );
   const [from, setFrom] = useState<TravelDirection | null>(
     storedDataForTrips && storedDataForTrips?.from
       ? storedDataForTrips.from
-      : null,
+      : null
   );
   const [to, setTo] = useState<TravelDirection | null>(
-    storedDataForTrips && storedDataForTrips?.to ? storedDataForTrips.to : null,
+    storedDataForTrips && storedDataForTrips?.to ? storedDataForTrips.to : null
   );
   const [fromDirections, setFromDirections] = useState<TravelDirection[]>([]);
   const [fromStr, setFromStr] = useState(from?.locality || "");
@@ -48,7 +48,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
   const [startDate, setStartDate] = useState<Date | null>(
     storedDataForTrips! && storedDataForTrips?.startDate
       ? new Date(storedDataForTrips.startDate)
-      : new Date(),
+      : new Date()
   );
   const [isFromInputFocused, setIsFromInputFocused] = useState(false);
   const [isToInputFocused, setIsToInputFocused] = useState(false);
@@ -97,14 +97,14 @@ const SearchSelect: FC<SearchSelectProps> = ({
   };
 
   return (
-    <div className="py-[10px] relative flex items-center mb-7 mt-6 justify-between pr-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] max-h-[70px]">
-      <div className="relative">
+    <div className="py-[10px] relative flex items-center mb-7 mt-6 md:justify-between xsm:justify-around xsm:flex-row flex-col justify-start pr-5 bg-[#fff] rounded-[12px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] md:flex-nowrap flex-wrap">
+      <div className="relative min-w-[110px] w-[200px] md:w-[300px] ">
         <Image
           src="/location.svg"
           alt=""
           width="24"
           height="24"
-          className="absolute top-[11px] left-[12px]"
+          className="absolute top-[11px] left-[5px]"
         />
         {fromDirections && fromDirections.length !== 0 ? (
           <Dropdown
@@ -131,8 +131,8 @@ const SearchSelect: FC<SearchSelectProps> = ({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 directions,
-                fromStr,
-              ),
+                fromStr
+              )
             );
             setFromStr(e.target.value);
           }}
@@ -146,7 +146,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
           </button>
         )}
       </div>
-      <div className="relative">
+      <div className="relative min-w-[110px] w-[200px] md:w-[300px]">
         <Image
           src="/location-tick.svg"
           width="24"
@@ -179,8 +179,8 @@ const SearchSelect: FC<SearchSelectProps> = ({
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 directions,
-                toStr,
-              ),
+                toStr
+              )
             );
             setToStr(e.target.value);
           }}
@@ -194,7 +194,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
           </button>
         )}
       </div>
-      <div className="relative flex">
+      <div className="relative flex my-5 m-auto md:m-0">
         <div className="flex">
           <Image src="/note.svg" width={24} height={25} alt="note" />
           <div className="ml-[14px]">
@@ -215,10 +215,10 @@ const SearchSelect: FC<SearchSelectProps> = ({
         setShowModal={setIsLoadingModal}
         content={<ModalContentLoader setShowModal={setIsLoadingModal} />}
       />
-      <div className="ml-10 py-2">
+      <div className="md:ml-10 ml-0 py-2 md:w-fit w-full">
         <CustomButton
           title="Найти"
-          containerStyles="bg-[#FFA723] text-white font-medium text-[15px] min-w-[194px]"
+          containerStyles="bg-[#FFA723] text-white font-medium text-[15px] min-w-[194px] md:m-0 m-auto"
           onClick={onSaveTrip}
         />
       </div>

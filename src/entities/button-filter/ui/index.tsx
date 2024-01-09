@@ -1,9 +1,4 @@
-import { 
-  car_gray,
-  bus_white,
-  car_white,
-  bus_gray
-} from "public"
+import { car_gray, bus_white, car_white, bus_gray } from "public";
 import { FC, useState } from "react";
 import { ButtonFilterProps } from "../type";
 import { CustomButton } from "@/shared";
@@ -31,7 +26,7 @@ const ButtonFilter: FC<ButtonFilterProps> = ({ containerStyles }) => {
             ? "bg-[#BD21D6] text-white"
             : "bg-[#E4E5EF] text-black"
         }`}
-        textStyles="ml-2 text-left"
+        textStyles="ml-2 text-left text-xsm"
         onClick={() => {
           setActiveButton("bus");
         }}
@@ -39,12 +34,12 @@ const ButtonFilter: FC<ButtonFilterProps> = ({ containerStyles }) => {
       <CustomButton
         icon={getIcon("car")}
         title="Автомобили"
-        containerStyles={`min-w-[100px] p-[10px] py-[9px] text-[12px] font-semibold ${
+        containerStyles={`p-[10px] py-[9px] text-[12px] min-w-[120px] font-semibold ${
           activeButton === "car"
             ? "bg-[#ffa722] text-black"
             : "bg-[#E4E5EF] text-black"
         }`}
-        textStyles="ml-2 text-left"
+        textStyles="ml-2 text-left text-xsm"
         onClick={() => {
           setActiveButton("car");
         }}

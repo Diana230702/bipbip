@@ -106,8 +106,8 @@ const ModalContentAuth: FC<ModalContentAuthProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex justify-between">
-          <div className="flex flex-col">
+        <div className="flex sm:justify-between justify-center sm:flex-nowrap flex-wrap">
+          <div className="flex flex-col sm:mr-0 mr-5">
             <p className="text-[#676767] text-left mb-5">
               В личном кабинете Вы можете:
             </p>
