@@ -17,14 +17,14 @@ import { RootState } from "@/store";
 
 const MoreTicket = () => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(
-    getStoredDataForTrips(),
+    getStoredDataForTrips()
   );
   const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
-    getStoredSeatsDataForTrips(),
+    getStoredSeatsDataForTrips()
   );
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const selectedSeats = useSelector(
-    (state: RootState) => state.selectedSeats.selectedSeats,
+    (state: RootState) => state.selectedSeats.selectedSeats
   );
 
   const toggleDetails = () => {

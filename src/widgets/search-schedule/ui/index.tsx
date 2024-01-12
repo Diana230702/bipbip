@@ -119,7 +119,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
         <input
           type="text"
           placeholder="Откуда"
-          className={`w-full py-3 pl-12 pr-10 rounded-r-none border-r border-[#F5F5F5] rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px] ${
+          className={`w-full py-3 pl-12 pr-10 rounded-r-none border-r border-[#F5F5F5] rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px]  ${
             isFromInputFocused ? "pr-14" : ""
           }`}
           value={fromStr}
@@ -167,7 +167,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
         <input
           type="text"
           placeholder="Куда"
-          className={`w-full py-3 pl-11 pr-10 rounded-l-none rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px] ${
+          className={`w-full py-3 pl-11 pr-10 rounded-l-none rounded-md focus:outline-none focus:ring focus:border-blue-300 text-[16px]  ${
             isToInputFocused ? "pr-14" : ""
           }`}
           value={toStr}
@@ -205,7 +205,7 @@ const SearchSelect: FC<SearchSelectProps> = ({
               locale={ruLocale}
               dateFormat="dd MMM eeeeee"
               placeholderText="Выберите дату"
-              className="text-[14px]"
+              className="text-[14px] "
             />
           </div>
         </div>

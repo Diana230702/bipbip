@@ -21,12 +21,12 @@ const ButtonFilter: FC<ButtonFilterProps> = ({ containerStyles }) => {
       <CustomButton
         icon={getIcon("bus")}
         title="Автобусные билеты"
-        containerStyles={`p-[10px] py-[9px] mr-5  text-[12px] min-w-[120px] ${
+        containerStyles={`p-[10px] py-[9px] mr-5  text-[12px] min-w-[120px]  ${
           activeButton === "bus"
             ? "bg-[#BD21D6] text-white"
             : "bg-[#E4E5EF] text-black"
         }`}
-        textStyles="ml-2 text-left text-xsm"
+        textStyles="ml-2 text-left text-xsm "
         onClick={() => {
           setActiveButton("bus");
         }}
@@ -34,12 +34,12 @@ const ButtonFilter: FC<ButtonFilterProps> = ({ containerStyles }) => {
       <CustomButton
         icon={getIcon("car")}
         title="Автомобили"
-        containerStyles={`p-[10px] py-[9px] text-[12px] min-w-[120px] font-semibold ${
+        containerStyles={`p-[10px] py-[9px] text-[12px] min-w-[120px]  ${
           activeButton === "car"
             ? "bg-[#ffa722] text-black"
             : "bg-[#E4E5EF] text-black"
         }`}
-        textStyles="ml-2 text-left text-xsm"
+        textStyles="ml-2 text-left text-xsm "
         onClick={() => {
           setActiveButton("car");
         }}

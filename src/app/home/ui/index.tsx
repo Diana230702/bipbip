@@ -1,6 +1,6 @@
 "use client";
 
-import { CustomButton, Modal } from "@/shared";
+import { BookingPlaceInfo, CustomButton, Modal } from "@/shared";
 import user from "../../../../public/user.svg";
 import { useEffect, useState } from "react";
 import ModalContentAuth from "@/widgets/modal-content-auth/ui";

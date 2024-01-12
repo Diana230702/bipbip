@@ -6,6 +6,9 @@ const config: Config = {
   },
   theme: {
     extend: {
+      fontWeight: {
+        "600": "600",
+      },
       backgroundImage: {
         "hero-bg": "url('/hero-bg.jpg')",
         "car-bg": "url('/car-bg.png')",

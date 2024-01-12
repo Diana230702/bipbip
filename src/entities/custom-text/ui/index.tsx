@@ -16,7 +16,7 @@ const CustomText: FC<CustomText> = ({ containerStyles, textStyles }) => {
         alt="direct-up"
         className="mr-[15px]"
       />
-      <h4 className={`font-medium ${textStyles}`}>Популярные направления</h4>
+      <h4 className={`${textStyles}`}>Популярные направления</h4>
     </div>
   );
 };

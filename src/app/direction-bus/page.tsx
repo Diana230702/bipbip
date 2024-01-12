@@ -24,7 +24,7 @@ import { ModalContentLoader } from "@/widgets/modal-content-loader/ui";
 
 const DirectionBus = () => {
   const [storedDataForTrips, setStoredDataForTrips] = useState(
-    getStoredDataForTrips(),
+    getStoredDataForTrips()
   );
   const [sortedTrips, setSortedTrips] = useState<Trip[]>([]);
   const [isSortedAsc, setIsSortedAsc] = useState(true);
@@ -164,6 +164,7 @@ const DirectionBus = () => {
           content={<ModalContentLoader setShowModal={setIsLoadingModal} />}
         />
       )}
+
       <Footer />
     </>
   );

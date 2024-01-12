@@ -12,7 +12,9 @@ const RecentlyInfo = () => {
       </div>
       <div className="bg-[#fff] p-[18px] mr-[25px] rounded-[10px]">
         <Image width={50} height={50} src="/rec-info-2.png" alt="icon" />
-        <p className="my-[8px] text-[14px]">Без касс и очередей</p>
+        <p className="my-[8px] text-[20px] font-semibold">
+          Без касс и очередей
+        </p>
         <p className="text-[12px] text-[#676766]">
           Билеты онлайн в любое время на сайте и в приложении
         </p>

@@ -13,7 +13,7 @@ import { ModalContentLoader } from "@/widgets/modal-content-loader/ui";
 const PayBus = () => {
   const [showModal, setShowModal] = useState(false);
   const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
-    getStoredSeatsDataForTrips(),
+    getStoredSeatsDataForTrips()
   );
 
   const { data: order, isFetching } = useStartSaleSessionQuery({
@@ -22,7 +22,7 @@ const PayBus = () => {
     departureId: storedSeatsDataForTrips!.departureId,
   });
   const selectedSeats = useSelector(
-    (state: RootState) => state.selectedSeats.selectedSeats,
+    (state: RootState) => state.selectedSeats.selectedSeats
   );
 
   const router = useRouter();

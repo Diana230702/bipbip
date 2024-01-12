@@ -11,7 +11,7 @@ import { ModalContentLoader } from "@/widgets/modal-content-loader/ui";
 
 const BookingBus = () => {
   const [storedSeatsDataForTrips, setStoredSeatsDataForTrips] = useState(
-    getStoredSeatsDataForTrips(),
+    getStoredSeatsDataForTrips()
   );
 
   const { data: seats, isFetching } = useGetOccupiedSeatsQuery({

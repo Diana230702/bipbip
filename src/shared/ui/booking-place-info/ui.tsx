@@ -16,7 +16,7 @@ const BookingPlaceInfo = ({
   tripId: string | undefined;
 }) => {
   const selectedSeats = useSelector(
-    (state: RootState) => state.selectedSeats.selectedSeats,
+    (state: RootState) => state.selectedSeats.selectedSeats
   );
   const dispatch = useDispatch();
 
